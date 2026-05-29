@@ -30,8 +30,7 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
     }
 
     func replaceLevel(with level: Level, reduceMotion: Bool) {
-        let scene = scene(for: level, reduceMotion: reduceMotion)
-        _ = scene
+        _ = scene(for: level, reduceMotion: reduceMotion)
     }
 
     func restart() {
@@ -43,6 +42,16 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
     func hint() {
         currentScene?.highlightHint()
     }
+
+    #if DEBUG
+    func bridgePerformNextSolutionMove() {
+        currentScene?.bridgePerformNextSolutionMove()
+    }
+
+    func bridgePerformInvalidMove() {
+        currentScene?.bridgePerformInvalidMove()
+    }
+    #endif
 
     nonisolated func gameScene(_ scene: GameScene, didChangeMoves moves: Int) {
         Task { @MainActor in self.moves = moves }
@@ -56,6 +65,14 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
     }
 
     nonisolated func gameSceneRequestsHaptic(_ scene: GameScene, kind: HapticKind) {
-        Task { @MainActor in Haptics.shared.fire(kind) }
+        Task { @MainActor in
+            Haptics.shared.fire(kind)
+            switch kind {
+            case .select:     AudioManager.shared.play(.ringSelect)
+            case .success:    AudioManager.shared.play(.ringRelease)
+            case .warning:    AudioManager.shared.play(.ringInvalid)
+            case .completion: AudioManager.shared.play(.levelComplete)
+            }
+        }
     }
 }

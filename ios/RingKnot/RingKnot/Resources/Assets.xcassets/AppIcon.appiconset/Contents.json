@@ -1,0 +1,14 @@
+{
+  "images" : [
+    {
+      "filename" : "ring_knot_app_icon_master.png",
+      "idiom" : "universal",
+      "platform" : "ios",
+      "size" : "1024x1024"
+    }
+  ],
+  "info" : {
+    "author" : "ringknot-procedural",
+    "version" : 1
+  }
+}

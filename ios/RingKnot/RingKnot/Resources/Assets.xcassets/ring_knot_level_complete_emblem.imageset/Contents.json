@@ -1,0 +1,17 @@
+{
+  "images" : [
+    {
+      "filename" : "ring_knot_level_complete_emblem.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    }
+  ],
+  "info" : {
+    "author" : "ringknot-procedural",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : false,
+    "template-rendering-intent" : "original"
+  }
+}

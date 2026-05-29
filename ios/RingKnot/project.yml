@@ -24,13 +24,20 @@ targets:
       - path: ../../shared/levels/ring_unlock_level_pack_v1.json
         buildPhase: resources
         group: SharedLevels
+      - path: ../../shared/assets/sfx
+        buildPhase: resources
+        group: SFX
+        type: folder
     info:
       path: RingKnot/Info.plist
       properties:
         CFBundleDisplayName: Ring Knot
         CFBundleShortVersionString: "1.0.0"
         CFBundleVersion: "1"
-        UILaunchScreen: {}
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+          UIImageName: ring_knot_brand_mark
+          UIImageRespectsSafeAreaInsets: true
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
         UISupportedInterfaceOrientations~ipad:
@@ -45,6 +52,8 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.swarpfoundation.ringknot
         TARGETED_DEVICE_FAMILY: "1,2"
         GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
   RingKnotTests:
     type: bundle.unit-test
     platform: iOS
@@ -60,3 +69,16 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.swarpfoundation.ringknot.tests
         GENERATE_INFOPLIST_FILE: YES
+  RingKnotUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: RingKnotUITests
+    dependencies:
+      - target: RingKnot
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.swarpfoundation.ringknot.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: RingKnot

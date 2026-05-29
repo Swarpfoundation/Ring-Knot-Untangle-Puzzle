@@ -9,7 +9,8 @@ struct LevelSelectView: View {
 
     var body: some View {
         ZStack {
-            Color.black.ignoresSafeArea()
+            BackgroundImage(name: "bg_menu_obsidian_portrait",
+                            fallback: [Color.black, Color(red: 0.06, green: 0.04, blue: 0.02)])
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 16) {
                     ForEach(environment.levelPack.levels, id: \.id) { level in
@@ -18,10 +19,12 @@ struct LevelSelectView: View {
                             unlocked: environment.isUnlocked(level.id),
                             record: environment.progress.records[level.id]
                         )
+                        .accessibilityIdentifier("levelCard.\(level.id)")
                     }
                 }
                 .padding(20)
             }
+            .accessibilityIdentifier("levelSelect.grid")
         }
         .navigationTitle("Select Level")
         .navigationBarTitleDisplayMode(.inline)
@@ -82,6 +85,9 @@ private struct LevelCard: View {
         }
         .buttonStyle(.plain)
         .disabled(!unlocked)
+        .simultaneousGesture(TapGesture().onEnded {
+            if unlocked { AudioManager.shared.play(.buttonTap) }
+        })
         .accessibilityLabel(accessibilityLabel)
     }
 

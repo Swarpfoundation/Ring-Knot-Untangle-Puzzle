@@ -26,6 +26,10 @@ final class GameScene: SKScene {
     private var cellSize: CGFloat = 0
     private var boardOrigin: CGPoint = .zero
 
+    private var fxLayer: SKNode = SKNode()
+    private var hintArrowNode: SKSpriteNode?
+    private var selectionGlowNode: SKSpriteNode?
+
     weak var gameDelegate: GameSceneDelegate?
 
     init(level: Level, reduceMotion: Bool) {
@@ -34,13 +38,14 @@ final class GameScene: SKScene {
         self.reduceMotion = reduceMotion
         super.init(size: .zero)
         scaleMode = .resizeFill
-        backgroundColor = RingPalette.boardBackground
+        backgroundColor = .clear
     }
 
     required init?(coder aDecoder: NSCoder) { nil }
 
     override func didMove(to view: SKView) {
         view.isMultipleTouchEnabled = false
+        view.allowsTransparency = true
         rebuildScene()
     }
 
@@ -61,11 +66,51 @@ final class GameScene: SKScene {
         guard let id = state.validator.nextSuggestedRingId(clearedIds: state.clearedRingIds),
               let node = ringNodes[id] else { return }
         node.showHint(reduceMotion: reduceMotion)
+        showHintArrow(for: node)
     }
+
+    #if DEBUG
+    func bridgePerformNextSolutionMove() {
+        guard let id = state.validator.nextSuggestedRingId(clearedIds: state.clearedRingIds),
+              let ring = level.ring(id),
+              let node = ringNodes[id] else { return }
+        let outcome = state.attempt(ringId: ring.id, dragDirection: ring.exitDirection)
+        if outcome == .accepted {
+            gameDelegate?.gameSceneRequestsHaptic(self, kind: .success)
+            spawnReleaseFX(at: node.position, direction: ring.exitDirection)
+            node.performExit(reduceMotion: reduceMotion) { [weak self] in
+                guard let self else { return }
+                self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
+                if self.state.isComplete {
+                    self.gameDelegate?.gameSceneRequestsHaptic(self, kind: .completion)
+                    self.gameDelegate?.gameScene(self, didCompleteLevel: self.level, moves: self.state.moveCount)
+                }
+            }
+        }
+    }
+
+    func bridgePerformInvalidMove() {
+        // Pick the first locked ring (one with unmet requires) and try its direction.
+        guard let blocked = level.rings.first(where: { ring in
+            !state.clearedRingIds.contains(ring.id) && !ring.requires.allSatisfy { state.clearedRingIds.contains($0) }
+        }), let node = ringNodes[blocked.id] else { return }
+        let outcome = state.attempt(ringId: blocked.id, dragDirection: blocked.exitDirection)
+        if case .blockedByPrerequisite = outcome {
+            gameDelegate?.gameSceneRequestsHaptic(self, kind: .warning)
+            spawnInvalidFX(at: node.position)
+            node.snapBack(reduceMotion: reduceMotion) { [weak self] in
+                guard let self else { return }
+                self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
+            }
+        }
+    }
+    #endif
 
     private func rebuildScene() {
         removeAllChildren()
         ringNodes.removeAll(keepingCapacity: true)
+        fxLayer = SKNode()
+        fxLayer.zPosition = 500
         guard size.width > 0, size.height > 0 else { return }
 
         let padding: CGFloat = 16
@@ -79,18 +124,15 @@ final class GameScene: SKScene {
             y: (size.height - boardHeight) / 2 + cellSize * 0.4
         )
 
-        let bgSize = CGSize(width: boardWidth + cellSize * 0.4, height: boardHeight + cellSize * 0.4)
-        let bgTexture = RingTextureFactory.boardBackgroundTexture(size: bgSize)
-        let bg = SKSpriteNode(texture: bgTexture, size: bgSize)
-        bg.position = CGPoint(x: boardOrigin.x + boardWidth / 2, y: boardOrigin.y + boardHeight / 2)
-        bg.zPosition = -1000
-        addChild(bg)
-
-        let frame = SKShapeNode(rect: CGRect(origin: .zero, size: bgSize), cornerRadius: cellSize * 0.18)
-        frame.position = CGPoint(x: bg.position.x - bgSize.width / 2, y: bg.position.y - bgSize.height / 2)
-        frame.strokeColor = UIColor(white: 0.18, alpha: 1.0)
+        let frame = SKShapeNode(rect: CGRect(
+            x: boardOrigin.x - cellSize * 0.18,
+            y: boardOrigin.y - cellSize * 0.18,
+            width: boardWidth + cellSize * 0.36,
+            height: boardHeight + cellSize * 0.36
+        ), cornerRadius: cellSize * 0.18)
+        frame.strokeColor = UIColor(white: 0.16, alpha: 1.0)
         frame.lineWidth = 2
-        frame.fillColor = .clear
+        frame.fillColor = UIColor(white: 0.04, alpha: 0.55)
         frame.zPosition = -999
         addChild(frame)
 
@@ -111,6 +153,7 @@ final class GameScene: SKScene {
             ringNodes[ring.id] = node
             addChild(node)
         }
+        addChild(fxLayer)
     }
 
     private func pointForCell(_ cell: Cell) -> CGPoint {
@@ -118,6 +161,8 @@ final class GameScene: SKScene {
         let y = boardOrigin.y + (CGFloat(level.board.rows - 1 - cell.row) + 0.5) * cellSize
         return CGPoint(x: x, y: y)
     }
+
+    // MARK: - Touch
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else { return }
@@ -134,6 +179,8 @@ final class GameScene: SKScene {
         selectedNode = target
         dragStartLocation = point
         target.showSelection(true)
+        showSelectionGlow(for: target)
+        hideHintArrow()
         gameDelegate?.gameSceneRequestsHaptic(self, kind: .select)
     }
 
@@ -158,6 +205,7 @@ final class GameScene: SKScene {
             switch outcome {
             case .accepted:
                 gameDelegate?.gameSceneRequestsHaptic(self, kind: .success)
+                spawnReleaseFX(at: node.position, direction: node.ring.exitDirection)
                 node.performExit(reduceMotion: reduceMotion) { [weak self] in
                     guard let self else { return }
                     self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
@@ -168,6 +216,7 @@ final class GameScene: SKScene {
                 }
             case .blockedByPrerequisite, .wrongDirection:
                 gameDelegate?.gameSceneRequestsHaptic(self, kind: .warning)
+                spawnInvalidFX(at: node.position)
                 node.snapBack(reduceMotion: reduceMotion) { [weak self] in
                     guard let self else { return }
                     self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
@@ -178,16 +227,146 @@ final class GameScene: SKScene {
         } else {
             node.snapBack(reduceMotion: reduceMotion) {}
         }
+        hideSelectionGlow()
         clearSelection()
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         selectedNode?.snapBack(reduceMotion: reduceMotion) {}
+        hideSelectionGlow()
         clearSelection()
     }
 
     private func clearSelection() {
         selectedNode?.showSelection(false)
         selectedNode = nil
+    }
+
+    // MARK: - FX
+
+    private func showSelectionGlow(for node: RingNode) {
+        hideSelectionGlow()
+        guard let texture = textureNamed("fx_ring_selection_glow") else { return }
+        let glow = SKSpriteNode(texture: texture)
+        glow.size = CGSize(width: cellSize * 1.4, height: cellSize * 1.4)
+        glow.alpha = 0.0
+        glow.position = node.position
+        glow.zPosition = node.zPosition - 0.1
+        glow.blendMode = .add
+        glow.run(SKAction.fadeAlpha(to: 0.95, duration: 0.12))
+        fxLayer.addChild(glow)
+        selectionGlowNode = glow
+    }
+
+    private func hideSelectionGlow() {
+        if let glow = selectionGlowNode {
+            glow.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: 0.10),
+                SKAction.removeFromParent()
+            ]))
+        }
+        selectionGlowNode = nil
+    }
+
+    private func showHintArrow(for node: RingNode) {
+        hideHintArrow()
+        guard let texture = textureNamed("ui_drag_arrow_master") else { return }
+        let arrow = SKSpriteNode(texture: texture)
+        arrow.size = CGSize(width: cellSize * 0.9, height: cellSize * 0.9)
+        let v = node.ring.exitDirection.unitVector
+        arrow.position = CGPoint(
+            x: node.position.x + v.dx * cellSize * 0.7,
+            y: node.position.y + v.dy * cellSize * 0.7
+        )
+        arrow.zRotation = atan2(v.dy, v.dx)
+        arrow.zPosition = 200
+        arrow.alpha = 0
+        fxLayer.addChild(arrow)
+        hintArrowNode = arrow
+        let pulse = SKAction.sequence([
+            SKAction.fadeAlpha(to: 1.0, duration: 0.18),
+            SKAction.wait(forDuration: 0.8),
+            SKAction.fadeAlpha(to: 0.0, duration: 0.25),
+            SKAction.removeFromParent()
+        ])
+        arrow.run(pulse)
+    }
+
+    private func hideHintArrow() {
+        hintArrowNode?.removeFromParent()
+        hintArrowNode = nil
+    }
+
+    private func spawnReleaseFX(at point: CGPoint, direction: Direction) {
+        guard let streakTexture = textureNamed("fx_ring_release_streak") else { return }
+        let streak = SKSpriteNode(texture: streakTexture)
+        streak.size = CGSize(width: cellSize * 2.2, height: cellSize * 0.6)
+        streak.position = point
+        streak.zRotation = direction.radians
+        streak.blendMode = .add
+        streak.alpha = 0.0
+        streak.zPosition = 300
+        fxLayer.addChild(streak)
+        let v = direction.unitVector
+        let endPoint = CGPoint(x: point.x + v.dx * cellSize * 1.4,
+                               y: point.y + v.dy * cellSize * 1.4)
+        let appear = SKAction.fadeAlpha(to: 0.85, duration: 0.08)
+        let move = SKAction.move(to: endPoint, duration: 0.30)
+        let fade = SKAction.fadeOut(withDuration: 0.30)
+        streak.run(SKAction.sequence([
+            appear,
+            SKAction.group([move, fade]),
+            SKAction.removeFromParent()
+        ]))
+
+        guard !reduceMotion, let sparkTexture = textureNamed("fx_metal_spark") else { return }
+        for _ in 0..<6 {
+            let spark = SKSpriteNode(texture: sparkTexture)
+            spark.size = CGSize(width: cellSize * 0.45, height: cellSize * 0.45)
+            spark.position = point
+            spark.blendMode = .add
+            spark.zPosition = 350
+            let angle = CGFloat.random(in: 0..<(2 * .pi))
+            let distance = CGFloat.random(in: cellSize * 0.4...cellSize * 1.0)
+            let endP = CGPoint(x: point.x + cos(angle) * distance,
+                               y: point.y + sin(angle) * distance)
+            spark.alpha = 0.95
+            fxLayer.addChild(spark)
+            spark.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.move(to: endP, duration: 0.28),
+                    SKAction.scale(to: 0.3, duration: 0.28),
+                    SKAction.fadeOut(withDuration: 0.28)
+                ]),
+                SKAction.removeFromParent()
+            ]))
+        }
+    }
+
+    private func spawnInvalidFX(at point: CGPoint) {
+        guard !reduceMotion, let texture = textureNamed("fx_invalid_shockwave") else { return }
+        let shock = SKSpriteNode(texture: texture)
+        shock.size = CGSize(width: cellSize * 1.0, height: cellSize * 1.0)
+        shock.position = point
+        shock.blendMode = .add
+        shock.alpha = 0.0
+        shock.zPosition = 400
+        fxLayer.addChild(shock)
+        shock.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.fadeAlpha(to: 0.85, duration: 0.06),
+                SKAction.scale(to: 1.0, duration: 0.06)
+            ]),
+            SKAction.group([
+                SKAction.fadeOut(withDuration: 0.28),
+                SKAction.scale(to: 1.6, duration: 0.28)
+            ]),
+            SKAction.removeFromParent()
+        ]))
+    }
+
+    private func textureNamed(_ name: String) -> SKTexture? {
+        guard let image = UIImage(named: name) else { return nil }
+        return SKTexture(image: image)
     }
 }

@@ -5,22 +5,16 @@ struct HomeView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color(red: 0.05, green: 0.06, blue: 0.09),
-                    Color(red: 0.10, green: 0.06, blue: 0.04)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
-
+            BackgroundImage(name: "bg_menu_obsidian_portrait",
+                            fallback: [
+                                Color(red: 0.05, green: 0.06, blue: 0.09),
+                                Color(red: 0.10, green: 0.06, blue: 0.04)
+                            ])
             VStack(spacing: 28) {
                 Spacer()
-                MarkView()
-                    .frame(width: 168, height: 168)
-                    .accessibilityHidden(true)
-
+                BrandHero()
+                    .frame(maxWidth: 280, maxHeight: 280)
+                    .accessibilityLabel("Ring Knot")
                 VStack(spacing: 6) {
                     Text("RING KNOT")
                         .font(.system(size: 34, weight: .heavy, design: .rounded))
@@ -30,9 +24,8 @@ struct HomeView: View {
                         .font(.callout)
                         .foregroundStyle(.gray)
                 }
-
+                .accessibilityElement(children: .combine)
                 Spacer()
-
                 NavigationLink(value: HomeRoute.levelSelect) {
                     Text("Play")
                         .font(.title3.weight(.semibold))
@@ -52,6 +45,10 @@ struct HomeView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                 }
                 .accessibilityLabel("Play. Opens the level select screen.")
+                .accessibilityIdentifier("home.play")
+                .simultaneousGesture(TapGesture().onEnded {
+                    AudioManager.shared.play(.buttonTap)
+                })
                 .padding(.horizontal, 32)
                 .padding(.bottom, 40)
             }
@@ -77,7 +74,40 @@ enum HomeRoute: Hashable {
     case game(Int)
 }
 
-private struct MarkView: View {
+struct BackgroundImage: View {
+    let name: String
+    let fallback: [Color]
+
+    var body: some View {
+        ZStack {
+            if let _ = UIImage(named: name) {
+                Image(name)
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+            } else {
+                LinearGradient(colors: fallback, startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea()
+            }
+        }
+    }
+}
+
+struct BrandHero: View {
+    var body: some View {
+        Group {
+            if let _ = UIImage(named: "ring_knot_home_hero") {
+                Image("ring_knot_home_hero")
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                FallbackMark()
+            }
+        }
+    }
+}
+
+private struct FallbackMark: View {
     var body: some View {
         ZStack {
             RingGlyph(color: Color(red: 0.72, green: 0.76, blue: 0.84), gap: 70, rotation: -.pi / 2)

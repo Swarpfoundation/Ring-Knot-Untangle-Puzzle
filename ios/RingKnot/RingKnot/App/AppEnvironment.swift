@@ -11,6 +11,11 @@ final class AppEnvironment: ObservableObject {
     init() {
         let store = ProgressStore()
         self.store = store
+        #if DEBUG
+        if ProcessInfo.processInfo.arguments.contains("-com.swarpfoundation.ringknot.resetProgress") {
+            store.reset()
+        }
+        #endif
         do {
             let pack = try LevelLoader.loadDefault()
             self.levelPack = pack
