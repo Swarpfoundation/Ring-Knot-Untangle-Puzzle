@@ -14,15 +14,20 @@
 		22A6C40594790308F124C8DE /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D153E26C2D028355D5800E /* ProgressStore.swift */; };
 		28444D2B575D36B2701DA0F9 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 32D40866D28A9DBC5D0D63E2 /* sfx */; };
 		2D85EAD03A7A869197223DD3 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D2D2780D2C028B456D91F9 /* Haptics.swift */; };
+		36E722C3EDF9F8BE8F7A6A10 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FA71D19830F9BC98C3ED54 /* OnboardingView.swift */; };
 		388389E6D11BBB95706B5CC2 /* ProgressStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED3537AE57FE06E23C9E41B /* ProgressStoreTests.swift */; };
 		3973A87E829AE3B763CCB640 /* RingKnotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13594919380D0F6BE43A0A43 /* RingKnotApp.swift */; };
 		4FCC8F1D98EC19638B0EFB6A /* TestBundleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A53166F1DD8B1DC96F266A /* TestBundleHelper.swift */; };
+		5035449BA6BA7CB5912E219E /* LevelDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571DDC0297CD5CB67CAC7530 /* LevelDisplay.swift */; };
+		519DD5516800B767CA78E59D /* RingKnotPhase3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D490F9E073699275A9297 /* RingKnotPhase3UITests.swift */; };
 		532A9345B9F155B8EEB2A0F5 /* ScreenshotTour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018A9F7902E59C7E854CF652 /* ScreenshotTour.swift */; };
 		5411036FD93EE6D29C6D1ACB /* ring_unlock_level_pack_v1.json in Resources */ = {isa = PBXBuildFile; fileRef = 51BC30F54103E50008320E07 /* ring_unlock_level_pack_v1.json */; };
 		57221C31ED58B53B1AC6941A /* DirectionAndCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F9C71F753AD8A905B7047E /* DirectionAndCellTests.swift */; };
 		62D53353619AD3EEDBEAFD15 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A51C2788C357E7C4FFE306 /* Direction.swift */; };
+		6598255384C9842620967681 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F0C78231BC5DE449C6C6C24B /* PrivacyInfo.xcprivacy */; };
 		70E81CF02AFBE1426F6322BB /* LevelLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746BE00906FB1D75A9D96204 /* LevelLoaderTests.swift */; };
 		74A22A99708A568A60A922BC /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5886BADA95AC376591CCBB3A /* Board.swift */; };
+		7766460B75FD7AEC0A86B099 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4020CF456013E3E30A432F1A /* Preferences.swift */; };
 		77C482A6A6A3CCCA38999FB5 /* MoveValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C140339C473DE8BFC9BFC2 /* MoveValidator.swift */; };
 		788B0B873D30AD7A1613C031 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFAA4BB0C8FBFFEC0B344C /* AppEnvironment.swift */; };
 		7AE45D17E0C283179990D632 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42A7B4CAF77817148528DD1D /* Assets.xcassets */; };
@@ -36,6 +41,7 @@
 		C9F8664C8790747744F6C443 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF347469EBAFF70646E05B1 /* RootView.swift */; };
 		D3650404C64C76F5367668B4 /* MoveValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911B8CD00F1B04EA7497A193 /* MoveValidatorTests.swift */; };
 		D77B8175752BB460BFECC72E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F77768D6416D29EE763C0F1 /* GameScene.swift */; };
+		EF651B4FBA95DED9A90A6E9A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B373C5464991D5A46F4F37 /* SettingsView.swift */; };
 		F7A468F07B03E9BE44B56B25 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */; };
 		FAF765913C820F76FD885EDA /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222393C6D87CD7B8C2A81BBB /* GameState.swift */; };
 		FCA3AC66AF69DF8883A97CF4 /* RingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE06224052C59428EB226F /* RingNode.swift */; };
@@ -73,11 +79,14 @@
 		383DEACAA6101BFAD057AAAB /* LevelSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectView.swift; sourceTree = "<group>"; };
 		38A51C2788C357E7C4FFE306 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
 		3FF379D7855F3BBBA4C8C601 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		4020CF456013E3E30A432F1A /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		425D490F9E073699275A9297 /* RingKnotPhase3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotPhase3UITests.swift; sourceTree = "<group>"; };
 		42A7B4CAF77817148528DD1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		48C140339C473DE8BFC9BFC2 /* MoveValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveValidator.swift; sourceTree = "<group>"; };
 		48FFAA4BB0C8FBFFEC0B344C /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		51BC30F54103E50008320E07 /* ring_unlock_level_pack_v1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ring_unlock_level_pack_v1.json; path = ../../shared/levels/ring_unlock_level_pack_v1.json; sourceTree = "<group>"; };
 		51E4E8717B29CB1F288D290B /* RingKnot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RingKnot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		571DDC0297CD5CB67CAC7530 /* LevelDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDisplay.swift; sourceTree = "<group>"; };
 		5886BADA95AC376591CCBB3A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
 		608BB89FA8091C6ECDEFD14D /* SolutionPathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionPathTests.swift; sourceTree = "<group>"; };
 		6421BD00E9E9109F6CF12102 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -86,15 +95,18 @@
 		74455134AA06586837F8E9AC /* Ring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
 		746BE00906FB1D75A9D96204 /* LevelLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLoaderTests.swift; sourceTree = "<group>"; };
 		74C9FDACF4D2F709482A5DBA /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
+		76FA71D19830F9BC98C3ED54 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		80F1377C90DEBEAC1C46F3BB /* RingKnotTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RingKnotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		911B8CD00F1B04EA7497A193 /* MoveValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveValidatorTests.swift; sourceTree = "<group>"; };
 		94D2D2780D2C028B456D91F9 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		9C2D66C86E72CDB7448A7FD1 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		A409D8D552249121F784A3CF /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		AEF347469EBAFF70646E05B1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		B6B373C5464991D5A46F4F37 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BF27EDE68A06D7BB0A80724B /* LevelLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLoader.swift; sourceTree = "<group>"; };
 		E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EED3537AE57FE06E23C9E41B /* ProgressStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStoreTests.swift; sourceTree = "<group>"; };
+		F0C78231BC5DE449C6C6C24B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -132,6 +144,7 @@
 		4C4CC513048A70DEBAB0C5DF /* RingKnotUITests */ = {
 			isa = PBXGroup;
 			children = (
+				425D490F9E073699275A9297 /* RingKnotPhase3UITests.swift */,
 				F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */,
 				018A9F7902E59C7E854CF652 /* ScreenshotTour.swift */,
 			);
@@ -176,6 +189,7 @@
 			isa = PBXGroup;
 			children = (
 				42A7B4CAF77817148528DD1D /* Assets.xcassets */,
+				F0C78231BC5DE449C6C6C24B /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -202,9 +216,13 @@
 				6421BD00E9E9109F6CF12102 /* GameView.swift */,
 				94D2D2780D2C028B456D91F9 /* Haptics.swift */,
 				E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */,
+				571DDC0297CD5CB67CAC7530 /* LevelDisplay.swift */,
 				383DEACAA6101BFAD057AAAB /* LevelSelectView.swift */,
+				76FA71D19830F9BC98C3ED54 /* OnboardingView.swift */,
+				4020CF456013E3E30A432F1A /* Preferences.swift */,
 				13594919380D0F6BE43A0A43 /* RingKnotApp.swift */,
 				AEF347469EBAFF70646E05B1 /* RootView.swift */,
+				B6B373C5464991D5A46F4F37 /* SettingsView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -327,6 +345,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7AE45D17E0C283179990D632 /* Assets.xcassets in Resources */,
+				6598255384C9842620967681 /* PrivacyInfo.xcprivacy in Resources */,
 				5411036FD93EE6D29C6D1ACB /* ring_unlock_level_pack_v1.json in Resources */,
 				28444D2B575D36B2701DA0F9 /* sfx in Resources */,
 			);
@@ -360,6 +379,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				519DD5516800B767CA78E59D /* RingKnotPhase3UITests.swift in Sources */,
 				0030DCFC97E13ACED796BB28 /* RingKnotUITests.swift in Sources */,
 				532A9345B9F155B8EEB2A0F5 /* ScreenshotTour.swift in Sources */,
 			);
@@ -381,15 +401,19 @@
 				2D85EAD03A7A869197223DD3 /* Haptics.swift in Sources */,
 				F7A468F07B03E9BE44B56B25 /* HomeView.swift in Sources */,
 				7B34C4A6286595AD06D7A09B /* Level.swift in Sources */,
+				5035449BA6BA7CB5912E219E /* LevelDisplay.swift in Sources */,
 				A5F9DC6523171EC0B0092CB7 /* LevelLoader.swift in Sources */,
 				C490FE08CA220A2593A48B83 /* LevelSelectView.swift in Sources */,
 				77C482A6A6A3CCCA38999FB5 /* MoveValidator.swift in Sources */,
+				36E722C3EDF9F8BE8F7A6A10 /* OnboardingView.swift in Sources */,
+				7766460B75FD7AEC0A86B099 /* Preferences.swift in Sources */,
 				22A6C40594790308F124C8DE /* ProgressStore.swift in Sources */,
 				FE23ECC2D6AD5CCA9B99F0D8 /* Ring.swift in Sources */,
 				3973A87E829AE3B763CCB640 /* RingKnotApp.swift in Sources */,
 				BCC70E93C751870AD09E1527 /* RingMaterial.swift in Sources */,
 				FCA3AC66AF69DF8883A97CF4 /* RingNode.swift in Sources */,
 				C9F8664C8790747744F6C443 /* RootView.swift in Sources */,
+				EF651B4FBA95DED9A90A6E9A /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

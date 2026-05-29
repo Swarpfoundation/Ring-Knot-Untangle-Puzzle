@@ -20,6 +20,9 @@ targets:
     platform: iOS
     deploymentTarget: "17.0"
     sources:
+      # The RingKnot folder (incl. Resources/Assets.xcassets and
+      # Resources/PrivacyInfo.xcprivacy) is bundled automatically: non-source
+      # files are added to the resources build phase.
       - path: RingKnot
       - path: ../../shared/levels/ring_unlock_level_pack_v1.json
         buildPhase: resources

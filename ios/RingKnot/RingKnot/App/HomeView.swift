@@ -10,7 +10,7 @@ struct HomeView: View {
                                 Color(red: 0.05, green: 0.06, blue: 0.09),
                                 Color(red: 0.10, green: 0.06, blue: 0.04)
                             ])
-            VStack(spacing: 28) {
+            VStack(spacing: 22) {
                 Spacer()
                 BrandHero()
                     .frame(maxWidth: 280, maxHeight: 280)
@@ -26,27 +26,31 @@ struct HomeView: View {
                 }
                 .accessibilityElement(children: .combine)
                 Spacer()
+
+                if environment.hasProgress, let target = environment.continueTargetID {
+                    NavigationLink(value: HomeRoute.game(target)) {
+                        primaryLabel("Continue", subtitle: "Level \(target)")
+                    }
+                    .accessibilityLabel("Continue. Resumes level \(target).")
+                    .accessibilityIdentifier("home.continue")
+                    .simultaneousGesture(TapGesture().onEnded {
+                        Haptics.shared.uiTap()
+                        AudioManager.shared.play(.buttonTap)
+                    })
+                    .padding(.horizontal, 32)
+                }
+
                 NavigationLink(value: HomeRoute.levelSelect) {
-                    Text("Play")
-                        .font(.title3.weight(.semibold))
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 56)
-                        .background(
-                            LinearGradient(
-                                colors: [
-                                    Color(red: 0.95, green: 0.65, blue: 0.35),
-                                    Color(red: 0.78, green: 0.40, blue: 0.18)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                        .foregroundStyle(.white)
-                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                    if environment.hasProgress {
+                        secondaryLabel("Level Select")
+                    } else {
+                        primaryLabel("Play", subtitle: nil)
+                    }
                 }
                 .accessibilityLabel("Play. Opens the level select screen.")
                 .accessibilityIdentifier("home.play")
                 .simultaneousGesture(TapGesture().onEnded {
+                    Haptics.shared.uiTap()
                     AudioManager.shared.play(.buttonTap)
                 })
                 .padding(.horizontal, 32)
@@ -54,10 +58,22 @@ struct HomeView: View {
             }
             .padding()
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(value: HomeRoute.settings) {
+                    Image(systemName: "gearshape.fill")
+                        .foregroundStyle(.white)
+                }
+                .accessibilityLabel("Settings")
+                .accessibilityIdentifier("home.settings")
+            }
+        }
         .navigationDestination(for: HomeRoute.self) { route in
             switch route {
             case .levelSelect:
                 LevelSelectView()
+            case .settings:
+                SettingsView()
             case .game(let id):
                 if let level = environment.levelPack.levels.first(where: { $0.id == id }) {
                     GameView(level: level)
@@ -67,10 +83,40 @@ struct HomeView: View {
             }
         }
     }
+
+    private func primaryLabel(_ title: String, subtitle: String?) -> some View {
+        VStack(spacing: 2) {
+            Text(title).font(.title3.weight(.semibold))
+            if let subtitle {
+                Text(subtitle).font(.caption).opacity(0.85)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 56)
+        .background(
+            LinearGradient(
+                colors: [Color(red: 0.95, green: 0.65, blue: 0.35),
+                         Color(red: 0.78, green: 0.40, blue: 0.18)],
+                startPoint: .top, endPoint: .bottom
+            )
+        )
+        .foregroundStyle(.white)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
+    }
+
+    private func secondaryLabel(_ title: String) -> some View {
+        Text(title)
+            .font(.title3.weight(.semibold))
+            .frame(maxWidth: .infinity)
+            .frame(height: 52)
+            .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 20))
+            .foregroundStyle(.white)
+    }
 }
 
 enum HomeRoute: Hashable {
     case levelSelect
+    case settings
     case game(Int)
 }
 

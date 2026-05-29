@@ -4,6 +4,7 @@ import UIKit
 protocol GameSceneDelegate: AnyObject {
     func gameScene(_ scene: GameScene, didChangeMoves moves: Int)
     func gameScene(_ scene: GameScene, didCompleteLevel level: Level, moves: Int)
+    func gameScene(_ scene: GameScene, didUpdateClearedCount count: Int)
     func gameSceneRequestsHaptic(_ scene: GameScene, kind: HapticKind)
 }
 
@@ -29,8 +30,14 @@ final class GameScene: SKScene {
     private var fxLayer: SKNode = SKNode()
     private var hintArrowNode: SKSpriteNode?
     private var selectionGlowNode: SKSpriteNode?
+    private var tutorialArrowNode: SKSpriteNode?
+    private var tutorialActive = false
 
     weak var gameDelegate: GameSceneDelegate?
+
+    /// Rings still on the board — used for the accessibility summary.
+    var remainingRingCount: Int { level.rings.count - state.clearedRingIds.count }
+    var totalRingCount: Int { level.rings.count }
 
     init(level: Level, reduceMotion: Bool) {
         self.level = level
@@ -69,6 +76,53 @@ final class GameScene: SKScene {
         showHintArrow(for: node)
     }
 
+    // MARK: - Tutorial guidance (Level 1)
+
+    /// Turns the persistent tutorial highlight + directional arrow on/off. The
+    /// highlighted ring is always derived from the level's solution path, never
+    /// a hardcoded id, so it stays correct across levels.
+    func setTutorialGuidance(active: Bool) {
+        tutorialActive = active
+        if active {
+            applyTutorialGuidance()
+        } else {
+            clearTutorialGuidance()
+        }
+    }
+
+    private func applyTutorialGuidance() {
+        clearTutorialGuidance()
+        guard tutorialActive,
+              let id = state.validator.nextSuggestedRingId(clearedIds: state.clearedRingIds),
+              let node = ringNodes[id] else { return }
+        node.setTutorialHighlight(true, reduceMotion: reduceMotion)
+        guard let texture = textureNamed("ui_drag_arrow_master") else { return }
+        let arrow = SKSpriteNode(texture: texture)
+        arrow.size = CGSize(width: cellSize * 0.9, height: cellSize * 0.9)
+        let v = node.ring.exitDirection.unitVector
+        arrow.position = CGPoint(
+            x: node.position.x + v.dx * cellSize * 0.7,
+            y: node.position.y + v.dy * cellSize * 0.7
+        )
+        arrow.zRotation = atan2(v.dy, v.dx)
+        arrow.zPosition = 220
+        fxLayer.addChild(arrow)
+        tutorialArrowNode = arrow
+        guard !reduceMotion else { return }
+        arrow.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.45, duration: 0.6),
+            SKAction.fadeAlpha(to: 1.0, duration: 0.6)
+        ])))
+    }
+
+    private func clearTutorialGuidance() {
+        tutorialArrowNode?.removeFromParent()
+        tutorialArrowNode = nil
+        for node in ringNodes.values {
+            node.setTutorialHighlight(false, reduceMotion: reduceMotion)
+        }
+    }
+
     #if DEBUG
     func bridgePerformNextSolutionMove() {
         guard let id = state.validator.nextSuggestedRingId(clearedIds: state.clearedRingIds),
@@ -81,6 +135,8 @@ final class GameScene: SKScene {
             node.performExit(reduceMotion: reduceMotion) { [weak self] in
                 guard let self else { return }
                 self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
+                self.gameDelegate?.gameScene(self, didUpdateClearedCount: self.state.clearedRingIds.count)
+                if self.tutorialActive { self.applyTutorialGuidance() }
                 if self.state.isComplete {
                     self.gameDelegate?.gameSceneRequestsHaptic(self, kind: .completion)
                     self.gameDelegate?.gameScene(self, didCompleteLevel: self.level, moves: self.state.moveCount)
@@ -154,6 +210,7 @@ final class GameScene: SKScene {
             addChild(node)
         }
         addChild(fxLayer)
+        if tutorialActive { applyTutorialGuidance() }
     }
 
     private func pointForCell(_ cell: Cell) -> CGPoint {
@@ -209,6 +266,8 @@ final class GameScene: SKScene {
                 node.performExit(reduceMotion: reduceMotion) { [weak self] in
                     guard let self else { return }
                     self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
+                    self.gameDelegate?.gameScene(self, didUpdateClearedCount: self.state.clearedRingIds.count)
+                    if self.tutorialActive { self.applyTutorialGuidance() }
                     if self.state.isComplete {
                         self.gameDelegate?.gameSceneRequestsHaptic(self, kind: .completion)
                         self.gameDelegate?.gameScene(self, didCompleteLevel: self.level, moves: self.state.moveCount)

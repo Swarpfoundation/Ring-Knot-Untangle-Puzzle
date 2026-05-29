@@ -18,21 +18,14 @@ final class AudioManager {
     private var pools: [SoundEffect: [AVAudioPlayer]] = [:]
     private var cursor: [SoundEffect: Int] = [:]
     private var sessionReady = false
-    private let userDefaults: UserDefaults
-    private let enabledKey = "com.swarpfoundation.ringknot.audio.enabled"
 
-    private init(userDefaults: UserDefaults = .standard) {
-        self.userDefaults = userDefaults
-        if userDefaults.object(forKey: enabledKey) == nil {
-            userDefaults.set(true, forKey: enabledKey)
-        }
+    /// Driven by `Preferences`. Defaults to on; flipping it off mutes all SFX
+    /// immediately because `play(_:)` re-checks it on every call.
+    var isEnabled: Bool = true
+
+    private init() {
         configureSession()
         if sessionReady { preloadPools() }
-    }
-
-    var isEnabled: Bool {
-        get { userDefaults.bool(forKey: enabledKey) }
-        set { userDefaults.set(newValue, forKey: enabledKey) }
     }
 
     func play(_ effect: SoundEffect) {

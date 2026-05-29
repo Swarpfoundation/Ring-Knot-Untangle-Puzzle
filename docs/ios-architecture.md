@@ -71,3 +71,67 @@ A single `Haptics` singleton owns prepared `UIImpactFeedbackGenerator` and `UINo
 ## Build
 
 The project is generated with XcodeGen from `ios/RingKnot/project.yml`. The level pack is consumed from `shared/levels/ring_unlock_level_pack_v1.json` via a relative resource reference. No third-party Swift packages are linked.
+
+## Phase 3 — onboarding & ship-readiness
+
+### Preferences (typed settings store)
+
+`Preferences` (`@MainActor ObservableObject`) is the single source of truth for
+user-facing settings and first-session flags. Every persisted key is namespaced
+under `com.swarpfoundation.ringknot.pref.*` and declared in one private `Key`
+enum — no raw `UserDefaults` strings are scattered through the UI. The four
+values are `soundEnabled`, `hapticsEnabled`, `onboardingCompleted`, and
+`level1TutorialCompleted`. Settings default **on**; first-session flags default
+**false**. `didSet` observers push the audio/haptics toggles straight into the
+`AudioManager` / `Haptics` singletons, so a change takes effect immediately.
+
+`AppEnvironment` owns a `Preferences` instance and injects it into the
+environment alongside itself. Under `DEBUG`, launch arguments
+(`-uiTestSkipIntro`, `-uiTestResetIntros`, `-uiTestResetTutorial`,
+`-uiTestSoundOff`) drive deterministic intro state for UI tests.
+
+### Onboarding
+
+`OnboardingView` is a three-page `TabView` shown once on first launch via a
+`fullScreenCover` in `RootView`, and re-armable from Settings. Pages are
+game-specific (escape through the gap, clear blockers first, hint/restart/moves)
+and use the generated brand art with SF Symbol fallbacks. It honours Dynamic
+Type (each page scrolls) and Reduce Motion (paging animation disabled).
+
+### Level 1 tutorial
+
+The tutorial highlights the **first ring of the level's `solution` path** — never
+a hard-coded ring id; the suggestion comes from `MoveValidator.nextSuggestedRingId`.
+`GameScene` draws a persistent glow on that ring plus a directional arrow
+(`ui_drag_arrow_master`) rotated to the ring's exit direction. After the first
+successful move the panel switches to "Clear blockers first…"; it completes after
+the second move (or level completion) and never blocks input or auto-solves.
+Reduce Motion makes the highlight static.
+
+### Progression & completion
+
+`AppEnvironment` exposes `isUnlocked`, `isCompleted`, `continueTargetID` (the
+highest unlocked-but-incomplete level, surfaced as Home's **Continue** button)
+and `hasProgress`. Level cards render number, difficulty label
+(`Level.difficultyLabel`), par (`Level.parMoveCount` = solution length), best, and
+a distinct completed state; locked levels stay visible but disabled.
+`CompletionInfo` carries moves/par/best/`isNewBest`/`isLastLevel`; the completion
+overlay shows "New Best!" when applicable and replaces Next with "All Levels
+Complete" on level 20. **Play behaviour is deterministic:** Home's primary action
+always opens Level Select; resuming is an explicit Continue button — so the Play
+button never depends on hidden state.
+
+### Haptics & audio
+
+`Haptics` is `@MainActor`, gated on both the user setting and
+`CHHapticEngine.capabilitiesForHardware().supportsHaptics`, and degrades silently
+on unsupported hardware. Events: selection on select, warning on invalid, success
+on release, a stronger success (notification + heavy impact) on completion, and a
+light tap on UI buttons. `AudioManager` is an in-memory-gated `AVAudioPlayer`
+pool; turning Sound off mutes all SFX immediately. There is no music or looping.
+
+### Privacy
+
+`PrivacyInfo.xcprivacy` ships in the app bundle (declared `false` tracking, empty
+tracking domains, no collected data, `UserDefaults` required-reason `CA92.1`).
+See `docs/privacy.md` for the full audit.

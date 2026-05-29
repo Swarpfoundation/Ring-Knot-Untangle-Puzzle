@@ -117,3 +117,21 @@ full scale.
 
 The procedural generator does not need to change to support manual overrides —
 the path is the contract.
+
+## Phase 3 usage
+
+No new art was added in Phase 3 — the onboarding, tutorial, and ship-readiness
+work reuse the existing generated catalogue as support/branding only (gameplay
+rings stay procedural):
+
+- **Onboarding** pages use `ring_knot_home_hero`, `ring_knot_brand_mark`, and
+  `ring_knot_level_complete_emblem` over `bg_menu_obsidian_portrait`, each with an
+  SF Symbol fallback if the image is missing.
+- **Level 1 tutorial** reuses `ui_drag_arrow_master`, rotated at runtime to the
+  highlighted ring's exit direction (the same asset as the hint arrow).
+- **Completion overlay** uses `ring_knot_level_complete_emblem` over
+  `bg_completion_dark_burst`.
+
+The six Phase 3 screenshots in `docs/screenshots/phase-3-*.png` are genuine
+captures from the iPhone 17 Pro simulator, produced by the
+`ScreenshotTour.test_capturePhase3Screens` UI test (see `docs/qa.md`).

@@ -4,7 +4,7 @@ struct LevelSelectView: View {
     @EnvironmentObject private var environment: AppEnvironment
 
     private let columns = [
-        GridItem(.adaptive(minimum: 92), spacing: 16)
+        GridItem(.adaptive(minimum: 104), spacing: 16)
     ]
 
     var body: some View {
@@ -28,6 +28,16 @@ struct LevelSelectView: View {
         }
         .navigationTitle("Select Level")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink(value: HomeRoute.settings) {
+                    Image(systemName: "gearshape.fill")
+                        .foregroundStyle(.white)
+                }
+                .accessibilityLabel("Settings")
+                .accessibilityIdentifier("levelSelect.settings")
+            }
+        }
     }
 }
 
@@ -36,33 +46,30 @@ private struct LevelCard: View {
     let unlocked: Bool
     let record: LevelRecord?
 
+    private var completed: Bool { record?.completed == true }
+
     var body: some View {
         NavigationLink(value: HomeRoute.game(level.id)) {
             VStack(spacing: 6) {
                 ZStack {
                     RoundedRectangle(cornerRadius: 18)
-                        .fill(
-                            LinearGradient(
-                                colors: unlocked
-                                    ? [Color(red: 0.18, green: 0.20, blue: 0.27), Color(red: 0.10, green: 0.11, blue: 0.16)]
-                                    : [Color(red: 0.08, green: 0.09, blue: 0.12), Color(red: 0.05, green: 0.06, blue: 0.09)],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                        )
-                        .frame(height: 96)
+                        .fill(fillGradient)
+                        .frame(height: 104)
                         .overlay(
                             RoundedRectangle(cornerRadius: 18)
-                                .stroke(borderColor, lineWidth: 1)
+                                .stroke(borderColor, lineWidth: completed ? 1.5 : 1)
                         )
                     if unlocked {
-                        VStack(spacing: 4) {
+                        VStack(spacing: 3) {
                             Text("\(level.id)")
-                                .font(.system(size: 28, weight: .heavy, design: .rounded))
+                                .font(.system(size: 26, weight: .heavy, design: .rounded))
                                 .foregroundStyle(.white)
-                            if record?.completed == true {
+                            Text(level.difficultyLabel)
+                                .font(.caption2.weight(.semibold))
+                                .foregroundStyle(.gray)
+                            if completed {
                                 Image(systemName: "checkmark.seal.fill")
-                                    .font(.system(size: 14))
+                                    .font(.system(size: 13))
                                     .foregroundStyle(Color(red: 0.95, green: 0.65, blue: 0.35))
                             }
                         }
@@ -76,30 +83,62 @@ private struct LevelCard: View {
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(unlocked ? .white : .gray)
                     .lineLimit(1)
-                if let best = record?.bestMoveCount {
-                    Text("Best \(best)")
-                        .font(.caption2)
-                        .foregroundStyle(.gray)
-                }
+                Text(detailLine)
+                    .font(.caption2)
+                    .foregroundStyle(.gray)
+                    .lineLimit(1)
             }
         }
         .buttonStyle(.plain)
         .disabled(!unlocked)
         .simultaneousGesture(TapGesture().onEnded {
-            if unlocked { AudioManager.shared.play(.buttonTap) }
+            if unlocked {
+                Haptics.shared.uiTap()
+                AudioManager.shared.play(.buttonTap)
+            }
         })
+        .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)
+        .accessibilityAddTraits(unlocked ? .isButton : [])
+    }
+
+    private var fillGradient: LinearGradient {
+        let colors: [Color]
+        if !unlocked {
+            colors = [Color(red: 0.08, green: 0.09, blue: 0.12), Color(red: 0.05, green: 0.06, blue: 0.09)]
+        } else if completed {
+            colors = [Color(red: 0.20, green: 0.16, blue: 0.12), Color(red: 0.12, green: 0.10, blue: 0.08)]
+        } else {
+            colors = [Color(red: 0.18, green: 0.20, blue: 0.27), Color(red: 0.10, green: 0.11, blue: 0.16)]
+        }
+        return LinearGradient(colors: colors, startPoint: .top, endPoint: .bottom)
     }
 
     private var borderColor: Color {
-        unlocked ? Color.white.opacity(0.08) : Color.white.opacity(0.04)
+        if completed { return Color(red: 0.95, green: 0.65, blue: 0.35).opacity(0.45) }
+        return unlocked ? Color.white.opacity(0.08) : Color.white.opacity(0.04)
+    }
+
+    /// Best when completed, otherwise the par target. Hidden for locked levels.
+    private var detailLine: String {
+        guard unlocked else { return " " }
+        if let best = record?.bestMoveCount {
+            return "Best \(best) · Par \(level.parMoveCount)"
+        }
+        return "Par \(level.parMoveCount)"
     }
 
     private var accessibilityLabel: String {
-        var parts: [String] = ["Level \(level.id) — \(level.name)"]
-        if !unlocked { parts.append("Locked") }
-        if record?.completed == true { parts.append("Completed") }
-        if let best = record?.bestMoveCount { parts.append("Best moves \(best)") }
+        var parts: [String] = ["Level \(level.id), \(level.name)", level.difficultyLabel]
+        if !unlocked {
+            parts.append("Locked")
+        } else if completed {
+            parts.append("Completed")
+        } else {
+            parts.append("Unlocked")
+        }
+        parts.append("Par \(level.parMoveCount) moves")
+        if let best = record?.bestMoveCount { parts.append("Best \(best) moves") }
         return parts.joined(separator: ", ")
     }
 }

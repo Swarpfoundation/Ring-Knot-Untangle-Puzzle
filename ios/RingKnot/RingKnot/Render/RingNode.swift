@@ -80,6 +80,27 @@ final class RingNode: SKNode {
         ]), withKey: "hint")
     }
 
+    /// Persistent highlight used by the Level 1 tutorial. Stays lit until
+    /// explicitly cleared. Static when Reduce Motion is on, gently pulsing otherwise.
+    func setTutorialHighlight(_ active: Bool, reduceMotion: Bool) {
+        removeAction(forKey: "hint")
+        removeAction(forKey: "tutorial")
+        guard active else {
+            glow.alpha = 0
+            glow.strokeColor = .clear
+            setScale(1.0)
+            return
+        }
+        glow.strokeColor = RingPalette.hintGlow
+        glow.alpha = 1.0
+        guard !reduceMotion else { return }
+        let pulse = SKAction.repeatForever(SKAction.sequence([
+            SKAction.scale(to: 1.06, duration: 0.5),
+            SKAction.scale(to: 1.0, duration: 0.5)
+        ]))
+        run(pulse, withKey: "tutorial")
+    }
+
     func resistanceDrag(toLocal point: CGPoint, exitVector: CGVector) {
         let projection = point.x * exitVector.dx + point.y * exitVector.dy
         let clampedAlong = max(min(projection, cellSize * 0.45), -cellSize * 0.1)

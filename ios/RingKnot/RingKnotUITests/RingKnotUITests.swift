@@ -11,7 +11,8 @@ final class RingKnotUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments += [
             "-com.swarpfoundation.ringknot.resetProgress", "YES",
-            "-uiTestBridge", "YES"
+            "-uiTestBridge", "YES",
+            "-uiTestSkipIntro", "YES"
         ]
         app.launch()
         return app

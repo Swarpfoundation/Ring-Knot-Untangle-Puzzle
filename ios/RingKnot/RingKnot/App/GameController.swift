@@ -2,10 +2,22 @@ import Combine
 import Foundation
 import SpriteKit
 
+/// Stats shown on the completion screen for the run that just finished.
+struct CompletionInfo: Equatable {
+    let levelID: Int
+    let moves: Int
+    let par: Int
+    let best: Int
+    let isNewBest: Bool
+    let isLastLevel: Bool
+}
+
 @MainActor
 final class GameController: NSObject, ObservableObject, GameSceneDelegate {
     @Published private(set) var moves: Int = 0
+    @Published private(set) var clearedCount: Int = 0
     @Published private(set) var didComplete: Bool = false
+    @Published private(set) var completion: CompletionInfo?
 
     private var currentScene: GameScene?
     private weak var environment: AppEnvironment?
@@ -25,7 +37,9 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
         currentScene = scene
         currentLevelID = level.id
         moves = 0
+        clearedCount = 0
         didComplete = false
+        completion = nil
         return scene
     }
 
@@ -36,11 +50,23 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
     func restart() {
         currentScene?.restart()
         moves = 0
+        clearedCount = 0
         didComplete = false
+        completion = nil
     }
 
     func hint() {
         currentScene?.highlightHint()
+    }
+
+    func setTutorialGuidance(active: Bool) {
+        currentScene?.setTutorialGuidance(active: active)
+    }
+
+    /// Accessibility summary of the board for the current level.
+    var boardAccessibilitySummary: String {
+        guard let scene = currentScene, let id = currentLevelID else { return "Game board" }
+        return "Level \(id) board. \(scene.remainingRingCount) of \(scene.totalRingCount) rings remaining."
     }
 
     #if DEBUG
@@ -57,10 +83,26 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
         Task { @MainActor in self.moves = moves }
     }
 
+    nonisolated func gameScene(_ scene: GameScene, didUpdateClearedCount count: Int) {
+        Task { @MainActor in self.clearedCount = count }
+    }
+
     nonisolated func gameScene(_ scene: GameScene, didCompleteLevel level: Level, moves: Int) {
         Task { @MainActor in
+            guard let environment = self.environment else { return }
+            let previousBest = environment.progress.records[level.id]?.bestMoveCount
+            environment.record(level.id, moves: moves)
+            let best = environment.progress.records[level.id]?.bestMoveCount ?? moves
+            let isNewBest = previousBest == nil || moves < (previousBest ?? Int.max)
+            self.completion = CompletionInfo(
+                levelID: level.id,
+                moves: moves,
+                par: level.solution.count,
+                best: best,
+                isNewBest: isNewBest,
+                isLastLevel: environment.nextLevelID(after: level.id) == nil
+            )
             self.didComplete = true
-            self.environment?.record(level.id, moves: moves)
         }
     }
 

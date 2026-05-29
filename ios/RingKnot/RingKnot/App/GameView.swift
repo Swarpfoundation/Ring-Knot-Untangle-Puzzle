@@ -3,12 +3,18 @@ import SwiftUI
 
 struct GameView: View {
     @EnvironmentObject private var environment: AppEnvironment
+    @EnvironmentObject private var preferences: Preferences
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @Environment(\.dismiss) private var dismiss
 
-    let level: Level
-
     @StateObject private var controller = GameController()
+    @State private var currentLevel: Level
+    /// nil = no tutorial; 0 = "drag toward opening"; 1 = "clear blockers".
+    @State private var tutorialStep: Int?
+
+    init(level: Level) {
+        _currentLevel = State(initialValue: level)
+    }
 
     var body: some View {
         ZStack {
@@ -17,42 +23,62 @@ struct GameView: View {
 
             VStack(spacing: 0) {
                 HUDBar(
-                    levelID: level.id,
-                    name: level.name,
+                    levelID: currentLevel.id,
+                    name: currentLevel.name,
                     moves: controller.moves,
                     onBack: {
+                        Haptics.shared.uiTap()
                         AudioManager.shared.play(.buttonTap)
                         dismiss()
                     },
                     onRestart: {
+                        Haptics.shared.uiTap()
                         AudioManager.shared.play(.buttonTap)
                         controller.restart()
+                        restartTutorialIfNeeded()
                     },
                     onHint: {
+                        Haptics.shared.uiTap()
                         AudioManager.shared.play(.hint)
                         controller.hint()
                     }
                 )
-                SpriteView(scene: controller.scene(for: level, reduceMotion: reduceMotion))
-                    .ignoresSafeArea(edges: .bottom)
-                    .accessibilityLabel("Game board for level \(level.id)")
-                    .accessibilityIdentifier("game.board")
+                ZStack(alignment: .top) {
+                    SpriteView(scene: controller.scene(for: currentLevel, reduceMotion: reduceMotion))
+                        .ignoresSafeArea(edges: .bottom)
+                        .accessibilityElement()
+                        .accessibilityLabel(controller.boardAccessibilitySummary)
+                        .accessibilityIdentifier("game.board")
+                        .accessibilityAction(named: "Show Hint") {
+                            AudioManager.shared.play(.hint)
+                            controller.hint()
+                        }
+                        .accessibilityAction(named: "Restart Level") {
+                            controller.restart()
+                            restartTutorialIfNeeded()
+                        }
+
+                    if let step = tutorialStep {
+                        TutorialPanel(step: step)
+                            .padding(.top, 12)
+                            .allowsHitTesting(false)
+                            .accessibilityIdentifier("tutorial.panel")
+                    }
+                }
             }
 
-            if controller.didComplete {
+            if controller.didComplete, let info = controller.completion {
                 CompletionOverlay(
-                    moves: controller.moves,
-                    nextLevelID: environment.nextLevelID(after: level.id),
-                    onNext: {
+                    info: info,
+                    onNext: advanceToNextLevel,
+                    onReplay: {
+                        Haptics.shared.uiTap()
                         AudioManager.shared.play(.buttonTap)
-                        guard let next = environment.nextLevelID(after: level.id),
-                              let nextLevel = environment.levelPack.levels.first(where: { $0.id == next }) else {
-                            dismiss()
-                            return
-                        }
-                        controller.replaceLevel(with: nextLevel, reduceMotion: reduceMotion)
+                        controller.restart()
+                        restartTutorialIfNeeded()
                     },
-                    onMenu: {
+                    onLevelSelect: {
+                        Haptics.shared.uiTap()
                         AudioManager.shared.play(.buttonTap)
                         dismiss()
                     }
@@ -67,8 +93,87 @@ struct GameView: View {
         .toolbar(.hidden, for: .navigationBar)
         .onAppear {
             controller.bind(environment: environment)
-            controller.scene(for: level, reduceMotion: reduceMotion)
+            controller.scene(for: currentLevel, reduceMotion: reduceMotion)
+            startTutorialIfNeeded()
         }
+        .onChange(of: controller.clearedCount) { _, count in
+            advanceTutorial(clearedCount: count)
+        }
+        .onChange(of: controller.didComplete) { _, done in
+            if done { finishTutorial() }
+        }
+    }
+
+    // MARK: - Level navigation
+
+    private func advanceToNextLevel() {
+        Haptics.shared.uiTap()
+        AudioManager.shared.play(.buttonTap)
+        guard let next = environment.nextLevelID(after: currentLevel.id),
+              let nextLevel = environment.levelPack.levels.first(where: { $0.id == next }) else {
+            dismiss()
+            return
+        }
+        finishTutorial()
+        currentLevel = nextLevel
+        controller.replaceLevel(with: nextLevel, reduceMotion: reduceMotion)
+    }
+
+    // MARK: - Tutorial
+
+    private func startTutorialIfNeeded() {
+        guard currentLevel.id == 1, !preferences.level1TutorialCompleted else { return }
+        tutorialStep = 0
+        controller.setTutorialGuidance(active: true)
+    }
+
+    private func restartTutorialIfNeeded() {
+        guard currentLevel.id == 1, !preferences.level1TutorialCompleted else { return }
+        tutorialStep = 0
+        controller.setTutorialGuidance(active: true)
+    }
+
+    private func advanceTutorial(clearedCount: Int) {
+        guard tutorialStep != nil else { return }
+        if clearedCount >= 2 {
+            finishTutorial()
+        } else if clearedCount == 1 {
+            tutorialStep = 1
+        }
+    }
+
+    private func finishTutorial() {
+        guard tutorialStep != nil else { return }
+        tutorialStep = nil
+        controller.setTutorialGuidance(active: false)
+        if currentLevel.id == 1 {
+            preferences.level1TutorialCompleted = true
+        }
+    }
+}
+
+private struct TutorialPanel: View {
+    let step: Int
+
+    private var text: String {
+        step == 0
+            ? "Drag this ring toward its opening."
+            : "Clear blockers first, then free the copper knot."
+    }
+
+    var body: some View {
+        Text(text)
+            .font(.callout.weight(.semibold))
+            .multilineTextAlignment(.center)
+            .foregroundStyle(.white)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 12)
+            .background(
+                Capsule().fill(Color(red: 0.07, green: 0.08, blue: 0.12).opacity(0.92))
+            )
+            .overlay(Capsule().stroke(Color.white.opacity(0.08), lineWidth: 1))
+            .padding(.horizontal, 24)
+            .accessibilityLabel("Tutorial. \(text)")
     }
 }
 
@@ -102,6 +207,10 @@ private struct HUDBar: View {
                 Text("Moves")
                     .font(.caption2)
                     .foregroundStyle(.gray)
+                // No `children: .combine` wrapper here: combining while a child
+                // also carries an identifier surfaces the id on two elements.
+                // The identifier lives on this single leaf and its label stays
+                // exactly the count ("0", "1", …) for both VoiceOver and tests.
                 Text("\(moves)")
                     .font(.headline.monospacedDigit())
                     .foregroundStyle(.white)
@@ -137,7 +246,7 @@ private struct HUDIconButton: View {
     var body: some View {
         Button(action: action) {
             Group {
-                if let _ = UIImage(named: name) {
+                if UIImage(named: name) != nil {
                     Image(name)
                         .resizable()
                         .scaledToFit()
@@ -158,10 +267,10 @@ private struct HUDIconButton: View {
 }
 
 private struct CompletionOverlay: View {
-    let moves: Int
-    let nextLevelID: Int?
+    let info: CompletionInfo
     let onNext: () -> Void
-    let onMenu: () -> Void
+    let onReplay: () -> Void
+    let onLevelSelect: () -> Void
 
     var body: some View {
         ZStack {
@@ -170,57 +279,104 @@ private struct CompletionOverlay: View {
                 .opacity(0.92)
             VStack(spacing: 16) {
                 Group {
-                    if let _ = UIImage(named: "ring_knot_level_complete_emblem") {
+                    if UIImage(named: "ring_knot_level_complete_emblem") != nil {
                         Image("ring_knot_level_complete_emblem")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 160, height: 160)
+                            .frame(width: 150, height: 150)
                     } else {
                         Image(systemName: "checkmark.seal.fill")
-                            .font(.system(size: 80))
+                            .font(.system(size: 76))
                             .foregroundStyle(Color(red: 0.95, green: 0.65, blue: 0.35))
                     }
                 }
-                Text("Solved")
-                    .font(.system(size: 42, weight: .heavy, design: .rounded))
+                Text("Level Complete")
+                    .font(.system(size: 34, weight: .heavy, design: .rounded))
                     .foregroundStyle(.white)
-                Text("\(moves) moves")
-                    .font(.title3)
-                    .foregroundStyle(.gray)
-                HStack(spacing: 12) {
-                    Button("Menu", action: onMenu)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .foregroundStyle(.white)
-                        .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
-                        .accessibilityIdentifier("completion.menu")
-                    Button(nextLevelID == nil ? "Done" : "Next Level", action: onNext)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 14)
-                        .foregroundStyle(.white)
-                        .background(
-                            LinearGradient(
-                                colors: [
-                                    Color(red: 0.95, green: 0.65, blue: 0.35),
-                                    Color(red: 0.78, green: 0.40, blue: 0.18)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            ),
-                            in: RoundedRectangle(cornerRadius: 16)
-                        )
-                        .accessibilityIdentifier("completion.next")
+
+                if info.isNewBest {
+                    Text("New Best!")
+                        .font(.headline.weight(.bold))
+                        .foregroundStyle(Color(red: 1.0, green: 0.82, blue: 0.4))
+                        .accessibilityIdentifier("completion.newBest")
+                }
+
+                VStack(spacing: 6) {
+                    statRow("Moves", "\(info.moves)", id: "completion.moves")
+                    statRow("Par", "\(info.par)", id: "completion.par")
+                    statRow("Best", "\(info.best)", id: "completion.best")
+                }
+                .padding(.vertical, 4)
+
+                VStack(spacing: 10) {
+                    if info.isLastLevel {
+                        Text("All Levels Complete")
+                            .font(.headline.weight(.semibold))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 14)
+                            .foregroundStyle(.white)
+                            .background(
+                                LinearGradient(colors: [Color(red: 0.95, green: 0.65, blue: 0.35),
+                                                        Color(red: 0.78, green: 0.40, blue: 0.18)],
+                                               startPoint: .top, endPoint: .bottom),
+                                in: RoundedRectangle(cornerRadius: 16)
+                            )
+                            .accessibilityIdentifier("completion.allComplete")
+                    } else {
+                        primaryButton("Next Level", action: onNext, id: "completion.next")
+                    }
+                    HStack(spacing: 12) {
+                        secondaryButton("Replay", action: onReplay, id: "completion.replay")
+                        secondaryButton("Level Select", action: onLevelSelect, id: "completion.levelSelect")
+                    }
                 }
                 .padding(.top, 8)
             }
-            .padding(32)
+            .padding(28)
             .background(
                 RoundedRectangle(cornerRadius: 28)
-                    .fill(Color(red: 0.07, green: 0.08, blue: 0.12).opacity(0.92))
+                    .fill(Color(red: 0.07, green: 0.08, blue: 0.12).opacity(0.94))
             )
-            .padding(.horizontal, 32)
+            .padding(.horizontal, 28)
         }
         .accessibilityElement(children: .contain)
+    }
+
+    private func statRow(_ label: String, _ value: String, id: String) -> some View {
+        HStack {
+            Text(label).foregroundStyle(.gray)
+            Spacer()
+            Text(value).foregroundStyle(.white).font(.body.monospacedDigit().weight(.semibold))
+        }
+        .font(.body)
+        .frame(maxWidth: 200)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("\(label) \(value)")
+        .accessibilityIdentifier(id)
+    }
+
+    private func primaryButton(_ title: String, action: @escaping () -> Void, id: String) -> some View {
+        Button(title, action: action)
+            .font(.title3.weight(.semibold))
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .foregroundStyle(.white)
+            .background(
+                LinearGradient(colors: [Color(red: 0.95, green: 0.65, blue: 0.35),
+                                        Color(red: 0.78, green: 0.40, blue: 0.18)],
+                               startPoint: .top, endPoint: .bottom),
+                in: RoundedRectangle(cornerRadius: 16)
+            )
+            .accessibilityIdentifier(id)
+    }
+
+    private func secondaryButton(_ title: String, action: @escaping () -> Void, id: String) -> some View {
+        Button(title, action: action)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 14)
+            .foregroundStyle(.white)
+            .background(Color.white.opacity(0.08), in: RoundedRectangle(cornerRadius: 16))
+            .accessibilityIdentifier(id)
     }
 }
 
