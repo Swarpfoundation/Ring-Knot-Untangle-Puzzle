@@ -1,0 +1,15 @@
+# Xcode user data
+**/xcuserdata/
+**/*.xcuserstate
+**/DerivedData/
+
+# Build outputs
+build/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift package manager
+.swiftpm/
+Packages/
+*.xcodeproj/project.xcworkspace/xcuserdata/
