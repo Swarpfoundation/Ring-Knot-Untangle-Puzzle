@@ -20,6 +20,11 @@ final class AppEnvironment: ObservableObject {
         if arguments.contains("-com.swarpfoundation.ringknot.resetProgress") {
             store.reset()
         }
+        // UI-test only: unlock every level so screenshot tours can open mid/late
+        // levels deterministically. DEBUG-gated, never compiled into Release.
+        if arguments.contains("-uiTestUnlockAll") {
+            store.save(ProgressSnapshot(unlockedLevelID: 20))
+        }
         preferences.applyUITestOverrides(arguments)
         #endif
         Haptics.shared.prepare()

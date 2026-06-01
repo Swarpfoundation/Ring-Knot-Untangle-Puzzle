@@ -117,3 +117,11 @@ Run against a Release build of `RingKnot.app` (e.g. `-configuration Release
 - [ ] **[needs account]** Marketing screenshots at required device sizes.
 - [ ] **[needs account]** Description, keywords, support URL, age rating.
 - [ ] **[needs account]** Export compliance answers.
+
+## Phase 6A gate (anchors & blocker clips)
+
+- [x] Every level has ≥1 closed anchor; complexity curve holds (replay validator).
+- [x] Every dependency has a visual interlock/clip; no `abstractOnly` in the pack.
+- [x] Clips/anchors drawn procedurally — no downloaded or copied art.
+- [x] DEBUG-only `-uiTestUnlockAll` is gated out of Release (artifact scan).
+- [x] Genuine `phase-6a-*` screenshots captured on iPhone 17 Pro simulator.

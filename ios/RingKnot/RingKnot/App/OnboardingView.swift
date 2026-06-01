@@ -22,17 +22,17 @@ struct OnboardingView: View {
              image: "ring_knot_home_hero",
              fallbackSymbol: "circle.dashed",
              title: "Rotate each ring to find its opening",
-             body: "Every ring is an open circle with one gap. Drag around a ring to roll it until the gap lines up with the way out."),
+             body: "Most rings are open circles with one gap. Drag around a ring to roll it until the gap lines up with the way out."),
         Page(id: 1,
              image: "ring_knot_brand_mark",
-             fallbackSymbol: "arrow.up.right.circle",
-             title: "Line the gap up with the exit",
-             body: "When the opening faces the exit arrow the ring lights up — that's your cue it's ready. Then pull it free through the gap."),
+             fallbackSymbol: "circle.circle",
+             title: "Anchors hold the grid together",
+             body: "Full closed rings are anchors — they don't move. The small metal clips show where each ring is caught by another."),
         Page(id: 2,
              image: "ring_knot_level_complete_emblem",
              fallbackSymbol: "lightbulb.circle",
-             title: "Clear blockers, then the knot",
-             body: "Some rings are pinned by others. Clear the blockers first, then free the copper knot. Tap Hint for the next safe ring.")
+             title: "Clear the clips, free the knot",
+             body: "Line a ring's gap up with its exit, then pull it free past the clip. Clear the blockers first, then free the copper knot. Tap Hint for the next safe ring.")
     ]
 
     var body: some View {

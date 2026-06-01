@@ -17,6 +17,14 @@ public struct Level: Hashable, Sendable {
     /// progress. Loaded from the JSON (`alignmentToleranceDegrees`) or defaulted
     /// from the level id band.
     public let alignmentToleranceDegrees: Double
+    /// Small metal clamp bands attached to rings — the visual language showing
+    /// where rings are caught. See `BlockerClip`.
+    public let clips: [BlockerClip]
+    /// Dependency-to-clip metadata; each `requires` edge is expected to have one.
+    public let interlocks: [Interlock]
+    /// When true the level is allowed to gate dependencies without a visual
+    /// interlock. Reserved as an escape hatch; the shipped pack does not use it.
+    public let abstractOnly: Bool
 
     public init(
         id: Int,
@@ -25,7 +33,10 @@ public struct Level: Hashable, Sendable {
         board: Board,
         rings: [Ring],
         solution: [SolutionStep],
-        alignmentToleranceDegrees: Double? = nil
+        alignmentToleranceDegrees: Double? = nil,
+        clips: [BlockerClip] = [],
+        interlocks: [Interlock] = [],
+        abstractOnly: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -35,10 +46,24 @@ public struct Level: Hashable, Sendable {
         self.solution = solution
         self.alignmentToleranceDegrees =
             alignmentToleranceDegrees ?? Level.defaultTolerance(forLevelID: id)
+        self.clips = clips
+        self.interlocks = interlocks
+        self.abstractOnly = abstractOnly
     }
 
     public func ring(_ id: String) -> Ring? {
         rings.first { $0.id == id }
+    }
+
+    /// Rings the player must remove to finish the level (anchors excluded).
+    public var removableRings: [Ring] { rings.filter { $0.removable } }
+
+    /// Closed anchor rings — fixed obstacles that stay on the board.
+    public var anchors: [Ring] { rings.filter { $0.isAnchor } }
+
+    /// Clips mounted on a given ring.
+    public func clips(forOwner ringID: String) -> [BlockerClip] {
+        clips.filter { $0.ownerRingId == ringID }
     }
 
     /// Rotation state for a ring at the start of the level (gap misaligned).

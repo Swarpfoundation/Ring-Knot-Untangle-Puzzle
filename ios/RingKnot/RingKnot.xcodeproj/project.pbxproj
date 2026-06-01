@@ -34,6 +34,7 @@
 		788B0B873D30AD7A1613C031 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFAA4BB0C8FBFFEC0B344C /* AppEnvironment.swift */; };
 		7AE45D17E0C283179990D632 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42A7B4CAF77817148528DD1D /* Assets.xcassets */; };
 		7B34C4A6286595AD06D7A09B /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = A409D8D552249121F784A3CF /* Level.swift */; };
+		811C5DEA8046201FB97DFEAB /* Clip.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3E28C0CBC8E695B77B102B0 /* Clip.swift */; };
 		9D5CD9A4279D32D00F750460 /* ring_unlock_level_pack_v1.json in Resources */ = {isa = PBXBuildFile; fileRef = 51BC30F54103E50008320E07 /* ring_unlock_level_pack_v1.json */; };
 		A46A6DCBD5D18A973891B61D /* RingRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFB2E5A8E318E7F854FE58F /* RingRotation.swift */; };
 		A5F9DC6523171EC0B0092CB7 /* LevelLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27EDE68A06D7BB0A80724B /* LevelLoader.swift */; };
@@ -44,11 +45,13 @@
 		C9F8664C8790747744F6C443 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF347469EBAFF70646E05B1 /* RootView.swift */; };
 		D3650404C64C76F5367668B4 /* MoveValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911B8CD00F1B04EA7497A193 /* MoveValidatorTests.swift */; };
 		D77B8175752BB460BFECC72E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F77768D6416D29EE763C0F1 /* GameScene.swift */; };
+		DA839E59FB230F742F454BA7 /* AnchorBlockerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64F0590008E0BA4C1360AB9 /* AnchorBlockerTests.swift */; };
 		DC31774365A983C650AAEEBE /* RingKnotPhase4UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9755F4FC9FB9B57447A92 /* RingKnotPhase4UITests.swift */; };
 		EF651B4FBA95DED9A90A6E9A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B373C5464991D5A46F4F37 /* SettingsView.swift */; };
 		F7A468F07B03E9BE44B56B25 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */; };
 		FAF765913C820F76FD885EDA /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222393C6D87CD7B8C2A81BBB /* GameState.swift */; };
 		FCA3AC66AF69DF8883A97CF4 /* RingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE06224052C59428EB226F /* RingNode.swift */; };
+		FD9A4AACDA6367A669AA457C /* RingKnotPhase6aUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D64474E21D0E2E90B3339AC4 /* RingKnotPhase6aUITests.swift */; };
 		FE23ECC2D6AD5CCA9B99F0D8 /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74455134AA06586837F8E9AC /* Ring.swift */; };
 /* End PBXBuildFile section */
 
@@ -105,17 +108,20 @@
 		911B8CD00F1B04EA7497A193 /* MoveValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveValidatorTests.swift; sourceTree = "<group>"; };
 		94D2D2780D2C028B456D91F9 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		9C2D66C86E72CDB7448A7FD1 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		A3E28C0CBC8E695B77B102B0 /* Clip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Clip.swift; sourceTree = "<group>"; };
 		A409D8D552249121F784A3CF /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		AEF347469EBAFF70646E05B1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		AEFB2E5A8E318E7F854FE58F /* RingRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingRotation.swift; sourceTree = "<group>"; };
 		B6B373C5464991D5A46F4F37 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BF27EDE68A06D7BB0A80724B /* LevelLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLoader.swift; sourceTree = "<group>"; };
+		D64474E21D0E2E90B3339AC4 /* RingKnotPhase6aUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotPhase6aUITests.swift; sourceTree = "<group>"; };
 		E1C9755F4FC9FB9B57447A92 /* RingKnotPhase4UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotPhase4UITests.swift; sourceTree = "<group>"; };
 		E472A965C5612BCFE062336E /* RingKnotRealGestureUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotRealGestureUITests.swift; sourceTree = "<group>"; };
 		E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EED3537AE57FE06E23C9E41B /* ProgressStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStoreTests.swift; sourceTree = "<group>"; };
 		F0C78231BC5DE449C6C6C24B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotUITests.swift; sourceTree = "<group>"; };
+		F64F0590008E0BA4C1360AB9 /* AnchorBlockerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnchorBlockerTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -154,6 +160,7 @@
 			children = (
 				425D490F9E073699275A9297 /* RingKnotPhase3UITests.swift */,
 				E1C9755F4FC9FB9B57447A92 /* RingKnotPhase4UITests.swift */,
+				D64474E21D0E2E90B3339AC4 /* RingKnotPhase6aUITests.swift */,
 				E472A965C5612BCFE062336E /* RingKnotRealGestureUITests.swift */,
 				F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */,
 				018A9F7902E59C7E854CF652 /* ScreenshotTour.swift */,
@@ -184,6 +191,7 @@
 			children = (
 				5886BADA95AC376591CCBB3A /* Board.swift */,
 				3FF379D7855F3BBBA4C8C601 /* Cell.swift */,
+				A3E28C0CBC8E695B77B102B0 /* Clip.swift */,
 				38A51C2788C357E7C4FFE306 /* Direction.swift */,
 				222393C6D87CD7B8C2A81BBB /* GameState.swift */,
 				A409D8D552249121F784A3CF /* Level.swift */,
@@ -208,6 +216,7 @@
 		EA89738ADFCB41BB985F9943 /* RingKnotTests */ = {
 			isa = PBXGroup;
 			children = (
+				F64F0590008E0BA4C1360AB9 /* AnchorBlockerTests.swift */,
 				71F9C71F753AD8A905B7047E /* DirectionAndCellTests.swift */,
 				746BE00906FB1D75A9D96204 /* LevelLoaderTests.swift */,
 				911B8CD00F1B04EA7497A193 /* MoveValidatorTests.swift */,
@@ -378,6 +387,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA839E59FB230F742F454BA7 /* AnchorBlockerTests.swift in Sources */,
 				57221C31ED58B53B1AC6941A /* DirectionAndCellTests.swift in Sources */,
 				70E81CF02AFBE1426F6322BB /* LevelLoaderTests.swift in Sources */,
 				D3650404C64C76F5367668B4 /* MoveValidatorTests.swift in Sources */,
@@ -394,6 +404,7 @@
 			files = (
 				519DD5516800B767CA78E59D /* RingKnotPhase3UITests.swift in Sources */,
 				DC31774365A983C650AAEEBE /* RingKnotPhase4UITests.swift in Sources */,
+				FD9A4AACDA6367A669AA457C /* RingKnotPhase6aUITests.swift in Sources */,
 				1213AE26F682B613EC9172C3 /* RingKnotRealGestureUITests.swift in Sources */,
 				0030DCFC97E13ACED796BB28 /* RingKnotUITests.swift in Sources */,
 				532A9345B9F155B8EEB2A0F5 /* ScreenshotTour.swift in Sources */,
@@ -408,6 +419,7 @@
 				0C7E0686F4F73C83AF4772AD /* AudioManager.swift in Sources */,
 				74A22A99708A568A60A922BC /* Board.swift in Sources */,
 				1487253267E35C4E9709E2D2 /* Cell.swift in Sources */,
+				811C5DEA8046201FB97DFEAB /* Clip.swift in Sources */,
 				62D53353619AD3EEDBEAFD15 /* Direction.swift in Sources */,
 				01A44B9D728399EEFC8913F0 /* GameController.swift in Sources */,
 				D77B8175752BB460BFECC72E /* GameScene.swift in Sources */,

@@ -169,3 +169,18 @@ The pure engine gains a rotation layer that the renderer drives:
 - **Accessibility**: the board summary names the held ring's alignment, and a
   "Rotate ring to opening" custom action aligns the next solvable ring without a
   gesture.
+
+## Anchors & blocker clips (Phase 6A)
+
+- **Engine**: `Ring.bodyType` (`openRing`/`closedAnchor`) + `Ring.removable`;
+  `BlockerClip` / `Interlock` model types (`Engine/Clip.swift`);
+  `Level.clips` / `Level.interlocks` / `Level.abstractOnly`. `GameState.isComplete`
+  counts only removable rings. `MoveValidator` returns `.notRemovable` for anchors
+  and skips them in hints. `LevelLoader` parses + referentially validates the new
+  fields.
+- **Render**: `RingNode` bakes anchors as full circles, draws clip child nodes in
+  a rolling layer (open rings) or static layer (anchors), and shows a calm anchor
+  pulse on tap. `RingTextureFactory.clipTexture(...)` draws clamp bands
+  procedurally. `GameScene` treats anchor taps as non-moves.
+- **DEBUG**: `-uiTestUnlockAll` unlocks every level for screenshot tours (gated
+  out of Release). See `docs/gameplay/anchor-blocker-system.md`.

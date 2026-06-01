@@ -91,6 +91,15 @@
             "S1"
           ],
           "initialGapAngle": 285
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -101,6 +110,40 @@
         {
           "id": "C1",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_C1",
+          "ownerRingId": "S1",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_C1",
+          "blockerRingId": "S1",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S1_C1",
+          "contactAngleDegrees": 270.0,
+          "description": "C1 is caught by S1's clamp until S1 is pulled free."
         }
       ]
     },
@@ -140,6 +183,15 @@
             "S2"
           ],
           "initialGapAngle": 0
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -154,6 +206,60 @@
         {
           "id": "C1",
           "drag": "S"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_C1",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_C1",
+          "ownerRingId": "S2",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_C1",
+          "blockerRingId": "S1",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S1_C1",
+          "contactAngleDegrees": 315.0,
+          "description": "C1 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_C1",
+          "blockerRingId": "S2",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S2_C1",
+          "contactAngleDegrees": 225.0,
+          "description": "C1 is caught by S2's clamp until S2 is pulled free."
         }
       ]
     },
@@ -205,6 +311,15 @@
             "S3"
           ],
           "initialGapAngle": 215
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -223,6 +338,100 @@
         {
           "id": "C1",
           "drag": "S"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S2",
+          "ownerRingId": "S1",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_C1",
+          "ownerRingId": "S2",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_C1",
+          "ownerRingId": "S3",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S2",
+          "blockerRingId": "S1",
+          "blockedRingId": "S2",
+          "blockerClipId": "K_S1_S2",
+          "contactAngleDegrees": 225.0,
+          "description": "S2 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 315.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_C1",
+          "blockerRingId": "S2",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S2_C1",
+          "contactAngleDegrees": 315.0,
+          "description": "C1 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_C1",
+          "blockerRingId": "S3",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S3_C1",
+          "contactAngleDegrees": 225.0,
+          "description": "C1 is caught by S3's clamp until S3 is pulled free."
         }
       ]
     },
@@ -284,6 +493,15 @@
             "S4"
           ],
           "initialGapAngle": 70
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -306,6 +524,120 @@
         {
           "id": "C1",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S2",
+          "ownerRingId": "S1",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S4",
+          "ownerRingId": "S2",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S4",
+          "ownerRingId": "S3",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_C1",
+          "ownerRingId": "S4",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S2",
+          "blockerRingId": "S1",
+          "blockedRingId": "S2",
+          "blockerClipId": "K_S1_S2",
+          "contactAngleDegrees": 225.0,
+          "description": "S2 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 315.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S4",
+          "blockerRingId": "S2",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S2_S4",
+          "contactAngleDegrees": 315.0,
+          "description": "S4 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S4",
+          "blockerRingId": "S3",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S3_S4",
+          "contactAngleDegrees": 225.0,
+          "description": "S4 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_C1",
+          "blockerRingId": "S4",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S4_C1",
+          "contactAngleDegrees": 90.0,
+          "description": "C1 is caught by S4's clamp until S4 is pulled free."
         }
       ]
     },
@@ -376,6 +708,15 @@
             "S5"
           ],
           "initialGapAngle": 170
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -402,6 +743,140 @@
         {
           "id": "C1",
           "drag": "S"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S3",
+          "ownerRingId": "S2",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S4",
+          "ownerRingId": "S3",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_C1",
+          "ownerRingId": "S4",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_C1",
+          "ownerRingId": "S5",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 315.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S3",
+          "blockerRingId": "S2",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S2_S3",
+          "contactAngleDegrees": 225.0,
+          "description": "S3 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S4",
+          "blockerRingId": "S3",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S3_S4",
+          "contactAngleDegrees": 225.0,
+          "description": "S4 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 315.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_C1",
+          "blockerRingId": "S4",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S4_C1",
+          "contactAngleDegrees": 0.0,
+          "description": "C1 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_C1",
+          "blockerRingId": "S5",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S5_C1",
+          "contactAngleDegrees": 180.0,
+          "description": "C1 is caught by S5's clamp until S5 is pulled free."
         }
       ]
     },
@@ -482,6 +957,15 @@
             "C1"
           ],
           "initialGapAngle": 50
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -512,6 +996,160 @@
         {
           "id": "C2",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 26.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S3",
+          "ownerRingId": "S2",
+          "angleDegrees": 153.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S4",
+          "ownerRingId": "S3",
+          "angleDegrees": 243.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 296.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_C1",
+          "ownerRingId": "S4",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_C1",
+          "ownerRingId": "S5",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 26.6,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S3",
+          "blockerRingId": "S2",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S2_S3",
+          "contactAngleDegrees": 153.4,
+          "description": "S3 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S4",
+          "blockerRingId": "S3",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S3_S4",
+          "contactAngleDegrees": 243.4,
+          "description": "S4 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 296.6,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_C1",
+          "blockerRingId": "S4",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S4_C1",
+          "contactAngleDegrees": 0.0,
+          "description": "C1 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_C1",
+          "blockerRingId": "S5",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S5_C1",
+          "contactAngleDegrees": 180.0,
+          "description": "C1 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -599,6 +1237,15 @@
             "C1"
           ],
           "initialGapAngle": 275
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -633,6 +1280,160 @@
         {
           "id": "C2",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S5",
+          "ownerRingId": "S4",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S6",
+          "ownerRingId": "S1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S6",
+          "ownerRingId": "S2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S6",
+          "ownerRingId": "S5",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_C1",
+          "ownerRingId": "S6",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 315.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_S5",
+          "blockerRingId": "S4",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S4_S5",
+          "contactAngleDegrees": 225.0,
+          "description": "S5 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S1_S6",
+          "blockerRingId": "S1",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S1_S6",
+          "contactAngleDegrees": 0.0,
+          "description": "S6 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S6",
+          "blockerRingId": "S2",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S2_S6",
+          "contactAngleDegrees": 180.0,
+          "description": "S6 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S5_S6",
+          "blockerRingId": "S5",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S5_S6",
+          "contactAngleDegrees": 270.0,
+          "description": "S6 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_C1",
+          "blockerRingId": "S6",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S6_C1",
+          "contactAngleDegrees": 90.0,
+          "description": "C1 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -722,6 +1523,15 @@
             "S7"
           ],
           "initialGapAngle": 185
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -756,6 +1566,180 @@
         {
           "id": "C1",
           "drag": "S"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S4",
+          "ownerRingId": "S1",
+          "angleDegrees": 243.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S4",
+          "ownerRingId": "S2",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S5",
+          "ownerRingId": "S1",
+          "angleDegrees": 296.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S6",
+          "ownerRingId": "S4",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S7",
+          "ownerRingId": "S5",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_C1",
+          "ownerRingId": "S6",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_C1",
+          "ownerRingId": "S7",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S6",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S4",
+          "blockerRingId": "S1",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S1_S4",
+          "contactAngleDegrees": 243.4,
+          "description": "S4 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S4",
+          "blockerRingId": "S2",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S2_S4",
+          "contactAngleDegrees": 315.0,
+          "description": "S4 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S1_S5",
+          "blockerRingId": "S1",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S1_S5",
+          "contactAngleDegrees": 296.6,
+          "description": "S5 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 225.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_S6",
+          "blockerRingId": "S4",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S4_S6",
+          "contactAngleDegrees": 270.0,
+          "description": "S6 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S7",
+          "blockerRingId": "S5",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S5_S7",
+          "contactAngleDegrees": 270.0,
+          "description": "S7 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_C1",
+          "blockerRingId": "S6",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S6_C1",
+          "contactAngleDegrees": 45.0,
+          "description": "C1 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_C1",
+          "blockerRingId": "S7",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S7_C1",
+          "contactAngleDegrees": 135.0,
+          "description": "C1 is caught by S7's clamp until S7 is pulled free."
         }
       ]
     },
@@ -857,6 +1841,24 @@
             "S8"
           ],
           "initialGapAngle": 20
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -895,6 +1897,230 @@
         {
           "id": "C1",
           "drag": "S"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S2",
+          "ownerRingId": "S1",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S5",
+          "ownerRingId": "S4",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S5",
+          "ownerRingId": "S2",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S6",
+          "ownerRingId": "S4",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S6",
+          "ownerRingId": "S3",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S7",
+          "ownerRingId": "S5",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S8",
+          "ownerRingId": "S6",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_C1",
+          "ownerRingId": "S7",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_C1",
+          "ownerRingId": "S8",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S4",
+          "ownerRingId": "A2",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S2",
+          "blockerRingId": "S1",
+          "blockedRingId": "S2",
+          "blockerClipId": "K_S1_S2",
+          "contactAngleDegrees": 135.0,
+          "description": "S2 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 45.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S4_S5",
+          "blockerRingId": "S4",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S4_S5",
+          "contactAngleDegrees": 225.0,
+          "description": "S5 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S2_S5",
+          "blockerRingId": "S2",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S2_S5",
+          "contactAngleDegrees": 90.0,
+          "description": "S5 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S4_S6",
+          "blockerRingId": "S4",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S4_S6",
+          "contactAngleDegrees": 315.0,
+          "description": "S6 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S3_S6",
+          "blockerRingId": "S3",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S3_S6",
+          "contactAngleDegrees": 90.0,
+          "description": "S6 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S5_S7",
+          "blockerRingId": "S5",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S5_S7",
+          "contactAngleDegrees": 90.0,
+          "description": "S7 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_S8",
+          "blockerRingId": "S6",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S6_S8",
+          "contactAngleDegrees": 90.0,
+          "description": "S8 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_C1",
+          "blockerRingId": "S7",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S7_C1",
+          "contactAngleDegrees": 315.0,
+          "description": "C1 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S8_C1",
+          "blockerRingId": "S8",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S8_C1",
+          "contactAngleDegrees": 225.0,
+          "description": "C1 is caught by S8's clamp until S8 is pulled free."
         }
       ]
     },
@@ -1005,6 +2231,24 @@
             "C1"
           ],
           "initialGapAngle": 295
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -1047,6 +2291,230 @@
         {
           "id": "C2",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S3",
+          "ownerRingId": "S2",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S4",
+          "ownerRingId": "S3",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S6",
+          "ownerRingId": "S4",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S7",
+          "ownerRingId": "S5",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S8",
+          "ownerRingId": "S6",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S8",
+          "ownerRingId": "S7",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_C1",
+          "ownerRingId": "S8",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S2",
+          "ownerRingId": "A2",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 315.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S3",
+          "blockerRingId": "S2",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S2_S3",
+          "contactAngleDegrees": 225.0,
+          "description": "S3 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S4",
+          "blockerRingId": "S3",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S3_S4",
+          "contactAngleDegrees": 180.0,
+          "description": "S4 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 0.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_S6",
+          "blockerRingId": "S4",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S4_S6",
+          "contactAngleDegrees": 315.0,
+          "description": "S6 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S7",
+          "blockerRingId": "S5",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S5_S7",
+          "contactAngleDegrees": 225.0,
+          "description": "S7 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_S8",
+          "blockerRingId": "S6",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S6_S8",
+          "contactAngleDegrees": 315.0,
+          "description": "S8 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_S8",
+          "blockerRingId": "S7",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S7_S8",
+          "contactAngleDegrees": 225.0,
+          "description": "S8 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S8_C1",
+          "blockerRingId": "S8",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S8_C1",
+          "contactAngleDegrees": 90.0,
+          "description": "C1 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -1158,6 +2626,24 @@
             "C1"
           ],
           "initialGapAngle": 295
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -1200,6 +2686,310 @@
         {
           "id": "C2",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S5",
+          "ownerRingId": "S1",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S6",
+          "ownerRingId": "S2",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S6",
+          "ownerRingId": "S3",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S7",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S7",
+          "ownerRingId": "S4",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S8",
+          "ownerRingId": "S2",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S8",
+          "ownerRingId": "S4",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_C1",
+          "ownerRingId": "S5",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_C1",
+          "ownerRingId": "S7",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_C2",
+          "ownerRingId": "S6",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_C2",
+          "ownerRingId": "S8",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S3",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S5",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S1",
+          "ownerRingId": "A2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S5",
+          "ownerRingId": "A2",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S5",
+          "blockerRingId": "S1",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S1_S5",
+          "contactAngleDegrees": 45.0,
+          "description": "S5 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 225.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S2_S6",
+          "blockerRingId": "S2",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S2_S6",
+          "contactAngleDegrees": 135.0,
+          "description": "S6 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S6",
+          "blockerRingId": "S3",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S3_S6",
+          "contactAngleDegrees": 315.0,
+          "description": "S6 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S1_S7",
+          "blockerRingId": "S1",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S1_S7",
+          "contactAngleDegrees": 315.0,
+          "description": "S7 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S4_S7",
+          "blockerRingId": "S4",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S4_S7",
+          "contactAngleDegrees": 135.0,
+          "description": "S7 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S2_S8",
+          "blockerRingId": "S2",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S2_S8",
+          "contactAngleDegrees": 225.0,
+          "description": "S8 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S4_S8",
+          "blockerRingId": "S4",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S4_S8",
+          "contactAngleDegrees": 45.0,
+          "description": "S8 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_C1",
+          "blockerRingId": "S5",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S5_C1",
+          "contactAngleDegrees": 315.0,
+          "description": "C1 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S7_C1",
+          "blockerRingId": "S7",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S7_C1",
+          "contactAngleDegrees": 45.0,
+          "description": "C1 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S6_C2",
+          "blockerRingId": "S6",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_S6_C2",
+          "contactAngleDegrees": 225.0,
+          "description": "C2 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S8_C2",
+          "blockerRingId": "S8",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_S8_C2",
+          "contactAngleDegrees": 135.0,
+          "description": "C2 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -1319,6 +3109,24 @@
             "C1"
           ],
           "initialGapAngle": 170
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -1365,6 +3173,290 @@
         {
           "id": "C2",
           "drag": "N"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S4_S5",
+          "ownerRingId": "S4",
+          "angleDegrees": 153.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S6",
+          "ownerRingId": "S4",
+          "angleDegrees": 26.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S7",
+          "ownerRingId": "S1",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S7",
+          "ownerRingId": "S2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S7",
+          "ownerRingId": "S3",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S8",
+          "ownerRingId": "S5",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S8",
+          "ownerRingId": "S7",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S9",
+          "ownerRingId": "S6",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S9",
+          "ownerRingId": "S7",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_C1",
+          "ownerRingId": "S8",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_C1",
+          "ownerRingId": "S9",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S2",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S7",
+          "ownerRingId": "A1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S3",
+          "ownerRingId": "A2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S7",
+          "ownerRingId": "A2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S4_S5",
+          "blockerRingId": "S4",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S4_S5",
+          "contactAngleDegrees": 153.4,
+          "description": "S5 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S4_S6",
+          "blockerRingId": "S4",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S4_S6",
+          "contactAngleDegrees": 26.6,
+          "description": "S6 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S1_S7",
+          "blockerRingId": "S1",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S1_S7",
+          "contactAngleDegrees": 270.0,
+          "description": "S7 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S7",
+          "blockerRingId": "S2",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S2_S7",
+          "contactAngleDegrees": 0.0,
+          "description": "S7 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S7",
+          "blockerRingId": "S3",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S3_S7",
+          "contactAngleDegrees": 180.0,
+          "description": "S7 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S5_S8",
+          "blockerRingId": "S5",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S5_S8",
+          "contactAngleDegrees": 45.0,
+          "description": "S8 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S7_S8",
+          "blockerRingId": "S7",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S7_S8",
+          "contactAngleDegrees": 225.0,
+          "description": "S8 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S6_S9",
+          "blockerRingId": "S6",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S6_S9",
+          "contactAngleDegrees": 135.0,
+          "description": "S9 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_S9",
+          "blockerRingId": "S7",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S7_S9",
+          "contactAngleDegrees": 315.0,
+          "description": "S9 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S8_C1",
+          "blockerRingId": "S8",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S8_C1",
+          "contactAngleDegrees": 0.0,
+          "description": "C1 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S9_C1",
+          "blockerRingId": "S9",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S9_C1",
+          "contactAngleDegrees": 180.0,
+          "description": "C1 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -1495,6 +3587,24 @@
             "C1"
           ],
           "initialGapAngle": 310
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -1545,6 +3655,270 @@
         {
           "id": "C2",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S2",
+          "ownerRingId": "S1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S3",
+          "ownerRingId": "S2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S4",
+          "ownerRingId": "S3",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S5",
+          "ownerRingId": "S4",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S6",
+          "ownerRingId": "S5",
+          "angleDegrees": 206.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S7",
+          "ownerRingId": "S6",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S8",
+          "ownerRingId": "S7",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_S9",
+          "ownerRingId": "S8",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_S10",
+          "ownerRingId": "S9",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S10_C1",
+          "ownerRingId": "S10",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S9",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S10",
+          "ownerRingId": "A1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S1",
+          "ownerRingId": "A2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S2",
+          "ownerRingId": "A2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S2",
+          "blockerRingId": "S1",
+          "blockedRingId": "S2",
+          "blockerClipId": "K_S1_S2",
+          "contactAngleDegrees": 0.0,
+          "description": "S2 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S3",
+          "blockerRingId": "S2",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S2_S3",
+          "contactAngleDegrees": 0.0,
+          "description": "S3 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S4",
+          "blockerRingId": "S3",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S3_S4",
+          "contactAngleDegrees": 270.0,
+          "description": "S4 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_S5",
+          "blockerRingId": "S4",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S4_S5",
+          "contactAngleDegrees": 270.0,
+          "description": "S5 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S6",
+          "blockerRingId": "S5",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S5_S6",
+          "contactAngleDegrees": 206.6,
+          "description": "S6 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_S7",
+          "blockerRingId": "S6",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S6_S7",
+          "contactAngleDegrees": 180.0,
+          "description": "S7 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_S8",
+          "blockerRingId": "S7",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S7_S8",
+          "contactAngleDegrees": 90.0,
+          "description": "S8 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S8_S9",
+          "blockerRingId": "S8",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S8_S9",
+          "contactAngleDegrees": 90.0,
+          "description": "S9 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S9_S10",
+          "blockerRingId": "S9",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S9_S10",
+          "contactAngleDegrees": 0.0,
+          "description": "S10 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_S10_C1",
+          "blockerRingId": "S10",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S10_C1",
+          "contactAngleDegrees": 270.0,
+          "description": "C1 is caught by S10's clamp until S10 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -1676,6 +4050,33 @@
             "C1"
           ],
           "initialGapAngle": 310
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A3",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -1726,6 +4127,330 @@
         {
           "id": "C2",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S4",
+          "ownerRingId": "S2",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S6",
+          "ownerRingId": "S4",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S7",
+          "ownerRingId": "S5",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S8",
+          "ownerRingId": "S6",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S9",
+          "ownerRingId": "S3",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S9",
+          "ownerRingId": "S7",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S10",
+          "ownerRingId": "S4",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_S10",
+          "ownerRingId": "S8",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_C1",
+          "ownerRingId": "S9",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S10_C2",
+          "ownerRingId": "S10",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S3",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S4",
+          "ownerRingId": "A1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S1",
+          "ownerRingId": "A2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S2",
+          "ownerRingId": "A2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S7",
+          "ownerRingId": "A3",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S8",
+          "ownerRingId": "A3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 270.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S4",
+          "blockerRingId": "S2",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S2_S4",
+          "contactAngleDegrees": 270.0,
+          "description": "S4 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 225.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_S6",
+          "blockerRingId": "S4",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S4_S6",
+          "contactAngleDegrees": 315.0,
+          "description": "S6 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S7",
+          "blockerRingId": "S5",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S5_S7",
+          "contactAngleDegrees": 315.0,
+          "description": "S7 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_S8",
+          "blockerRingId": "S6",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S6_S8",
+          "contactAngleDegrees": 225.0,
+          "description": "S8 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S3_S9",
+          "blockerRingId": "S3",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S3_S9",
+          "contactAngleDegrees": 270.0,
+          "description": "S9 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S7_S9",
+          "blockerRingId": "S7",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S7_S9",
+          "contactAngleDegrees": 90.0,
+          "description": "S9 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S4_S10",
+          "blockerRingId": "S4",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S4_S10",
+          "contactAngleDegrees": 270.0,
+          "description": "S10 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S8_S10",
+          "blockerRingId": "S8",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S8_S10",
+          "contactAngleDegrees": 90.0,
+          "description": "S10 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S9_C1",
+          "blockerRingId": "S9",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S9_C1",
+          "contactAngleDegrees": 0.0,
+          "description": "C1 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_S10_C2",
+          "blockerRingId": "S10",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_S10_C2",
+          "contactAngleDegrees": 180.0,
+          "description": "C2 is caught by S10's clamp until S10 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -1871,6 +4596,33 @@
             "C2"
           ],
           "initialGapAngle": 95
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A3",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -1925,6 +4677,410 @@
         {
           "id": "C3",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S2",
+          "ownerRingId": "S1",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S4",
+          "ownerRingId": "S2",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S6",
+          "ownerRingId": "S4",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S7",
+          "ownerRingId": "S5",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S8",
+          "ownerRingId": "S6",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S8",
+          "ownerRingId": "S7",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S9",
+          "ownerRingId": "S2",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S9",
+          "ownerRingId": "S6",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S10",
+          "ownerRingId": "S3",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S10",
+          "ownerRingId": "S7",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_C1",
+          "ownerRingId": "S8",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_C1",
+          "ownerRingId": "S9",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S10_C1",
+          "ownerRingId": "S10",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C2_C3",
+          "ownerRingId": "C2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S2",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S6",
+          "ownerRingId": "A2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S7",
+          "ownerRingId": "A2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S1",
+          "ownerRingId": "A3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S2",
+          "ownerRingId": "A3",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S2",
+          "blockerRingId": "S1",
+          "blockedRingId": "S2",
+          "blockerClipId": "K_S1_S2",
+          "contactAngleDegrees": 225.0,
+          "description": "S2 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 315.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S4",
+          "blockerRingId": "S2",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S2_S4",
+          "contactAngleDegrees": 225.0,
+          "description": "S4 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 315.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_S6",
+          "blockerRingId": "S4",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S4_S6",
+          "contactAngleDegrees": 315.0,
+          "description": "S6 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S7",
+          "blockerRingId": "S5",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S5_S7",
+          "contactAngleDegrees": 225.0,
+          "description": "S7 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_S8",
+          "blockerRingId": "S6",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S6_S8",
+          "contactAngleDegrees": 315.0,
+          "description": "S8 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_S8",
+          "blockerRingId": "S7",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S7_S8",
+          "contactAngleDegrees": 225.0,
+          "description": "S8 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S2_S9",
+          "blockerRingId": "S2",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S2_S9",
+          "contactAngleDegrees": 270.0,
+          "description": "S9 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S6_S9",
+          "blockerRingId": "S6",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S6_S9",
+          "contactAngleDegrees": 90.0,
+          "description": "S9 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S3_S10",
+          "blockerRingId": "S3",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S3_S10",
+          "contactAngleDegrees": 270.0,
+          "description": "S10 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S7_S10",
+          "blockerRingId": "S7",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S7_S10",
+          "contactAngleDegrees": 90.0,
+          "description": "S10 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S8_C1",
+          "blockerRingId": "S8",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S8_C1",
+          "contactAngleDegrees": 90.0,
+          "description": "C1 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S9_C1",
+          "blockerRingId": "S9",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S9_C1",
+          "contactAngleDegrees": 0.0,
+          "description": "C1 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_S10_C1",
+          "blockerRingId": "S10",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S10_C1",
+          "contactAngleDegrees": 180.0,
+          "description": "C1 is caught by S10's clamp until S10 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
+        },
+        {
+          "id": "IL_C2_C3",
+          "blockerRingId": "C2",
+          "blockedRingId": "C3",
+          "blockerClipId": "K_C2_C3",
+          "contactAngleDegrees": 0.0,
+          "description": "C3 is caught by C2's clamp until C2 is pulled free."
         }
       ]
     },
@@ -2080,6 +5236,33 @@
             "C1"
           ],
           "initialGapAngle": 290
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "C3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A3",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -2138,6 +5321,450 @@
         {
           "id": "C2",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S4",
+          "ownerRingId": "S2",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S6",
+          "ownerRingId": "S4",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S7",
+          "ownerRingId": "S5",
+          "angleDegrees": 333.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S8",
+          "ownerRingId": "S6",
+          "angleDegrees": 206.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S9",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S9",
+          "ownerRingId": "S3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S10",
+          "ownerRingId": "S2",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S10",
+          "ownerRingId": "S4",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_S11",
+          "ownerRingId": "S9",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S11"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S11",
+          "ownerRingId": "S5",
+          "angleDegrees": 63.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S11"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S10_S12",
+          "ownerRingId": "S10",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S12"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S12",
+          "ownerRingId": "S6",
+          "angleDegrees": 116.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S12"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_C1",
+          "ownerRingId": "S7",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S11_C1",
+          "ownerRingId": "S11",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_C2",
+          "ownerRingId": "S8",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S12_C2",
+          "ownerRingId": "S12",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S9",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S11",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S10",
+          "ownerRingId": "A2",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S12",
+          "ownerRingId": "A2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S1",
+          "ownerRingId": "A3",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S3",
+          "ownerRingId": "A3",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 225.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S4",
+          "blockerRingId": "S2",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S2_S4",
+          "contactAngleDegrees": 315.0,
+          "description": "S4 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 270.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_S6",
+          "blockerRingId": "S4",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S4_S6",
+          "contactAngleDegrees": 270.0,
+          "description": "S6 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S7",
+          "blockerRingId": "S5",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S5_S7",
+          "contactAngleDegrees": 333.4,
+          "description": "S7 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_S8",
+          "blockerRingId": "S6",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S6_S8",
+          "contactAngleDegrees": 206.6,
+          "description": "S8 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S1_S9",
+          "blockerRingId": "S1",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S1_S9",
+          "contactAngleDegrees": 315.0,
+          "description": "S9 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S3_S9",
+          "blockerRingId": "S3",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S3_S9",
+          "contactAngleDegrees": 0.0,
+          "description": "S9 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S2_S10",
+          "blockerRingId": "S2",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S2_S10",
+          "contactAngleDegrees": 225.0,
+          "description": "S10 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S4_S10",
+          "blockerRingId": "S4",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S4_S10",
+          "contactAngleDegrees": 180.0,
+          "description": "S10 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S9_S11",
+          "blockerRingId": "S9",
+          "blockedRingId": "S11",
+          "blockerClipId": "K_S9_S11",
+          "contactAngleDegrees": 225.0,
+          "description": "S11 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_S5_S11",
+          "blockerRingId": "S5",
+          "blockedRingId": "S11",
+          "blockerClipId": "K_S5_S11",
+          "contactAngleDegrees": 63.4,
+          "description": "S11 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S10_S12",
+          "blockerRingId": "S10",
+          "blockedRingId": "S12",
+          "blockerClipId": "K_S10_S12",
+          "contactAngleDegrees": 315.0,
+          "description": "S12 is caught by S10's clamp until S10 is pulled free."
+        },
+        {
+          "id": "IL_S6_S12",
+          "blockerRingId": "S6",
+          "blockedRingId": "S12",
+          "blockerClipId": "K_S6_S12",
+          "contactAngleDegrees": 116.6,
+          "description": "S12 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_C1",
+          "blockerRingId": "S7",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S7_C1",
+          "contactAngleDegrees": 90.0,
+          "description": "C1 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S11_C1",
+          "blockerRingId": "S11",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S11_C1",
+          "contactAngleDegrees": 315.0,
+          "description": "C1 is caught by S11's clamp until S11 is pulled free."
+        },
+        {
+          "id": "IL_S8_C2",
+          "blockerRingId": "S8",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_S8_C2",
+          "contactAngleDegrees": 90.0,
+          "description": "C2 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S12_C2",
+          "blockerRingId": "S12",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_S12_C2",
+          "contactAngleDegrees": 225.0,
+          "description": "C2 is caught by S12's clamp until S12 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -2299,6 +5926,33 @@
             "C2"
           ],
           "initialGapAngle": 105
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A3",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -2361,6 +6015,430 @@
         {
           "id": "C3",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S5",
+          "ownerRingId": "S1",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S6",
+          "ownerRingId": "S1",
+          "angleDegrees": 333.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S6",
+          "ownerRingId": "S4",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S7",
+          "ownerRingId": "S2",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S7",
+          "ownerRingId": "S3",
+          "angleDegrees": 296.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S8",
+          "ownerRingId": "S2",
+          "angleDegrees": 26.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S8",
+          "ownerRingId": "S4",
+          "angleDegrees": 243.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S9",
+          "ownerRingId": "S5",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S9",
+          "ownerRingId": "S7",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S10",
+          "ownerRingId": "S6",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_S10",
+          "ownerRingId": "S8",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_S11",
+          "ownerRingId": "S9",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S11"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S10_S12",
+          "ownerRingId": "S10",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S12"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S11_C1",
+          "ownerRingId": "S11",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S12_C2",
+          "ownerRingId": "S12",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C3",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C2_C3",
+          "ownerRingId": "C2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S1",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S5",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S6",
+          "ownerRingId": "A2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_C2",
+          "ownerRingId": "A2",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S7",
+          "ownerRingId": "A3",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S9",
+          "ownerRingId": "A3",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S5",
+          "blockerRingId": "S1",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S1_S5",
+          "contactAngleDegrees": 225.0,
+          "description": "S5 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 45.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S1_S6",
+          "blockerRingId": "S1",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S1_S6",
+          "contactAngleDegrees": 333.4,
+          "description": "S6 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S4_S6",
+          "blockerRingId": "S4",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S4_S6",
+          "contactAngleDegrees": 135.0,
+          "description": "S6 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S2_S7",
+          "blockerRingId": "S2",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S2_S7",
+          "contactAngleDegrees": 135.0,
+          "description": "S7 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S7",
+          "blockerRingId": "S3",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S3_S7",
+          "contactAngleDegrees": 296.6,
+          "description": "S7 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S2_S8",
+          "blockerRingId": "S2",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S2_S8",
+          "contactAngleDegrees": 26.6,
+          "description": "S8 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S4_S8",
+          "blockerRingId": "S4",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S4_S8",
+          "contactAngleDegrees": 243.4,
+          "description": "S8 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S9",
+          "blockerRingId": "S5",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S5_S9",
+          "contactAngleDegrees": 270.0,
+          "description": "S9 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S7_S9",
+          "blockerRingId": "S7",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S7_S9",
+          "contactAngleDegrees": 90.0,
+          "description": "S9 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S6_S10",
+          "blockerRingId": "S6",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S6_S10",
+          "contactAngleDegrees": 270.0,
+          "description": "S10 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S8_S10",
+          "blockerRingId": "S8",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S8_S10",
+          "contactAngleDegrees": 90.0,
+          "description": "S10 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S9_S11",
+          "blockerRingId": "S9",
+          "blockedRingId": "S11",
+          "blockerClipId": "K_S9_S11",
+          "contactAngleDegrees": 315.0,
+          "description": "S11 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_S10_S12",
+          "blockerRingId": "S10",
+          "blockedRingId": "S12",
+          "blockerClipId": "K_S10_S12",
+          "contactAngleDegrees": 225.0,
+          "description": "S12 is caught by S10's clamp until S10 is pulled free."
+        },
+        {
+          "id": "IL_S11_C1",
+          "blockerRingId": "S11",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S11_C1",
+          "contactAngleDegrees": 90.0,
+          "description": "C1 is caught by S11's clamp until S11 is pulled free."
+        },
+        {
+          "id": "IL_S12_C2",
+          "blockerRingId": "S12",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_S12_C2",
+          "contactAngleDegrees": 90.0,
+          "description": "C2 is caught by S12's clamp until S12 is pulled free."
+        },
+        {
+          "id": "IL_C1_C3",
+          "blockerRingId": "C1",
+          "blockedRingId": "C3",
+          "blockerClipId": "K_C1_C3",
+          "contactAngleDegrees": 0.0,
+          "description": "C3 is caught by C1's clamp until C1 is pulled free."
+        },
+        {
+          "id": "IL_C2_C3",
+          "blockerRingId": "C2",
+          "blockedRingId": "C3",
+          "blockerClipId": "K_C2_C3",
+          "contactAngleDegrees": 180.0,
+          "description": "C3 is caught by C2's clamp until C2 is pulled free."
         }
       ]
     },
@@ -2531,6 +6609,33 @@
             "C1"
           ],
           "initialGapAngle": 300
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "A5",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A3",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -2597,6 +6702,370 @@
         {
           "id": "C2",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S2",
+          "ownerRingId": "S1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S3",
+          "ownerRingId": "S2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S4",
+          "ownerRingId": "S3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S5",
+          "ownerRingId": "S4",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S6",
+          "ownerRingId": "S5",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S7",
+          "ownerRingId": "S6",
+          "angleDegrees": 243.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S8",
+          "ownerRingId": "S7",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_S9",
+          "ownerRingId": "S8",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_S10",
+          "ownerRingId": "S9",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S10_S11",
+          "ownerRingId": "S10",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S11"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S11_S12",
+          "ownerRingId": "S11",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S12"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S12_S13",
+          "ownerRingId": "S12",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S13"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S13_S14",
+          "ownerRingId": "S13",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S14"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S14_C1",
+          "ownerRingId": "S14",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S2",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S3",
+          "ownerRingId": "A1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S3",
+          "ownerRingId": "A2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S4",
+          "ownerRingId": "A2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S5",
+          "ownerRingId": "A3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S14",
+          "ownerRingId": "A3",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S2",
+          "blockerRingId": "S1",
+          "blockedRingId": "S2",
+          "blockerClipId": "K_S1_S2",
+          "contactAngleDegrees": 0.0,
+          "description": "S2 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S3",
+          "blockerRingId": "S2",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S2_S3",
+          "contactAngleDegrees": 0.0,
+          "description": "S3 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S3_S4",
+          "blockerRingId": "S3",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S3_S4",
+          "contactAngleDegrees": 0.0,
+          "description": "S4 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S4_S5",
+          "blockerRingId": "S4",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S4_S5",
+          "contactAngleDegrees": 270.0,
+          "description": "S5 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S6",
+          "blockerRingId": "S5",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S5_S6",
+          "contactAngleDegrees": 270.0,
+          "description": "S6 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_S7",
+          "blockerRingId": "S6",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S6_S7",
+          "contactAngleDegrees": 243.4,
+          "description": "S7 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_S8",
+          "blockerRingId": "S7",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S7_S8",
+          "contactAngleDegrees": 180.0,
+          "description": "S8 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S8_S9",
+          "blockerRingId": "S8",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S8_S9",
+          "contactAngleDegrees": 180.0,
+          "description": "S9 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S9_S10",
+          "blockerRingId": "S9",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S9_S10",
+          "contactAngleDegrees": 90.0,
+          "description": "S10 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_S10_S11",
+          "blockerRingId": "S10",
+          "blockedRingId": "S11",
+          "blockerClipId": "K_S10_S11",
+          "contactAngleDegrees": 90.0,
+          "description": "S11 is caught by S10's clamp until S10 is pulled free."
+        },
+        {
+          "id": "IL_S11_S12",
+          "blockerRingId": "S11",
+          "blockedRingId": "S12",
+          "blockerClipId": "K_S11_S12",
+          "contactAngleDegrees": 45.0,
+          "description": "S12 is caught by S11's clamp until S11 is pulled free."
+        },
+        {
+          "id": "IL_S12_S13",
+          "blockerRingId": "S12",
+          "blockedRingId": "S13",
+          "blockerClipId": "K_S12_S13",
+          "contactAngleDegrees": 0.0,
+          "description": "S13 is caught by S12's clamp until S12 is pulled free."
+        },
+        {
+          "id": "IL_S13_S14",
+          "blockerRingId": "S13",
+          "blockedRingId": "S14",
+          "blockerClipId": "K_S13_S14",
+          "contactAngleDegrees": 0.0,
+          "description": "S14 is caught by S13's clamp until S13 is pulled free."
+        },
+        {
+          "id": "IL_S14_C1",
+          "blockerRingId": "S14",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S14_C1",
+          "contactAngleDegrees": 225.0,
+          "description": "C1 is caught by S14's clamp until S14 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 315.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
         }
       ]
     },
@@ -2778,6 +7247,42 @@
             "C2"
           ],
           "initialGapAngle": 175
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A3",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A4",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -2848,6 +7353,490 @@
         {
           "id": "C3",
           "drag": "N"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S3",
+          "ownerRingId": "S1",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S4",
+          "ownerRingId": "S2",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S7",
+          "ownerRingId": "S5",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S8",
+          "ownerRingId": "S6",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S9",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S9",
+          "ownerRingId": "S3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S10",
+          "ownerRingId": "S2",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S10",
+          "ownerRingId": "S4",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S11",
+          "ownerRingId": "S5",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S11"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S11",
+          "ownerRingId": "S7",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S11"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S12",
+          "ownerRingId": "S6",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S12"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_S12",
+          "ownerRingId": "S8",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S12"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_S13",
+          "ownerRingId": "S9",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S13"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S11_S13",
+          "ownerRingId": "S11",
+          "angleDegrees": 116.6,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S13"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S10_S14",
+          "ownerRingId": "S10",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S14"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S12_S14",
+          "ownerRingId": "S12",
+          "angleDegrees": 63.4,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S14"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S13_C1",
+          "ownerRingId": "S13",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S14_C2",
+          "ownerRingId": "S14",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C2_C3",
+          "ownerRingId": "C2",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S10",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S14",
+          "ownerRingId": "A1",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S1",
+          "ownerRingId": "A2",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S3",
+          "ownerRingId": "A2",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S2",
+          "ownerRingId": "A3",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S4",
+          "ownerRingId": "A3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A4_S13",
+          "ownerRingId": "A4",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A4_C1",
+          "ownerRingId": "A4",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S3",
+          "blockerRingId": "S1",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S1_S3",
+          "contactAngleDegrees": 225.0,
+          "description": "S3 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S4",
+          "blockerRingId": "S2",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S2_S4",
+          "contactAngleDegrees": 315.0,
+          "description": "S4 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S5_S7",
+          "blockerRingId": "S5",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S5_S7",
+          "contactAngleDegrees": 135.0,
+          "description": "S7 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S6_S8",
+          "blockerRingId": "S6",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S6_S8",
+          "contactAngleDegrees": 45.0,
+          "description": "S8 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S1_S9",
+          "blockerRingId": "S1",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S1_S9",
+          "contactAngleDegrees": 315.0,
+          "description": "S9 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S3_S9",
+          "blockerRingId": "S3",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S3_S9",
+          "contactAngleDegrees": 0.0,
+          "description": "S9 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S2_S10",
+          "blockerRingId": "S2",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S2_S10",
+          "contactAngleDegrees": 225.0,
+          "description": "S10 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S4_S10",
+          "blockerRingId": "S4",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S4_S10",
+          "contactAngleDegrees": 180.0,
+          "description": "S10 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S5_S11",
+          "blockerRingId": "S5",
+          "blockedRingId": "S11",
+          "blockerClipId": "K_S5_S11",
+          "contactAngleDegrees": 45.0,
+          "description": "S11 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S7_S11",
+          "blockerRingId": "S7",
+          "blockedRingId": "S11",
+          "blockerClipId": "K_S7_S11",
+          "contactAngleDegrees": 0.0,
+          "description": "S11 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S6_S12",
+          "blockerRingId": "S6",
+          "blockedRingId": "S12",
+          "blockerClipId": "K_S6_S12",
+          "contactAngleDegrees": 135.0,
+          "description": "S12 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S8_S12",
+          "blockerRingId": "S8",
+          "blockedRingId": "S12",
+          "blockerClipId": "K_S8_S12",
+          "contactAngleDegrees": 180.0,
+          "description": "S12 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S9_S13",
+          "blockerRingId": "S9",
+          "blockedRingId": "S13",
+          "blockerClipId": "K_S9_S13",
+          "contactAngleDegrees": 225.0,
+          "description": "S13 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_S11_S13",
+          "blockerRingId": "S11",
+          "blockedRingId": "S13",
+          "blockerClipId": "K_S11_S13",
+          "contactAngleDegrees": 116.6,
+          "description": "S13 is caught by S11's clamp until S11 is pulled free."
+        },
+        {
+          "id": "IL_S10_S14",
+          "blockerRingId": "S10",
+          "blockedRingId": "S14",
+          "blockerClipId": "K_S10_S14",
+          "contactAngleDegrees": 315.0,
+          "description": "S14 is caught by S10's clamp until S10 is pulled free."
+        },
+        {
+          "id": "IL_S12_S14",
+          "blockerRingId": "S12",
+          "blockedRingId": "S14",
+          "blockerClipId": "K_S12_S14",
+          "contactAngleDegrees": 63.4,
+          "description": "S14 is caught by S12's clamp until S12 is pulled free."
+        },
+        {
+          "id": "IL_S13_C1",
+          "blockerRingId": "S13",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S13_C1",
+          "contactAngleDegrees": 315.0,
+          "description": "C1 is caught by S13's clamp until S13 is pulled free."
+        },
+        {
+          "id": "IL_S14_C2",
+          "blockerRingId": "S14",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_S14_C2",
+          "contactAngleDegrees": 225.0,
+          "description": "C2 is caught by S14's clamp until S14 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 0.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
+        },
+        {
+          "id": "IL_C2_C3",
+          "blockerRingId": "C2",
+          "blockedRingId": "C3",
+          "blockerClipId": "K_C2_C3",
+          "contactAngleDegrees": 135.0,
+          "description": "C3 is caught by C2's clamp until C2 is pulled free."
         }
       ]
     },
@@ -3045,6 +8034,42 @@
             "C2"
           ],
           "initialGapAngle": 265
+        },
+        {
+          "id": "A1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A2",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A3",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
+        },
+        {
+          "id": "A4",
+          "kind": "silver",
+          "cell": "E3",
+          "exitDirection": "N",
+          "requires": [],
+          "bodyType": "closedAnchor",
+          "removable": false
         }
       ],
       "solution": [
@@ -3119,6 +8144,570 @@
         {
           "id": "C3",
           "drag": "E"
+        }
+      ],
+      "clips": [
+        {
+          "id": "K_S1_S2",
+          "ownerRingId": "S1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S3",
+          "ownerRingId": "S2",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S1_S4",
+          "ownerRingId": "S1",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S4"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S3_S5",
+          "ownerRingId": "S3",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S5"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S5_S6",
+          "ownerRingId": "S5",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S6"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S7",
+          "ownerRingId": "S4",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S7"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S8",
+          "ownerRingId": "S7",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S8"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S9",
+          "ownerRingId": "S6",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S9"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S8_S10",
+          "ownerRingId": "S8",
+          "angleDegrees": 225.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S10"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S9_S11",
+          "ownerRingId": "S9",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S11"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S10_S12",
+          "ownerRingId": "S10",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S12"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S2_S13",
+          "ownerRingId": "S2",
+          "angleDegrees": 315.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S13"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S4_S13",
+          "ownerRingId": "S4",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S13"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S13_S14",
+          "ownerRingId": "S13",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S14"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S6_S14",
+          "ownerRingId": "S6",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S14"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S7_S14",
+          "ownerRingId": "S7",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S14"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S14_S15",
+          "ownerRingId": "S14",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S15"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S11_S15",
+          "ownerRingId": "S11",
+          "angleDegrees": 45.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S15"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S12_S15",
+          "ownerRingId": "S12",
+          "angleDegrees": 135.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "S15"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S13_C1",
+          "ownerRingId": "S13",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S14_C1",
+          "ownerRingId": "S14",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C1"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C1_C2",
+          "ownerRingId": "C1",
+          "angleDegrees": 270.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_S15_C2",
+          "ownerRingId": "S15",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C2"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_C2_C3",
+          "ownerRingId": "C2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "blocker",
+          "blocksRingIds": [
+            "C3"
+          ],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": true
+        },
+        {
+          "id": "K_A1_S2",
+          "ownerRingId": "A1",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A1_S3",
+          "ownerRingId": "A1",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S1",
+          "ownerRingId": "A2",
+          "angleDegrees": 90.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A2_S4",
+          "ownerRingId": "A2",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S1",
+          "ownerRingId": "A3",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A3_S2",
+          "ownerRingId": "A3",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A4_S11",
+          "ownerRingId": "A4",
+          "angleDegrees": 180.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        },
+        {
+          "id": "K_A4_S12",
+          "ownerRingId": "A4",
+          "angleDegrees": 0.0,
+          "material": "inherited",
+          "kind": "connector",
+          "blocksRingIds": [],
+          "visualWidthScale": 1.0,
+          "rotatesWithOwner": false
+        }
+      ],
+      "interlocks": [
+        {
+          "id": "IL_S1_S2",
+          "blockerRingId": "S1",
+          "blockedRingId": "S2",
+          "blockerClipId": "K_S1_S2",
+          "contactAngleDegrees": 180.0,
+          "description": "S2 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S2_S3",
+          "blockerRingId": "S2",
+          "blockedRingId": "S3",
+          "blockerClipId": "K_S2_S3",
+          "contactAngleDegrees": 225.0,
+          "description": "S3 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S1_S4",
+          "blockerRingId": "S1",
+          "blockedRingId": "S4",
+          "blockerClipId": "K_S1_S4",
+          "contactAngleDegrees": 315.0,
+          "description": "S4 is caught by S1's clamp until S1 is pulled free."
+        },
+        {
+          "id": "IL_S3_S5",
+          "blockerRingId": "S3",
+          "blockedRingId": "S5",
+          "blockerClipId": "K_S3_S5",
+          "contactAngleDegrees": 270.0,
+          "description": "S5 is caught by S3's clamp until S3 is pulled free."
+        },
+        {
+          "id": "IL_S5_S6",
+          "blockerRingId": "S5",
+          "blockedRingId": "S6",
+          "blockerClipId": "K_S5_S6",
+          "contactAngleDegrees": 0.0,
+          "description": "S6 is caught by S5's clamp until S5 is pulled free."
+        },
+        {
+          "id": "IL_S4_S7",
+          "blockerRingId": "S4",
+          "blockedRingId": "S7",
+          "blockerClipId": "K_S4_S7",
+          "contactAngleDegrees": 225.0,
+          "description": "S7 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S7_S8",
+          "blockerRingId": "S7",
+          "blockedRingId": "S8",
+          "blockerClipId": "K_S7_S8",
+          "contactAngleDegrees": 0.0,
+          "description": "S8 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S6_S9",
+          "blockerRingId": "S6",
+          "blockedRingId": "S9",
+          "blockerClipId": "K_S6_S9",
+          "contactAngleDegrees": 270.0,
+          "description": "S9 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S8_S10",
+          "blockerRingId": "S8",
+          "blockedRingId": "S10",
+          "blockerClipId": "K_S8_S10",
+          "contactAngleDegrees": 225.0,
+          "description": "S10 is caught by S8's clamp until S8 is pulled free."
+        },
+        {
+          "id": "IL_S9_S11",
+          "blockerRingId": "S9",
+          "blockedRingId": "S11",
+          "blockerClipId": "K_S9_S11",
+          "contactAngleDegrees": 270.0,
+          "description": "S11 is caught by S9's clamp until S9 is pulled free."
+        },
+        {
+          "id": "IL_S10_S12",
+          "blockerRingId": "S10",
+          "blockedRingId": "S12",
+          "blockerClipId": "K_S10_S12",
+          "contactAngleDegrees": 270.0,
+          "description": "S12 is caught by S10's clamp until S10 is pulled free."
+        },
+        {
+          "id": "IL_S2_S13",
+          "blockerRingId": "S2",
+          "blockedRingId": "S13",
+          "blockerClipId": "K_S2_S13",
+          "contactAngleDegrees": 315.0,
+          "description": "S13 is caught by S2's clamp until S2 is pulled free."
+        },
+        {
+          "id": "IL_S4_S13",
+          "blockerRingId": "S4",
+          "blockedRingId": "S13",
+          "blockerClipId": "K_S4_S13",
+          "contactAngleDegrees": 180.0,
+          "description": "S13 is caught by S4's clamp until S4 is pulled free."
+        },
+        {
+          "id": "IL_S13_S14",
+          "blockerRingId": "S13",
+          "blockedRingId": "S14",
+          "blockerClipId": "K_S13_S14",
+          "contactAngleDegrees": 270.0,
+          "description": "S14 is caught by S13's clamp until S13 is pulled free."
+        },
+        {
+          "id": "IL_S6_S14",
+          "blockerRingId": "S6",
+          "blockedRingId": "S14",
+          "blockerClipId": "K_S6_S14",
+          "contactAngleDegrees": 0.0,
+          "description": "S14 is caught by S6's clamp until S6 is pulled free."
+        },
+        {
+          "id": "IL_S7_S14",
+          "blockerRingId": "S7",
+          "blockedRingId": "S14",
+          "blockerClipId": "K_S7_S14",
+          "contactAngleDegrees": 180.0,
+          "description": "S14 is caught by S7's clamp until S7 is pulled free."
+        },
+        {
+          "id": "IL_S14_S15",
+          "blockerRingId": "S14",
+          "blockedRingId": "S15",
+          "blockerClipId": "K_S14_S15",
+          "contactAngleDegrees": 270.0,
+          "description": "S15 is caught by S14's clamp until S14 is pulled free."
+        },
+        {
+          "id": "IL_S11_S15",
+          "blockerRingId": "S11",
+          "blockedRingId": "S15",
+          "blockerClipId": "K_S11_S15",
+          "contactAngleDegrees": 45.0,
+          "description": "S15 is caught by S11's clamp until S11 is pulled free."
+        },
+        {
+          "id": "IL_S12_S15",
+          "blockerRingId": "S12",
+          "blockedRingId": "S15",
+          "blockerClipId": "K_S12_S15",
+          "contactAngleDegrees": 135.0,
+          "description": "S15 is caught by S12's clamp until S12 is pulled free."
+        },
+        {
+          "id": "IL_S13_C1",
+          "blockerRingId": "S13",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S13_C1",
+          "contactAngleDegrees": 0.0,
+          "description": "C1 is caught by S13's clamp until S13 is pulled free."
+        },
+        {
+          "id": "IL_S14_C1",
+          "blockerRingId": "S14",
+          "blockedRingId": "C1",
+          "blockerClipId": "K_S14_C1",
+          "contactAngleDegrees": 90.0,
+          "description": "C1 is caught by S14's clamp until S14 is pulled free."
+        },
+        {
+          "id": "IL_C1_C2",
+          "blockerRingId": "C1",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_C1_C2",
+          "contactAngleDegrees": 270.0,
+          "description": "C2 is caught by C1's clamp until C1 is pulled free."
+        },
+        {
+          "id": "IL_S15_C2",
+          "blockerRingId": "S15",
+          "blockedRingId": "C2",
+          "blockerClipId": "K_S15_C2",
+          "contactAngleDegrees": 90.0,
+          "description": "C2 is caught by S15's clamp until S15 is pulled free."
+        },
+        {
+          "id": "IL_C2_C3",
+          "blockerRingId": "C2",
+          "blockedRingId": "C3",
+          "blockerClipId": "K_C2_C3",
+          "contactAngleDegrees": 0.0,
+          "description": "C3 is caught by C2's clamp until C2 is pulled free."
         }
       ]
     }

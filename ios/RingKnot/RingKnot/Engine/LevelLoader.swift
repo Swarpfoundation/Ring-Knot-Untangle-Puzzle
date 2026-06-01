@@ -14,6 +14,12 @@ public enum LevelLoaderError: Error, CustomStringConvertible, Equatable {
     case unknownKind(levelID: Int, ringID: String, raw: String)
     case invalidGapAngle(levelID: Int, ringID: String, raw: Double)
     case invalidTolerance(levelID: Int, raw: Double)
+    case unknownBodyType(levelID: Int, ringID: String, raw: String)
+    case duplicateClipID(levelID: Int, clipID: String)
+    case unknownClipOwner(levelID: Int, clipID: String, owner: String)
+    case unknownClipBlocked(levelID: Int, clipID: String, blocked: String)
+    case unknownInterlockRing(levelID: Int, interlockID: String, ringID: String)
+    case unknownInterlockClip(levelID: Int, interlockID: String, clipID: String)
 
     public var description: String {
         switch self {
@@ -44,6 +50,18 @@ public enum LevelLoaderError: Error, CustomStringConvertible, Equatable {
             return "Ring \(ringID) in level \(levelID) has invalid initialGapAngle \(raw)"
         case .invalidTolerance(let levelID, let raw):
             return "Level \(levelID) has invalid alignmentToleranceDegrees \(raw)"
+        case .unknownBodyType(let levelID, let ringID, let raw):
+            return "Ring \(ringID) in level \(levelID) has unknown bodyType '\(raw)'"
+        case .duplicateClipID(let levelID, let clipID):
+            return "Duplicate clip id '\(clipID)' in level \(levelID)"
+        case .unknownClipOwner(let levelID, let clipID, let owner):
+            return "Clip '\(clipID)' in level \(levelID) has unknown ownerRingId '\(owner)'"
+        case .unknownClipBlocked(let levelID, let clipID, let blocked):
+            return "Clip '\(clipID)' in level \(levelID) blocks unknown ring '\(blocked)'"
+        case .unknownInterlockRing(let levelID, let interlockID, let ringID):
+            return "Interlock '\(interlockID)' in level \(levelID) references unknown ring '\(ringID)'"
+        case .unknownInterlockClip(let levelID, let interlockID, let clipID):
+            return "Interlock '\(interlockID)' in level \(levelID) references unknown clip '\(clipID)'"
         }
     }
 }
@@ -123,6 +141,15 @@ public enum LevelLoader {
         for step in solutionRaw {
             steps.append(try parseStep(step, levelID: id))
         }
+        var clips: [BlockerClip] = []
+        for clipRaw in (obj["clips"] as? [[String: Any]]) ?? [] {
+            clips.append(try parseClip(clipRaw, levelID: id))
+        }
+        var interlocks: [Interlock] = []
+        for lockRaw in (obj["interlocks"] as? [[String: Any]]) ?? [] {
+            interlocks.append(try parseInterlock(lockRaw, levelID: id))
+        }
+        let abstractOnly = (obj["abstractOnly"] as? Bool) ?? false
         return Level(
             id: id,
             name: name,
@@ -130,7 +157,10 @@ public enum LevelLoader {
             board: board,
             rings: rings,
             solution: steps,
-            alignmentToleranceDegrees: tolerance
+            alignmentToleranceDegrees: tolerance,
+            clips: clips,
+            interlocks: interlocks,
+            abstractOnly: abstractOnly
         )
     }
 
@@ -173,13 +203,73 @@ public enum LevelLoader {
             }
             initialGapAngle = value
         }
+        // Optional body type; defaults to openRing for backward compatibility.
+        let bodyType: RingBodyType
+        if let bodyRaw = obj["bodyType"] as? String {
+            guard let parsed = RingBodyType(rawValue: bodyRaw) else {
+                throw LevelLoaderError.unknownBodyType(levelID: levelID, ringID: id, raw: bodyRaw)
+            }
+            bodyType = parsed
+        } else {
+            bodyType = .openRing
+        }
+        // Optional removable override; otherwise derived from body type.
+        let removable = obj["removable"] as? Bool
         return Ring(
             id: id,
             kind: kind,
             cell: cell,
             exitDirection: direction,
             requires: requires,
-            initialGapAngleDegrees: initialGapAngle
+            initialGapAngleDegrees: initialGapAngle,
+            bodyType: bodyType,
+            removable: removable
+        )
+    }
+
+    private static func parseClip(_ obj: [String: Any], levelID: Int) throws -> BlockerClip {
+        guard let id = obj["id"] as? String else {
+            throw LevelLoaderError.malformedJSON("level \(levelID) clip missing id")
+        }
+        guard let owner = obj["ownerRingId"] as? String else {
+            throw LevelLoaderError.malformedJSON("level \(levelID) clip '\(id)' missing ownerRingId")
+        }
+        let angle = (obj["angleDegrees"] as? NSNumber)?.doubleValue ?? 0
+        let material = (obj["material"] as? String).flatMap(ClipMaterial.init(rawValue:)) ?? .inherited
+        let kind = (obj["kind"] as? String).flatMap(ClipKind.init(rawValue:)) ?? .blocker
+        let blocks = (obj["blocksRingIds"] as? [String]) ?? []
+        let widthScale = (obj["visualWidthScale"] as? NSNumber)?.doubleValue ?? 1.0
+        let rotates = (obj["rotatesWithOwner"] as? Bool) ?? true
+        return BlockerClip(
+            id: id,
+            ownerRingId: owner,
+            angleDegrees: angle,
+            material: material,
+            kind: kind,
+            blocksRingIds: blocks,
+            visualWidthScale: widthScale,
+            rotatesWithOwner: rotates
+        )
+    }
+
+    private static func parseInterlock(_ obj: [String: Any], levelID: Int) throws -> Interlock {
+        guard let id = obj["id"] as? String else {
+            throw LevelLoaderError.malformedJSON("level \(levelID) interlock missing id")
+        }
+        guard let blocker = obj["blockerRingId"] as? String,
+              let blocked = obj["blockedRingId"] as? String,
+              let clip = obj["blockerClipId"] as? String else {
+            throw LevelLoaderError.malformedJSON("level \(levelID) interlock '\(id)' missing references")
+        }
+        let contact = (obj["contactAngleDegrees"] as? NSNumber)?.doubleValue ?? 0
+        let description = (obj["description"] as? String) ?? ""
+        return Interlock(
+            id: id,
+            blockerRingId: blocker,
+            blockedRingId: blocked,
+            blockerClipId: clip,
+            contactAngleDegrees: contact,
+            description: description
         )
     }
 
@@ -219,6 +309,32 @@ public enum LevelLoader {
         }
         if !level.rings.contains(where: { $0.kind == .copper }) {
             throw LevelLoaderError.missingCopper(levelID: level.id)
+        }
+        // Clip referential integrity: owner + blocked rings must exist; ids unique.
+        var clipIDs = Set<String>()
+        for clip in level.clips {
+            if !clipIDs.insert(clip.id).inserted {
+                throw LevelLoaderError.duplicateClipID(levelID: level.id, clipID: clip.id)
+            }
+            if !ringIDs.contains(clip.ownerRingId) {
+                throw LevelLoaderError.unknownClipOwner(
+                    levelID: level.id, clipID: clip.id, owner: clip.ownerRingId)
+            }
+            for blocked in clip.blocksRingIds where !ringIDs.contains(blocked) {
+                throw LevelLoaderError.unknownClipBlocked(
+                    levelID: level.id, clipID: clip.id, blocked: blocked)
+            }
+        }
+        // Interlock referential integrity: rings + clip must exist.
+        for lock in level.interlocks {
+            for ringRef in [lock.blockerRingId, lock.blockedRingId] where !ringIDs.contains(ringRef) {
+                throw LevelLoaderError.unknownInterlockRing(
+                    levelID: level.id, interlockID: lock.id, ringID: ringRef)
+            }
+            if !clipIDs.contains(lock.blockerClipId) {
+                throw LevelLoaderError.unknownInterlockClip(
+                    levelID: level.id, interlockID: lock.id, clipID: lock.blockerClipId)
+            }
         }
         try detectCycle(level: level)
     }

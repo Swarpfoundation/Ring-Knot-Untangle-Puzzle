@@ -58,3 +58,13 @@ readable; difficulty comes from longer dependency chains, not tight windows.
 ## Validation philosophy
 
 The shared level pack is the single source of truth. The Swift loader rejects malformed data on startup rather than silently dropping pieces. Every shipped level is verified during tests by replaying its `solution` path and confirming the board ends empty.
+
+## Anchors & blocker clips (Phase 6A)
+
+The board is built from **open C-rings** (rollable, removable) and **closed
+anchor rings** (full circles, fixed obstacles). Adjacent rings are joined by
+small metal **clamp bands** — blocker clips that show where a ring is physically
+caught. Every level carries at least one closed anchor (more in later levels),
+and every `requires` dependency is explained by a visible clip/interlock. The
+copper trefoil knot remains the goal/identity at the centre. Completion ignores
+the fixed anchors. Full spec: `docs/gameplay/anchor-blocker-system.md`.

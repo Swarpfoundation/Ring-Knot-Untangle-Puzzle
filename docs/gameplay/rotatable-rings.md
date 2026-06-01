@@ -141,3 +141,13 @@ is the cross-platform oracle.
 - [ ] VoiceOver: board summary states remaining rings and, when a ring is held,
       whether it is aligned; the "Rotate ring to opening" action works.
 - [ ] `python3 tools/replay_validator.py` passes for all 20 levels.
+
+## Interaction with anchors (Phase 6A)
+
+- Closed anchor rings have **no gap** and are never rolled or released; tapping
+  one gives a calm steel pulse, not an error, and never counts as a move.
+- Open rings still rotate-then-pull exactly as above. Their blocker clips roll
+  with them; anchor clips stay put.
+- [ ] Tapping an anchor leaves the move counter unchanged.
+- [ ] Each level shows at least one full closed anchor with a clamp band.
+- See `docs/gameplay/anchor-blocker-system.md` for the full model.

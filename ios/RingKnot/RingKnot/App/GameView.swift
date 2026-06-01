@@ -165,9 +165,9 @@ private struct TutorialPanel: View {
 
     private var text: String {
         switch step {
-        case 0:  return "Rotate the ring until the opening faces the arrow."
-        case 1:  return "Now pull it out through the gap."
-        default: return "Some rings are blocked. Clear them first, then free the copper knot."
+        case 0:  return "The full ring is an anchor — it stays put. Rotate the open ring until its gap clears the clip."
+        case 1:  return "Now pull it free through the gap."
+        default: return "Some rings are caught by clips on others. Clear the blockers, then free the copper knot."
         }
     }
 
