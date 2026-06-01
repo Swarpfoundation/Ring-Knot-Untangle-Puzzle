@@ -93,6 +93,19 @@ def tolerance_default(level_id):
     return 12.0
 
 
+def min_anchors(level_id):
+    """Minimum closed anchors expected per level band (Phase 6A curve)."""
+    if level_id is None:
+        return 1
+    if level_id <= 5:
+        return 1
+    if level_id <= 10:
+        return 1
+    if level_id <= 15:
+        return 2
+    return 3
+
+
 # --- Faithful port of MoveValidator ----------------------------------------
 
 def evaluate_release(ring, gap_angle, cleared_ids, tolerance):
@@ -122,6 +135,7 @@ def validate_level(level):
 
     pieces = level.get("pieces", [])
     rings = {}
+    anchors = set()        # ids of non-removable closed anchors
     for piece in pieces:
         rid = piece.get("id")
         if rid is None:
@@ -134,19 +148,35 @@ def validate_level(level):
                 f"Level {level_id}: ring '{rid}' invalid exitDirection '{direction}'")
         target = EXIT_ANGLE[direction]
 
-        gap = piece.get("initialGapAngle")
-        if gap is None:
-            gap = derived_initial_gap(rid, target)
-        if not isinstance(gap, (int, float)) or not math.isfinite(gap):
+        body_type = piece.get("bodyType", "openRing")
+        if body_type not in ("openRing", "closedAnchor"):
             raise ValidationError(
-                f"Level {level_id}: ring '{rid}' invalid initialGapAngle {gap!r}")
-        gap = normalize_degrees(float(gap))
+                f"Level {level_id}: ring '{rid}' invalid bodyType '{body_type}'")
+        is_anchor = body_type == "closedAnchor"
+        removable = piece.get("removable", not is_anchor)
+        if is_anchor and removable:
+            # Anchors default non-removable; an explicitly removable anchor would
+            # be a future feature, not used in the shipped pack.
+            raise ValidationError(
+                f"Level {level_id}: closed anchor '{rid}' is marked removable")
+        if is_anchor:
+            anchors.add(rid)
 
-        # The mechanic requires a deliberate rotation: no ring may start aligned.
-        if is_aligned(gap, target, tolerance):
-            raise ValidationError(
-                f"Level {level_id}: ring '{rid}' starts already aligned "
-                f"(gap {gap}, target {target}, tol {tolerance}); it must require rotation")
+        # Anchors are full closed rings: no gap, never rolled or released, so the
+        # "must start misaligned" rule does not apply to them.
+        gap = None
+        if not is_anchor:
+            gap = piece.get("initialGapAngle")
+            if gap is None:
+                gap = derived_initial_gap(rid, target)
+            if not isinstance(gap, (int, float)) or not math.isfinite(gap):
+                raise ValidationError(
+                    f"Level {level_id}: ring '{rid}' invalid initialGapAngle {gap!r}")
+            gap = normalize_degrees(float(gap))
+            if is_aligned(gap, target, tolerance):
+                raise ValidationError(
+                    f"Level {level_id}: ring '{rid}' starts already aligned "
+                    f"(gap {gap}, target {target}, tol {tolerance}); it must require rotation")
 
         rings[rid] = {
             "id": rid,
@@ -155,7 +185,16 @@ def validate_level(level):
             "target": target,
             "initialGap": gap,
             "requires": list(piece.get("requires", []) or []),
+            "removable": removable,
+            "isAnchor": is_anchor,
         }
+
+    # Every level must carry at least the band's minimum closed anchors.
+    need = min_anchors(level_id)
+    if len(anchors) < need:
+        raise ValidationError(
+            f"Level {level_id}: has {len(anchors)} closed anchor(s); "
+            f"needs at least {need} for its band")
 
     # Dependencies must reference existing rings.
     for ring in rings.values():
@@ -164,7 +203,60 @@ def validate_level(level):
                 raise ValidationError(
                     f"Level {level_id}: ring '{ring['id']}' requires missing ring '{dep}'")
 
-    # Solution must reference existing rings and have valid drag directions.
+    # --- Clips ------------------------------------------------------------
+    clips = {}
+    for clip in level.get("clips", []):
+        cid = clip.get("id")
+        if cid is None:
+            raise ValidationError(f"Level {level_id}: clip missing id")
+        if cid in clips:
+            raise ValidationError(f"Level {level_id}: duplicate clip id '{cid}'")
+        owner = clip.get("ownerRingId")
+        if owner not in rings:
+            raise ValidationError(
+                f"Level {level_id}: clip '{cid}' has unknown ownerRingId '{owner}'")
+        for blocked in clip.get("blocksRingIds", []) or []:
+            if blocked not in rings:
+                raise ValidationError(
+                    f"Level {level_id}: clip '{cid}' blocks unknown ring '{blocked}'")
+        clips[cid] = clip
+
+    # Every closed anchor must carry at least one clip.
+    clipped_owners = {c.get("ownerRingId") for c in clips.values()}
+    for aid in anchors:
+        if aid not in clipped_owners:
+            raise ValidationError(
+                f"Level {level_id}: closed anchor '{aid}' has no blocker clip")
+
+    # --- Interlocks -------------------------------------------------------
+    interlocks = level.get("interlocks", [])
+    # An interlock "covers" a dependency edge (blocker -> blocked).
+    covered_edges = set()
+    for lock in interlocks:
+        lid = lock.get("id", "?")
+        blocker = lock.get("blockerRingId")
+        blocked = lock.get("blockedRingId")
+        clip_id = lock.get("blockerClipId")
+        for ref in (blocker, blocked):
+            if ref not in rings:
+                raise ValidationError(
+                    f"Level {level_id}: interlock '{lid}' references unknown ring '{ref}'")
+        if clip_id not in clips:
+            raise ValidationError(
+                f"Level {level_id}: interlock '{lid}' references unknown clip '{clip_id}'")
+        covered_edges.add((blocker, blocked))
+
+    # Every dependency edge must be visually explained by an interlock/clip,
+    # unless the level opts into abstractOnly (not used in the shipped pack).
+    if not level.get("abstractOnly", False):
+        for ring in rings.values():
+            for dep in ring["requires"]:
+                if (dep, ring["id"]) not in covered_edges:
+                    raise ValidationError(
+                        f"Level {level_id}: dependency '{dep}' -> '{ring['id']}' "
+                        f"has no matching interlock/clip (set abstractOnly to allow)")
+
+    # Solution must reference existing, removable, non-anchor rings only.
     solution = level.get("solution", [])
     for step in solution:
         sid = step.get("id")
@@ -172,6 +264,9 @@ def validate_level(level):
         if sid not in rings:
             raise ValidationError(
                 f"Level {level_id}: solution references missing ring '{sid}'")
+        if rings[sid]["isAnchor"] or not rings[sid]["removable"]:
+            raise ValidationError(
+                f"Level {level_id}: solution references non-removable anchor '{sid}'")
         if drag not in VALID_DIRECTIONS:
             raise ValidationError(
                 f"Level {level_id}: solution step '{sid}' invalid drag '{drag}'")
@@ -179,12 +274,18 @@ def validate_level(level):
     # Blocked rings must NOT be removable before their prerequisites — even when
     # their gap is rolled perfectly onto the exit (alignment alone is not enough).
     for ring in rings.values():
+        if ring["isAnchor"]:
+            continue
         if ring["requires"]:
             outcome = evaluate_release(ring, ring["target"], set(), tolerance)
             if outcome == "accepted":
                 raise ValidationError(
                     f"Level {level_id}: blocked ring '{ring['id']}' is removable "
                     f"before its prerequisites {ring['requires']}")
+
+    # Anchors must never be releasable (engine returns notRemovable; here we just
+    # assert they are not in the removable set the replay will clear).
+    removable_ids = {rid for rid, r in rings.items() if r["removable"]}
 
     # Replay the solution in order. Each step: roll the gap onto the exit, confirm
     # it is now aligned, confirm a release would otherwise be rejected at the
@@ -194,15 +295,12 @@ def validate_level(level):
         sid = step["id"]
         ring = rings[sid]
 
-        # A pull before rotating must be rejected (rotate-first), unless the ring
-        # is still blocked (then the blocker is the reason).
         pre = evaluate_release(ring, ring["initialGap"], cleared, tolerance)
         if pre == "accepted":
             raise ValidationError(
                 f"Level {level_id}: solution step {index + 1} ('{sid}') would remove "
                 f"the ring at its unaligned initial gap — alignment not enforced")
 
-        # Roll the gap onto the exit direction and release.
         aligned_gap = ring["target"]
         outcome = evaluate_release(ring, aligned_gap, cleared, tolerance)
         if outcome != "accepted":
@@ -211,14 +309,18 @@ def validate_level(level):
                 f"after alignment with '{outcome}'")
         cleared.add(sid)
 
-    # The level must be fully cleared after the solution path.
-    if len(cleared) != len(rings):
-        leftover = sorted(set(rings) - cleared)
+    # All removable rings must be gone; all anchors must remain on the board.
+    if cleared != removable_ids:
+        missing = sorted(removable_ids - cleared)
         raise ValidationError(
-            f"Level {level_id}: not complete after solution path; "
-            f"{len(cleared)}/{len(rings)} cleared, leftover {leftover}")
+            f"Level {level_id}: solution did not clear all removable rings; "
+            f"leftover {missing}")
+    remaining_anchors = anchors - cleared
+    if remaining_anchors != anchors:
+        raise ValidationError(
+            f"Level {level_id}: an anchor was removed by the solution path")
 
-    return len(rings)
+    return len(rings), len(anchors), len(clips)
 
 
 def validate_pack(path):
@@ -230,16 +332,20 @@ def validate_pack(path):
     if not isinstance(levels, list) or not levels:
         raise ValidationError("Level pack has no levels array")
 
+    if len(levels) != 20:
+        raise ValidationError(f"Expected exactly 20 levels, found {len(levels)}")
+
     seen_ids = set()
     for level in levels:
         lid = level.get("id")
         if lid in seen_ids:
             raise ValidationError(f"Duplicate level id {lid}")
         seen_ids.add(lid)
-        ring_count = validate_level(level)
+        ring_count, anchor_count, clip_count = validate_level(level)
         print(f"OK    Level {lid:>2}  '{level.get('name','?')}'  "
               f"tol={level.get('alignmentToleranceDegrees', tolerance_default(lid))}°  "
-              f"rings={ring_count}  solution={len(level.get('solution', []))}")
+              f"rings={ring_count}  anchors={anchor_count}  clips={clip_count}  "
+              f"solution={len(level.get('solution', []))}")
     return len(levels)
 
 
@@ -254,17 +360,34 @@ def selftest():
             return
         raise AssertionError(f"expected failure containing '{needle}'")
 
-    # Valid mini level: S1 (N, starts 150° = 60° off) then C1 (E, starts 285°).
+    def anchor(rid="A1", cell_dir="N"):
+        return {"id": rid, "kind": "silver", "exitDirection": cell_dir,
+                "requires": [], "bodyType": "closedAnchor", "removable": False}
+
+    # Valid mini level (band 1-5 → 1 anchor): S1 (N, 150° = 60° off), C1 (E, 285°),
+    # one closed anchor A1 with a connector clip, and an interlock covering S1->C1.
     good = {
-        "id": 99, "name": "t", "alignmentToleranceDegrees": 22, "pieces": [
+        "id": 3, "name": "t", "alignmentToleranceDegrees": 22, "pieces": [
             {"id": "S1", "kind": "silver", "exitDirection": "N",
              "requires": [], "initialGapAngle": 150},
             {"id": "C1", "kind": "copper", "exitDirection": "E",
              "requires": ["S1"], "initialGapAngle": 285},
+            anchor("A1"),
+        ],
+        "clips": [
+            {"id": "K1", "ownerRingId": "S1", "angleDegrees": 270,
+             "kind": "blocker", "blocksRingIds": ["C1"]},
+            {"id": "KA", "ownerRingId": "A1", "angleDegrees": 0,
+             "kind": "connector", "blocksRingIds": []},
+        ],
+        "interlocks": [
+            {"id": "IL1", "blockerRingId": "S1", "blockedRingId": "C1",
+             "blockerClipId": "K1", "contactAngleDegrees": 270},
         ],
         "solution": [{"id": "S1", "drag": "N"}, {"id": "C1", "drag": "E"}],
     }
-    assert validate_level(good) == 2
+    rings, anchors, clips = validate_level(good)
+    assert (rings, anchors, clips) == (3, 1, 2), (rings, anchors, clips)
 
     # Direct rotation maths.
     assert normalize_degrees(-90) == 270
@@ -281,39 +404,102 @@ def selftest():
     # Missing dependency / solution ghost / out-of-order / incomplete.
     expect_fail({**good, "pieces": [
         {"id": "C1", "kind": "copper", "exitDirection": "E",
-         "requires": ["MISSING"], "initialGapAngle": 285}],
+         "requires": ["MISSING"], "initialGapAngle": 285}, anchor("A1")],
+        "clips": [{"id": "KA", "ownerRingId": "A1", "angleDegrees": 0}],
+        "interlocks": [],
         "solution": [{"id": "C1", "drag": "E"}]}, "missing ring")
     expect_fail({**good, "solution": [{"id": "GHOST", "drag": "E"}]},
                 "missing ring 'GHOST'")
     expect_fail({**good, "solution": [{"id": "C1", "drag": "E"},
                                       {"id": "S1", "drag": "N"}]}, "blocked")
-    expect_fail({**good, "solution": [{"id": "S1", "drag": "N"}]}, "not complete")
+    expect_fail({**good, "solution": [{"id": "S1", "drag": "N"}]},
+                "did not clear all removable")
 
     # A ring that starts already aligned must fail.
     expect_fail({**good, "pieces": [
         {"id": "S1", "kind": "silver", "exitDirection": "N",
          "requires": [], "initialGapAngle": 90},
         {"id": "C1", "kind": "copper", "exitDirection": "E",
-         "requires": ["S1"], "initialGapAngle": 285}]}, "already aligned")
+         "requires": ["S1"], "initialGapAngle": 285}, anchor("A1")]}, "already aligned")
 
     # Invalid gap angle and invalid tolerance.
     expect_fail({**good, "pieces": [
         {"id": "S1", "kind": "silver", "exitDirection": "N",
          "requires": [], "initialGapAngle": "oops"},
         {"id": "C1", "kind": "copper", "exitDirection": "E",
-         "requires": ["S1"], "initialGapAngle": 285}]}, "invalid initialGapAngle")
+         "requires": ["S1"], "initialGapAngle": 285}, anchor("A1")]},
+        "invalid initialGapAngle")
     expect_fail({**good, "alignmentToleranceDegrees": 0}, "invalid alignmentToleranceDegrees")
     expect_fail({**good, "alignmentToleranceDegrees": 120}, "invalid alignmentToleranceDegrees")
 
+    # --- Phase 6A anchor / clip / interlock rules -------------------------
+
+    # A level with no closed anchor fails the band minimum.
+    expect_fail({**good, "pieces": [
+        {"id": "S1", "kind": "silver", "exitDirection": "N",
+         "requires": [], "initialGapAngle": 150},
+        {"id": "C1", "kind": "copper", "exitDirection": "E",
+         "requires": ["S1"], "initialGapAngle": 285}]}, "closed anchor")
+
+    # An anchor with no clip fails.
+    expect_fail({**good, "clips": [
+        {"id": "K1", "ownerRingId": "S1", "angleDegrees": 270,
+         "blocksRingIds": ["C1"]}]}, "no blocker clip")
+
+    # A clip with an unknown owner fails.
+    expect_fail({**good, "clips": good["clips"] + [
+        {"id": "KX", "ownerRingId": "NOPE", "angleDegrees": 0}]}, "unknown ownerRingId")
+
+    # A clip blocking an unknown ring fails.
+    expect_fail({**good, "clips": good["clips"] + [
+        {"id": "KY", "ownerRingId": "S1", "angleDegrees": 0,
+         "blocksRingIds": ["NOPE"]}]}, "blocks unknown ring")
+
+    # An interlock referencing an unknown clip fails.
+    expect_fail({**good, "interlocks": [
+        {"id": "ILX", "blockerRingId": "S1", "blockedRingId": "C1",
+         "blockerClipId": "GHOSTCLIP", "contactAngleDegrees": 0}]},
+        "unknown clip")
+
+    # A dependency with no interlock fails (unless abstractOnly).
+    expect_fail({**good, "interlocks": []}, "no matching interlock")
+    abstract = {**good, "interlocks": [], "abstractOnly": True}
+    assert validate_level(abstract)[1] == 1   # anchors still present
+
+    # The solution may not reference a non-removable anchor.
+    expect_fail({**good, "solution": good["solution"] + [{"id": "A1", "drag": "N"}]},
+                "non-removable anchor")
+
+    # An explicitly removable closed anchor is rejected.
+    expect_fail({**good, "pieces": [
+        {"id": "S1", "kind": "silver", "exitDirection": "N",
+         "requires": [], "initialGapAngle": 150},
+        {"id": "C1", "kind": "copper", "exitDirection": "E",
+         "requires": ["S1"], "initialGapAngle": 285},
+        {"id": "A1", "kind": "silver", "exitDirection": "N", "requires": [],
+         "bodyType": "closedAnchor", "removable": True}]}, "marked removable")
+
+    # Anchors remain on the board after a full solution replay (completion ignores
+    # them): `good` clears S1+C1 but keeps A1, and validate_level returned cleanly.
+
     # Missing initialGapAngle falls back to a derived, non-aligned angle.
     fallback = {
-        "id": 98, "name": "f", "alignmentToleranceDegrees": 22, "pieces": [
+        "id": 4, "name": "f", "alignmentToleranceDegrees": 22, "pieces": [
             {"id": "S1", "kind": "silver", "exitDirection": "N", "requires": []},
             {"id": "C1", "kind": "copper", "exitDirection": "E", "requires": ["S1"]},
+            anchor("A1"),
+        ],
+        "clips": [
+            {"id": "K1", "ownerRingId": "S1", "angleDegrees": 270, "blocksRingIds": ["C1"]},
+            {"id": "KA", "ownerRingId": "A1", "angleDegrees": 0},
+        ],
+        "interlocks": [
+            {"id": "IL1", "blockerRingId": "S1", "blockedRingId": "C1",
+             "blockerClipId": "K1", "contactAngleDegrees": 270},
         ],
         "solution": [{"id": "S1", "drag": "N"}, {"id": "C1", "drag": "E"}],
     }
-    assert validate_level(fallback) == 2
+    assert validate_level(fallback)[0] == 3
 
     print("self-test passed")
 

@@ -59,10 +59,17 @@ final class SolutionPathTests: XCTestCase {
             )
         }
         XCTAssertTrue(state.isComplete, "Level \(level.id) not complete after solution path")
+        // The solution clears every *removable* ring; closed anchors stay put.
         XCTAssertEqual(
             state.clearedRingIds.count,
-            level.rings.count,
-            "Level \(level.id) did not clear every ring"
+            level.removableRings.count,
+            "Level \(level.id) did not clear every removable ring"
         )
+        for anchor in level.anchors {
+            XCTAssertFalse(
+                state.clearedRingIds.contains(anchor.id),
+                "Level \(level.id) anchor \(anchor.id) should remain after completion"
+            )
+        }
     }
 }

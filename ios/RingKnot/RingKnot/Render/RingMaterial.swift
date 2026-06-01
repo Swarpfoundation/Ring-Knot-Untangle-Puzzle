@@ -64,7 +64,8 @@ enum RingTextureFactory {
         let inner = outer - tube * 2
         let mid = (outer + inner) / 2
 
-        let halfGap = (gapDegrees * .pi / 180) / 2
+        // A gap of 0° (or less) means a fully closed ring — a closed anchor.
+        let halfGap = max(0, gapDegrees) * .pi / 180 / 2
         let start = rotationRadians + halfGap
         let end = rotationRadians + (2 * .pi) - halfGap
 
@@ -145,6 +146,100 @@ enum RingTextureFactory {
         ctx.setLineDash(phase: 0, lengths: dashes)
         ctx.strokePath()
         ctx.restoreGState()
+    }
+
+    /// Resolve a clip's material to a concrete (highlight, base, shadow) triple.
+    /// `inherited` borrows the owner ring's metal; `darkSteel` is a gunmetal grey.
+    static func clipColors(
+        for material: ClipMaterial,
+        owner: RingKind
+    ) -> (highlight: UIColor, base: UIColor, shadow: UIColor) {
+        switch material {
+        case .silver:
+            return (RingPalette.silverHighlight, RingPalette.silverBase, RingPalette.silverShadow)
+        case .copper:
+            return (RingPalette.copperHighlight, RingPalette.copperBase, RingPalette.copperShadow)
+        case .darkSteel:
+            return (UIColor(white: 0.62, alpha: 1),
+                    UIColor(white: 0.40, alpha: 1),
+                    UIColor(white: 0.18, alpha: 1))
+        case .inherited:
+            switch owner {
+            case .silver:
+                return (RingPalette.silverHighlight, RingPalette.silverBase, RingPalette.silverShadow)
+            case .copper:
+                return (RingPalette.copperHighlight, RingPalette.copperBase, RingPalette.copperShadow)
+            }
+        }
+    }
+
+    /// A small metallic clamp band (rounded rectangle with a brushed-metal
+    /// gradient, dark seam edges and two rivet ridges) drawn procedurally — no
+    /// downloaded art. `size.width` runs across the ring tube; `size.height`
+    /// runs along the ring. Returned upright; the caller rotates it into place.
+    static func clipTexture(
+        for material: ClipMaterial,
+        owner: RingKind,
+        size: CGSize,
+        scale: CGFloat = 2.0
+    ) -> SKTexture {
+        let px = CGSize(width: max(16, size.width * scale), height: max(8, size.height * scale))
+        let colors = clipColors(for: material, owner: owner)
+        let renderer = UIGraphicsImageRenderer(size: px)
+        let image = renderer.image { ctx in
+            let cg = ctx.cgContext
+            let inset: CGFloat = px.width * 0.06
+            let rect = CGRect(x: inset, y: inset,
+                              width: px.width - inset * 2, height: px.height - inset * 2)
+            let radius = min(rect.width, rect.height) * 0.32
+
+            cg.saveGState()
+            cg.setShadow(offset: CGSize(width: 0, height: px.height * 0.06),
+                         blur: px.height * 0.18,
+                         color: UIColor.black.withAlphaComponent(0.6).cgColor)
+            let body = UIBezierPath(roundedRect: rect, cornerRadius: radius)
+            cg.addPath(body.cgPath)
+            cg.setFillColor(colors.base.cgColor)
+            cg.fillPath()
+            cg.restoreGState()
+
+            // Brushed-metal vertical gradient clipped to the band.
+            cg.saveGState()
+            cg.addPath(body.cgPath)
+            cg.clip()
+            let grad = CGGradient(
+                colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                colors: [colors.highlight.cgColor, colors.base.cgColor,
+                         colors.shadow.cgColor] as CFArray,
+                locations: [0.0, 0.5, 1.0]
+            )
+            if let grad {
+                cg.drawLinearGradient(
+                    grad,
+                    start: CGPoint(x: rect.midX, y: rect.minY),
+                    end: CGPoint(x: rect.midX, y: rect.maxY),
+                    options: [])
+            }
+            // Two rivet ridges so it reads as a clamp at phone size.
+            cg.setStrokeColor(colors.shadow.withAlphaComponent(0.85).cgColor)
+            cg.setLineWidth(max(1, px.width * 0.05))
+            for fx in [0.32, 0.68] as [CGFloat] {
+                let x = rect.minX + rect.width * fx
+                cg.move(to: CGPoint(x: x, y: rect.minY + rect.height * 0.18))
+                cg.addLine(to: CGPoint(x: x, y: rect.maxY - rect.height * 0.18))
+            }
+            cg.strokePath()
+            cg.restoreGState()
+
+            // Crisp dark edge so adjacent rings/clips stay legible.
+            cg.addPath(body.cgPath)
+            cg.setStrokeColor(UIColor.black.withAlphaComponent(0.55).cgColor)
+            cg.setLineWidth(max(1, px.width * 0.05))
+            cg.strokePath()
+        }
+        let tex = SKTexture(image: image)
+        tex.filteringMode = .linear
+        return tex
     }
 
     static func boardBackgroundTexture(size: CGSize) -> SKTexture {

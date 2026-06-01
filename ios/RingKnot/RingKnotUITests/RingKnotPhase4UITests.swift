@@ -42,10 +42,10 @@ final class RingKnotPhase4UITests: XCTestCase {
     func test30_Level1TutorialShowsRotationPrompt() {
         let app = launchWithTutorial()
         openLevel(app: app, id: 1)
-        let prompt = NSPredicate(format: "label CONTAINS[c] %@", "Rotate the ring")
+        let prompt = NSPredicate(format: "label CONTAINS[c] %@", "Rotate the open ring")
         let element = app.descendants(matching: .any).matching(prompt).firstMatch
         XCTAssertTrue(element.waitForExistence(timeout: 5),
-                      "Level 1 tutorial should prompt the player to rotate the ring")
+                      "Level 1 tutorial should prompt the player to rotate the open ring")
     }
 
     // MARK: - Alignment is required before release
@@ -128,7 +128,7 @@ final class RingKnotPhase4UITests: XCTestCase {
         XCTAssertTrue(replay.waitForExistence(timeout: 5))
         replay.tap()   // dismisses settings, re-arms the Level 1 tutorial
         openLevel(app: app, id: 1)
-        let prompt = NSPredicate(format: "label CONTAINS[c] %@", "Rotate the ring")
+        let prompt = NSPredicate(format: "label CONTAINS[c] %@", "Rotate the open ring")
         let element = app.descendants(matching: .any).matching(prompt).firstMatch
         XCTAssertTrue(element.waitForExistence(timeout: 5),
                       "Replaying the tutorial should show the rotation prompt again")

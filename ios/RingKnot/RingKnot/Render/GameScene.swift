@@ -344,7 +344,8 @@ final class GameScene: SKScene {
                 rotation: level.rotation(for: ring),
                 cellSize: cellSize,
                 homePosition: center,
-                reduceMotion: reduceMotion
+                reduceMotion: reduceMotion,
+                clips: level.clips(forOwner: ring.id)
             )
             node.name = ring.id
             node.isUserInteractionEnabled = false
@@ -375,6 +376,15 @@ final class GameScene: SKScene {
         let topMost = candidates.max(by: { $0.zPosition < $1.zPosition })
         guard let target = topMost else {
             clearSelection()
+            return
+        }
+        // Closed anchors are fixed: give a calm "anchor" pulse, no selection for
+        // drag, no rotation, no move counted.
+        if target.isAnchor {
+            selectedNode?.showSelection(false)
+            clearSelection()
+            target.showAnchorFeedback()
+            gameDelegate?.gameSceneRequestsHaptic(self, kind: .select)
             return
         }
         selectedNode?.showSelection(false)
@@ -499,6 +509,10 @@ final class GameScene: SKScene {
             gameDelegate?.gameSceneRequestsHaptic(self, kind: .warning)
             spawnInvalidFX(at: node.position)
             node.snapBack(reduceMotion: reduceMotion) {}
+        case .notRemovable:
+            // A fixed anchor somehow reached release (anchors aren't selectable):
+            // calm anchor feedback rather than an error.
+            node.showAnchorFeedback()
         case .notAligned, .wrongDirection, .alreadyCleared, .unknownRing:
             node.snapBack(reduceMotion: reduceMotion) {}
         }

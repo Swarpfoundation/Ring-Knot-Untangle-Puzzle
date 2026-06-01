@@ -15,8 +15,11 @@ public struct GameState: Sendable {
         self.completedAt = nil
     }
 
+    /// The level is complete once every *removable* ring has left the board.
+    /// Non-removable closed anchors are ignored — they stay on the board after
+    /// completion as fixed obstacles.
     public var isComplete: Bool {
-        clearedRingIds.count == level.rings.count
+        level.removableRings.allSatisfy { clearedRingIds.contains($0.id) }
     }
 
     public var validator: MoveValidator { MoveValidator(level: level) }
@@ -38,7 +41,7 @@ public struct GameState: Sendable {
             if isComplete { completedAt = now }
         case .blockedByPrerequisite, .wrongDirection:
             moveCount += 1
-        case .notAligned, .alreadyCleared, .unknownRing:
+        case .notAligned, .notRemovable, .alreadyCleared, .unknownRing:
             break
         }
         return outcome
@@ -63,7 +66,7 @@ public struct GameState: Sendable {
             clearedRingIds.insert(ringId)
             moveCount += 1
             if isComplete { completedAt = now }
-        case .blockedByPrerequisite, .notAligned, .wrongDirection,
+        case .blockedByPrerequisite, .notAligned, .notRemovable, .wrongDirection,
              .alreadyCleared, .unknownRing:
             break
         }

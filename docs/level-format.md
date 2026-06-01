@@ -104,3 +104,24 @@ The loader rejects a pack that fails any of:
 - visual offset = small radial nudge per sub-slot for in-cell stacking
 
 This keeps the JSON minimal and lets the renderer remain in charge of cosmetic decisions.
+
+## Anchors, clips & interlocks (Phase 6A)
+
+Pieces may declare two optional fields:
+
+- `bodyType`: `"openRing"` (default) or `"closedAnchor"` (full closed ring).
+- `removable`: `Bool` (default: open → `true`, anchor → `false`).
+
+Each level may also declare two arrays:
+
+- `clips`: `{ id, ownerRingId, angleDegrees, material, kind, blocksRingIds,
+  visualWidthScale, rotatesWithOwner }` — small metal clamp bands. `material` is
+  one of `silver|copper|darkSteel|inherited`; `kind` is `blocker|connector|bridge`.
+- `interlocks`: `{ id, blockerRingId, blockedRingId, blockerClipId,
+  contactAngleDegrees, description }` — ties each dependency to the clip that
+  explains it.
+- `abstractOnly`: `Bool` (default `false`) — allows a dependency without a visual
+  interlock. **Not used** by the shipped pack.
+
+These are generated reproducibly by `tools/apply_anchor_blockers.py` and checked
+by `tools/replay_validator.py`. See `docs/gameplay/anchor-blocker-system.md`.

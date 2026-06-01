@@ -7,6 +7,9 @@ public enum MoveOutcome: Hashable, Sendable {
     /// The ring's gap is not yet lined up with its exit direction — the player
     /// must roll it into alignment before it will release.
     case notAligned(expected: Direction)
+    /// The ring is a fixed closed anchor; it cannot be selected for release.
+    /// This is a calm "it's an anchor" state, not an error.
+    case notRemovable
     case alreadyCleared
     case unknownRing
 }
@@ -25,6 +28,7 @@ public struct MoveValidator: Sendable {
     ) -> MoveOutcome {
         guard let ring = level.ring(ringId) else { return .unknownRing }
         if clearedIds.contains(ring.id) { return .alreadyCleared }
+        if !ring.removable { return .notRemovable }
         let missing = ring.requires.filter { !clearedIds.contains($0) }
         if !missing.isEmpty {
             return .blockedByPrerequisite(missing: missing)
@@ -47,6 +51,8 @@ public struct MoveValidator: Sendable {
     ) -> MoveOutcome {
         guard let ring = level.ring(ringId) else { return .unknownRing }
         if clearedIds.contains(ring.id) { return .alreadyCleared }
+        // Closed anchors have no gap and cannot be pulled out.
+        if !ring.removable { return .notRemovable }
         let missing = ring.requires.filter { !clearedIds.contains($0) }
         if !missing.isEmpty {
             return .blockedByPrerequisite(missing: missing)
@@ -70,9 +76,13 @@ public struct MoveValidator: Sendable {
     public func isUnlocked(ringId: String, clearedIds: Set<String>) -> Bool {
         guard let ring = level.ring(ringId) else { return false }
         if clearedIds.contains(ring.id) { return false }
+        // Non-removable anchors are never "the next ring" — they don't leave.
+        if !ring.removable { return false }
         return ring.requires.allSatisfy { clearedIds.contains($0) }
     }
 
+    /// The next ring a hint should point at — always a removable ring on the
+    /// solution path; closed anchors are skipped entirely.
     public func nextSuggestedRingId(clearedIds: Set<String>) -> String? {
         for step in level.solution where !clearedIds.contains(step.ringId) {
             if isUnlocked(ringId: step.ringId, clearedIds: clearedIds) {
@@ -80,7 +90,9 @@ public struct MoveValidator: Sendable {
             }
         }
         return level.rings.first { ring in
-            !clearedIds.contains(ring.id) && isUnlocked(ringId: ring.id, clearedIds: clearedIds)
+            ring.removable
+                && !clearedIds.contains(ring.id)
+                && isUnlocked(ringId: ring.id, clearedIds: clearedIds)
         }?.id
     }
 }

@@ -201,3 +201,19 @@ display between capture sessions), so the `.mov` was **not** produced here; the
 three genuine stills above stand in as the required evidence. The script is kept
 so the recording can be captured on a host where the render server is stable
 (typically with the Simulator app fronted in an interactive GUI session).
+
+## Phase 6A — anchors & blocker clips
+
+- Unit tests: `RingKnotTests/AnchorBlockerTests` (bodyType/removable defaults +
+  parsing, completion ignores anchors, anchors not releasable, anchor tap is no
+  move, hints skip anchors, every level has anchors + complexity curve, clip /
+  interlock referential integrity, dependency coverage, solution removable-only).
+- UI tests: `RingKnotUITests/RingKnotPhase6aUITests` (Level 1 tutorial mentions
+  the anchor, anchor tap does not count as a move, Level 1 completes with the
+  anchor present, and six genuine screenshots).
+- Replay: `python3 tools/replay_validator.py` validates 20 levels, anchors per
+  band, clips on anchors, interlock coverage, and that anchors remain after the
+  solution path. Run `--selftest` for the validator's own checks.
+- Screenshots: `docs/screenshots/phase-6a-*.png` (anchor level 1, anchor
+  tutorial, blocker-clip close-up, level 10 multi-anchor, level 20 final knot,
+  level-complete-anchor-remains).

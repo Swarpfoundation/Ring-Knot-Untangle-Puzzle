@@ -13,24 +13,47 @@ final class RingNode: SKNode {
     private let readyRing: SKShapeNode
     private(set) var isCleared: Bool = false
 
+    /// Whether this is a fixed closed-anchor ring: full circle, no gap, no
+    /// rotation, and never released by the player.
+    let isAnchor: Bool
+    /// Clips mounted on this ring (blocker/connector/bridge clamp bands).
+    private let clips: [BlockerClip]
+    /// Clips that roll with the ring (open rings) live here; the layer's
+    /// zRotation tracks the ring's roll relative to its starting gap.
+    private let rollingClipLayer = SKNode()
+    /// Clips that stay put (closed anchors) live here.
+    private let staticClipLayer = SKNode()
+    private let initialGapRadians: CGFloat
+
     /// Live rotation state. The gap angle is rendered by rotating `sprite`
     /// (zRotation, counter-clockwise) — the texture itself is baked once with the
     /// gap at screen-east, so `zRotation == gapAngleRadians`.
     private(set) var rotation: RingRotation
 
-    init(ring: Ring, rotation: RingRotation, cellSize: CGFloat, homePosition: CGPoint, reduceMotion: Bool) {
+    init(
+        ring: Ring,
+        rotation: RingRotation,
+        cellSize: CGFloat,
+        homePosition: CGPoint,
+        reduceMotion: Bool,
+        clips: [BlockerClip] = []
+    ) {
         self.ring = ring
         self.rotation = rotation
         self.cellSize = cellSize
         self.homePosition = homePosition
         self.reduceMotion = reduceMotion
+        self.isAnchor = ring.isAnchor
+        self.clips = clips
+        self.initialGapRadians = RingNode.radians(fromDegrees: ring.initialGapAngleDegrees)
 
         let diameter = cellSize * 0.88
-        // Bake the gap at screen-east (rotationRadians: 0); the gap's on-screen
-        // angle is then driven entirely by the sprite's zRotation.
+        // Anchors are full closed rings (gap 0); open rings bake the gap at
+        // screen-east (rotationRadians: 0) so the gap's on-screen angle is then
+        // driven entirely by the sprite's zRotation.
         let texture = RingTextureFactory.texture(
             for: ring.kind,
-            gapDegrees: 72,
+            gapDegrees: ring.isAnchor ? 0 : 72,
             rotationRadians: 0,
             diameter: diameter
         )
@@ -60,11 +83,51 @@ final class RingNode: SKNode {
         addChild(glow)
         addChild(sprite)
         addChild(readyRing)
+        rollingClipLayer.zPosition = 3
+        staticClipLayer.zPosition = 3
+        addChild(staticClipLayer)
+        addChild(rollingClipLayer)
         position = homePosition
         zPosition = CGFloat(ring.zIndex)
         applyVisualOffset()
-        sprite.zRotation = RingNode.radians(fromDegrees: rotation.gapAngleDegrees)
-        if rotation.isAligned { showReady(true) }
+        buildClips(diameter: diameter)
+        if isAnchor {
+            // Closed anchors never roll and have no "ready" state.
+            sprite.zRotation = 0
+        } else {
+            sprite.zRotation = RingNode.radians(fromDegrees: rotation.gapAngleDegrees)
+            if rotation.isAligned { showReady(true) }
+        }
+    }
+
+    /// Build the clamp-band child nodes for this ring. Rolling clips (open rings)
+    /// go in `rollingClipLayer` so they spin with the ring; static clips (anchors)
+    /// stay in `staticClipLayer`.
+    private func buildClips(diameter: CGFloat) {
+        guard !clips.isEmpty else { return }
+        let clipRadius = diameter * 0.385
+        for clip in clips {
+            let widthAcross = diameter * 0.22 * CGFloat(clip.visualWidthScale)   // radial
+            let lengthAlong = diameter * 0.15                                    // tangential
+            let texture = RingTextureFactory.clipTexture(
+                for: clip.material,
+                owner: ring.kind,
+                size: CGSize(width: widthAcross, height: lengthAlong)
+            )
+            let band = SKSpriteNode(texture: texture,
+                                    size: CGSize(width: widthAcross, height: lengthAlong))
+            let angle = RingNode.radians(fromDegrees: clip.angleDegrees)
+            band.position = CGPoint(x: cos(angle) * clipRadius, y: sin(angle) * clipRadius)
+            band.zRotation = angle
+            // Subtle depth: connectors sit a touch behind blockers so overlapping
+            // bands between rings read as interlocked rather than flat.
+            band.zPosition = clip.kind == .connector ? -0.5 : 0.5
+            if clip.rotatesWithOwner && !isAnchor {
+                rollingClipLayer.addChild(band)
+            } else {
+                staticClipLayer.addChild(band)
+            }
+        }
     }
 
     required init?(coder aDecoder: NSCoder) { nil }
@@ -82,6 +145,8 @@ final class RingNode: SKNode {
         sprite.position = CGPoint(x: dx, y: dy)
         glow.position = sprite.position
         readyRing.position = sprite.position
+        rollingClipLayer.position = sprite.position
+        staticClipLayer.position = sprite.position
     }
 
     // MARK: - Rotation
@@ -95,6 +160,7 @@ final class RingNode: SKNode {
     /// the exit. Returns whether the ring *became* aligned and whether a snap fired.
     @discardableResult
     func rotateGap(byRadians delta: CGFloat, snapDegrees: Double = 6) -> (becameAligned: Bool, didSnap: Bool) {
+        guard !isAnchor else { return (false, false) }
         let wasAligned = rotation.isAligned
         rotation.rotate(byDegrees: Double(delta) * 180.0 / .pi)
         let didSnap = rotation.snapToTargetIfWithin(snapDegrees)
@@ -107,6 +173,7 @@ final class RingNode: SKNode {
     /// Roll straight to the exit alignment (used by the accessibility action and
     /// the DEBUG test bridge so alignment is reachable without a drag gesture).
     func alignGapToExit() {
+        guard !isAnchor else { return }
         let wasAligned = rotation.isAligned
         rotation.setGap(angleDegrees: rotation.targetAngleDegrees)
         applyRotationToSprite(animated: true)
@@ -115,6 +182,7 @@ final class RingNode: SKNode {
 
     /// Set the gap to a deliberately misaligned angle (DEBUG bridge only).
     func setGapMisaligned() {
+        guard !isAnchor else { return }
         rotation.setGap(angleDegrees: rotation.targetAngleDegrees + rotation.toleranceDegrees + 45)
         applyRotationToSprite(animated: true)
         refreshReady(animated: true)
@@ -122,14 +190,21 @@ final class RingNode: SKNode {
 
     private func applyRotationToSprite(animated: Bool) {
         let target = RingNode.radians(fromDegrees: rotation.gapAngleDegrees)
+        // Rolling clips spin with the ring, tracking the roll since its start gap.
+        let clipRoll = target - initialGapRadians
         sprite.removeAction(forKey: "spin")
+        rollingClipLayer.removeAction(forKey: "spin")
         guard animated, !reduceMotion else {
             sprite.zRotation = target
+            rollingClipLayer.zRotation = clipRoll
             return
         }
         let spin = SKAction.rotate(toAngle: target, duration: 0.12, shortestUnitArc: true)
         spin.timingMode = .easeOut
         sprite.run(spin, withKey: "spin")
+        let clipSpin = SKAction.rotate(toAngle: clipRoll, duration: 0.12, shortestUnitArc: true)
+        clipSpin.timingMode = .easeOut
+        rollingClipLayer.run(clipSpin, withKey: "spin")
     }
 
     private func refreshReady(animated: Bool) {
@@ -159,6 +234,28 @@ final class RingNode: SKNode {
     func showSelection(_ active: Bool) {
         glow.strokeColor = active ? RingPalette.selectionGlow : .clear
         glow.alpha = active ? 1.0 : 0
+    }
+
+    /// Calm "this is a fixed anchor" feedback for a tap on a closed anchor: a
+    /// brief steely pulse on the ring, no error shockwave, no gap/ready cue.
+    func showAnchorFeedback() {
+        removeAction(forKey: "anchor")
+        let steel = UIColor(white: 0.75, alpha: 0.9)
+        glow.strokeColor = steel
+        glow.alpha = 0.0
+        if reduceMotion {
+            glow.alpha = 0.9
+            run(SKAction.sequence([
+                SKAction.wait(forDuration: 0.5),
+                SKAction.run { [weak self] in self?.glow.alpha = 0 }
+            ]), withKey: "anchor")
+            return
+        }
+        let pulse = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.9, duration: 0.10),
+            SKAction.fadeAlpha(to: 0.0, duration: 0.35)
+        ])
+        glow.run(pulse, withKey: "anchor")
     }
 
     func showHint(reduceMotion: Bool) {
