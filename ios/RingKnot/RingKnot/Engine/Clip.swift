@@ -146,6 +146,15 @@ public struct BlockerClip: Hashable, Sendable {
         self.clampStyle = clampStyle ?? (kind == .bridge ? .bridgeBand : .shortBand)
         self.blocksExitDirection = blocksExitDirection
     }
+
+    /// A clip is rendered as a neighbour-aware *contact band* (scene-level, fixed
+    /// at the true contact point between owner and contact ring, with genuine
+    /// over/under occlusion) when it names a contact ring or asks for a non-owner
+    /// placement. Otherwise it is a legacy owner-attached band that rolls with the
+    /// open ring. (Phase 6C.)
+    public var isContactBand: Bool {
+        contactRingId != nil || contactPointMode != .ownerAngle
+    }
 }
 
 /// How a dependency contact is presented visually (Phase 6B).

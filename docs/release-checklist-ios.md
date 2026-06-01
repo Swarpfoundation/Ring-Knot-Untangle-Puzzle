@@ -134,3 +134,12 @@ Run against a Release build of `RingKnot.app` (e.g. `-configuration Release
 - [x] Background remains original/subtle — no copied reference equation/hand/UI.
 - [x] DEBUG `bridge.tryReleaseBlocked` excluded from Release (artifact scan).
 - [x] Genuine `phase-6b-*` screenshots on iPhone 17 Pro simulator.
+
+## Phase 6C gate (tube occlusion)
+
+- [x] Neighbour-aware contact bands span the true contact between rings.
+- [x] Over/under depth via per-ring render z + depthRole; copper knot stays visible.
+- [x] bridgeBand clips carry a contactRingId (replay validator enforced).
+- [x] Bands/art procedural; faint original background motif (no copied reference).
+- [x] DEBUG bridge strings excluded from Release (artifact scan).
+- [x] Genuine `phase-6c-*` screenshots on iPhone 17 Pro simulator.

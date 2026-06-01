@@ -107,8 +107,13 @@ final class RingNode: SKNode {
     /// silhouettes, over/under z-depth, and a soft contact shadow on the ring
     /// the clamp crosses.
     private func buildClips(diameter: CGFloat) {
-        guard !clips.isEmpty else { return }
-        for clip in clips {
+        // Phase 6C: neighbour-aware contact/bridge bands are drawn at scene level
+        // by GameScene (fixed at the true contact between two rings, with genuine
+        // over/under occlusion). RingNode only draws legacy owner-attached bands
+        // that roll with an open ring.
+        let rolling = clips.filter { !$0.isContactBand }
+        guard !rolling.isEmpty else { return }
+        for clip in rolling {
             // Silhouette per clamp style (across-tube width × along-ring length).
             let (acrossF, alongF): (CGFloat, CGFloat)
             switch clip.clampStyle {

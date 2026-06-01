@@ -32,6 +32,21 @@ final class GameScene: SKScene {
     private var dragStartLocation: CGPoint = .zero
     private var previousLocation: CGPoint = .zero
 
+    /// Scene-level neighbour-aware contact/bridge bands (Phase 6C). Each spans the
+    /// true contact between its owner ring and a contact ring, sitting at a z
+    /// between the two so it passes over one tube and under the other.
+    private var clipBandLayer = SKNode()
+    private struct BandEntry {
+        let node: SKNode
+        let clipID: String
+        let ownerID: String
+        let contactID: String?
+        let blocksRingIds: [String]
+    }
+    private var bandEntries: [BandEntry] = []
+    /// Per-ring render z, spaced so bands can occlude one tube but not another.
+    private var ringRenderZ: [String: CGFloat] = [:]
+
     private var cellSize: CGFloat = 0
     private var boardOrigin: CGPoint = .zero
 
@@ -326,6 +341,10 @@ final class GameScene: SKScene {
     private func rebuildScene() {
         removeAllChildren()
         ringNodes.removeAll(keepingCapacity: true)
+        bandEntries.removeAll(keepingCapacity: true)
+        ringRenderZ.removeAll(keepingCapacity: true)
+        clipBandLayer = SKNode()
+        clipBandLayer.zPosition = 0
         fxLayer = SKNode()
         fxLayer.zPosition = 500
         guard size.width > 0, size.height > 0 else { return }
@@ -352,9 +371,10 @@ final class GameScene: SKScene {
         frame.fillColor = UIColor(white: 0.04, alpha: 0.55)
         frame.zPosition = -999
         addChild(frame)
+        addBoardMotif(width: boardWidth, height: boardHeight)
 
         let sorted = level.rings.sorted { $0.zIndex < $1.zIndex }
-        for ring in sorted {
+        for (order, ring) in sorted.enumerated() {
             let center = pointForCell(ring.cell)
             let node = RingNode(
                 ring: ring,
@@ -366,14 +386,176 @@ final class GameScene: SKScene {
             )
             node.name = ring.id
             node.isUserInteractionEnabled = false
+            // Unique render z (copper stays far above silver) so neighbour bands
+            // can pass over one tube and under another.
+            let z = CGFloat(ring.zIndex) * 1000 + CGFloat(order) * 4
+            ringRenderZ[ring.id] = z
+            node.zPosition = z
             if state.clearedRingIds.contains(ring.id) {
                 node.alpha = 0
             }
             ringNodes[ring.id] = node
             addChild(node)
         }
+        addChild(clipBandLayer)
+        buildContactBands()
         addChild(fxLayer)
         if tutorialActive { applyTutorialGuidance() }
+    }
+
+    /// Build the scene-level neighbour-aware contact/bridge bands. Each band spans
+    /// the gap between its owner ring and its contact ring, fixed at the true
+    /// contact midpoint, with a z chosen from `depthRole` so it reads over and/or
+    /// under the tubes. (Phase 6C.)
+    private func buildContactBands() {
+        let diameter = cellSize * 0.88
+        let outerR = diameter * 0.5 * 0.94
+        for clip in level.clips where clip.isContactBand {
+            guard let owner = ringNodes[clip.ownerRingId] else { continue }
+            let ownerCenter = owner.homePosition
+            let ownerZ = ringRenderZ[clip.ownerRingId] ?? owner.zPosition
+
+            // Resolve the contact ring (may be absent → fall back to owner rim).
+            let contactCenter: CGPoint
+            let contactZ: CGFloat
+            if let cid = clip.contactRingId, let contactNode = ringNodes[cid] {
+                contactCenter = contactNode.homePosition
+                contactZ = ringRenderZ[cid] ?? contactNode.zPosition
+            } else {
+                let a = CGFloat(clip.angleDegrees * .pi / 180)
+                contactCenter = CGPoint(x: ownerCenter.x + cos(a) * cellSize,
+                                        y: ownerCenter.y + sin(a) * cellSize)
+                contactZ = ownerZ
+            }
+
+            let dx = contactCenter.x - ownerCenter.x
+            let dy = contactCenter.y - ownerCenter.y
+            let dist = max(0.001, hypot(dx, dy))
+            let angle = atan2(dy, dx)
+            let mid = CGPoint(x: (ownerCenter.x + contactCenter.x) / 2,
+                              y: (ownerCenter.y + contactCenter.y) / 2)
+
+            // Span the visible gap between the two tubes, overlapping both a touch.
+            let thicknessF: CGFloat
+            switch clip.clampStyle {
+            case .bridgeBand: thicknessF = 0.20
+            case .wideBand:   thicknessF = 0.20
+            case .rivetedBand: thicknessF = 0.17
+            case .shortBand:  thicknessF = 0.16
+            }
+            let thickness = diameter * thicknessF * CGFloat(clip.visualWidthScale)
+            let span = max(diameter * 0.30,
+                           dist - 2 * outerR + cellSize * 0.55)
+
+            // z from depth role: over = above both tubes; bridge = between (over the
+            // lower tube, under the higher); connector = mid; under = below both.
+            let lo = min(ownerZ, contactZ), hi = max(ownerZ, contactZ)
+            let bandZ: CGFloat
+            switch clip.depthRole {
+            case .over:      bandZ = hi + 2
+            case .bridge:    bandZ = (lo + hi) / 2
+            case .connector: bandZ = (lo + hi) / 2 - 1
+            case .under:     bandZ = lo - 2
+            }
+
+            let texture = RingTextureFactory.clipTexture(
+                for: clip.material,
+                owner: owner.ring.kind,
+                size: CGSize(width: span, height: thickness),
+                style: clip.clampStyle
+            )
+            let band = SKSpriteNode(texture: texture,
+                                    size: CGSize(width: span, height: thickness))
+            band.position = mid
+            band.zRotation = angle
+            band.zPosition = bandZ
+            band.name = "band:\(clip.id)"
+
+            // Soft contact shadow on the ring below, just under the band.
+            let shadow = SKShapeNode(ellipseOf: CGSize(width: span * 0.96,
+                                                       height: thickness * 1.25))
+            shadow.fillColor = UIColor.black.withAlphaComponent(0.30)
+            shadow.strokeColor = .clear
+            shadow.position = CGPoint(x: mid.x - sin(angle) * thickness * 0.18,
+                                      y: mid.y - cos(angle) * thickness * 0.18 - thickness * 0.10)
+            shadow.zRotation = angle
+            shadow.zPosition = bandZ - 0.5
+
+            let container = SKNode()
+            container.addChild(shadow)
+            container.addChild(band)
+            if state.clearedRingIds.contains(clip.ownerRingId)
+                || (clip.contactRingId.map { state.clearedRingIds.contains($0) } ?? false) {
+                container.alpha = 0
+            }
+            clipBandLayer.addChild(container)
+            bandEntries.append(BandEntry(node: container, clipID: clip.id,
+                                         ownerID: clip.ownerRingId,
+                                         contactID: clip.contactRingId,
+                                         blocksRingIds: clip.blocksRingIds))
+        }
+    }
+
+    /// Fade out any contact bands attached to a ring that has just left the board.
+    private func retireBands(forRing ringID: String) {
+        for entry in bandEntries where entry.ownerID == ringID || entry.contactID == ringID {
+            guard entry.node.parent != nil, entry.node.alpha > 0 else { continue }
+            if reduceMotion {
+                entry.node.alpha = 0
+            } else {
+                entry.node.run(SKAction.fadeOut(withDuration: 0.24))
+            }
+        }
+    }
+
+    /// A very faint, original graphite motif behind the board: a few abstract
+    /// knot-like arcs and non-readable chalk strokes. Deliberately low-contrast so
+    /// it never competes with the rings. Nothing here is copied from any reference
+    /// — no readable equations, numbers, hands, or UI. (Phase 6C, section D.)
+    private func addBoardMotif(width: CGFloat, height: CGFloat) {
+        let motif = SKNode()
+        motif.zPosition = -998
+        motif.alpha = 0.05
+        let cx = boardOrigin.x + width / 2
+        let cy = boardOrigin.y + height / 2
+        let chalk = UIColor(white: 0.85, alpha: 1.0)
+
+        // Abstract interlocked-knot arcs.
+        for i in 0..<3 {
+            let r = min(width, height) * (0.22 + CGFloat(i) * 0.12)
+            let path = CGMutablePath()
+            let start = CGFloat(i) * 0.7
+            path.addArc(center: CGPoint(x: cx + CGFloat(i - 1) * width * 0.12,
+                                        y: cy + CGFloat(i - 1) * height * 0.08),
+                        radius: r, startAngle: start, endAngle: start + .pi * 1.4,
+                        clockwise: false)
+            let arc = SKShapeNode(path: path)
+            arc.strokeColor = chalk
+            arc.lineWidth = 1.5
+            arc.fillColor = .clear
+            arc.lineCap = .round
+            motif.addChild(arc)
+        }
+        // A couple of faint, non-readable "math-like" squiggles (pure strokes, no
+        // glyphs) for chalkboard texture.
+        for k in 0..<2 {
+            let path = CGMutablePath()
+            let baseX = boardOrigin.x + width * (k == 0 ? 0.12 : 0.62)
+            let baseY = boardOrigin.y + height * (k == 0 ? 0.82 : 0.16)
+            path.move(to: CGPoint(x: baseX, y: baseY))
+            for j in 1...5 {
+                let x = baseX + CGFloat(j) * width * 0.04
+                let y = baseY + sin(CGFloat(j) * 1.3 + CGFloat(k)) * height * 0.02
+                path.addLine(to: CGPoint(x: x, y: y))
+            }
+            let squiggle = SKShapeNode(path: path)
+            squiggle.strokeColor = chalk
+            squiggle.lineWidth = 1.2
+            squiggle.fillColor = .clear
+            squiggle.lineCap = .round
+            motif.addChild(squiggle)
+        }
+        addChild(motif)
     }
 
     private func pointForCell(_ cell: Cell) -> CGPoint {
@@ -512,6 +694,7 @@ final class GameScene: SKScene {
         case .accepted:
             gameDelegate?.gameSceneRequestsHaptic(self, kind: .success)
             spawnReleaseFX(at: node.position, direction: node.ring.exitDirection)
+            retireBands(forRing: node.ring.id)
             node.performExit(reduceMotion: reduceMotion) { [weak self] in
                 guard let self else { return }
                 self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
@@ -548,6 +731,29 @@ final class GameScene: SKScene {
         let targets = withClip.isEmpty ? missing : withClip
         for id in targets {
             ringNodes[id]?.pulseAsBlocker(reduceMotion: reduceMotion)
+        }
+        // Also flash the exact contact band(s)/bridge holding the selected ring.
+        flashBands(blocking: blockedId)
+    }
+
+    /// Briefly highlight the scene-level contact band(s) that hold `blockedId`, so
+    /// the player sees the precise clamp/bridge still in the way. (Phase 6C.)
+    private func flashBands(blocking blockedId: String) {
+        for entry in bandEntries where entry.blocksRingIds.contains(blockedId) {
+            guard entry.node.parent != nil, entry.node.alpha > 0.05 else { continue }
+            entry.node.removeAction(forKey: "flash")
+            if reduceMotion {
+                entry.node.run(SKAction.sequence([
+                    SKAction.scale(to: 1.18, duration: 0.0),
+                    SKAction.wait(forDuration: 0.3),
+                    SKAction.scale(to: 1.0, duration: 0.0)
+                ]), withKey: "flash")
+            } else {
+                entry.node.run(SKAction.sequence([
+                    SKAction.scale(to: 1.22, duration: 0.10),
+                    SKAction.scale(to: 1.0, duration: 0.22)
+                ]), withKey: "flash")
+            }
         }
     }
 

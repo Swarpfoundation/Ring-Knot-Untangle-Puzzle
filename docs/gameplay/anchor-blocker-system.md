@@ -135,3 +135,12 @@ rings** (`betweenCenters`) and read `over` the blocked ring. A dependency is onl
 considered "explained" by a **non-decorative** interlock — the replay validator
 rejects a `requires` edge that has only a `decorativeConnector`. `abstractOnly` is
 no longer permitted in the shipped pack. See `docs/art/interlock-visual-style.md`.
+
+## Phase 6C — neighbour-aware bands & tube occlusion
+
+Contact/bridge clips are now drawn as scene-level bands spanning the true contact
+between two rings, with genuine over/under depth (`depthRole=bridge` passes over the
+lower tube and under the higher one). `BlockerClip.isContactBand` selects scene-level
+rendering (any clip with a `contactRingId` or non-`ownerAngle` placement); legacy
+owner-attached clips still roll with their open ring. Bands fade when their owner or
+contact ring leaves. See `docs/art/interlock-visual-style.md` → "Tube occlusion model".
