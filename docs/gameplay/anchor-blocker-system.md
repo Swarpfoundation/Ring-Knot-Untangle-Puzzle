@@ -117,3 +117,21 @@ When the Android port is built it must mirror this model exactly: the same
 `bodyType` / `removable` fields and the `clips` / `interlocks` arrays. Android
 should draw clips procedurally (Canvas/Compose) — never ship copied art — and
 reproduce the rolling-vs-static clip behaviour and z-depth rules above.
+
+## Phase 6B — interlock geometry & art polish
+
+The clip/interlock model gained backward-compatible fields:
+
+- `BlockerClip`: `depthRole` (over/under/bridge/connector), `contactRingId`,
+  `contactPointMode` (ownerAngle/betweenCenters/explicit), `explicitPositionOffset`,
+  `visualLayer` (foreground/midground/background), `clampStyle`
+  (shortBand/wideBand/bridgeBand/rivetedBand), `blocksExitDirection`.
+- `Interlock`: `visualContactMode` (clipBlocksGap/ringPassesUnderAnchor/
+  ringHeldByBridge/decorativeConnector), `requiredGapClearanceAngleDegrees`,
+  `contactDescription`.
+
+Dependency blocker clips are now placed at the **contact rim between the two
+rings** (`betweenCenters`) and read `over` the blocked ring. A dependency is only
+considered "explained" by a **non-decorative** interlock — the replay validator
+rejects a `requires` edge that has only a `decorativeConnector`. `abstractOnly` is
+no longer permitted in the shipped pack. See `docs/art/interlock-visual-style.md`.

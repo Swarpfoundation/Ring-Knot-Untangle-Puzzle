@@ -69,12 +69,25 @@ def cell_name(row, col):
     return f"{chr(65 + row)}{col + 1}"
 
 
+# Gap angle (screen convention, CCW from East) that faces each exit direction.
+EXIT_ANGLE = {
+    "E": 0.0, "NE": 45.0, "N": 90.0, "NW": 135.0,
+    "W": 180.0, "SW": 225.0, "S": 270.0, "SE": 315.0,
+}
+
+
 def scene_angle(from_rc, to_rc):
     """Scene-convention angle (E=0, N=90, CCW+, y-up) from one cell to another."""
     dr = to_rc[0] - from_rc[0]      # row increases downward
     dc = to_rc[1] - from_rc[1]
     ang = math.degrees(math.atan2(-dr, dc))
     return round((ang + 360.0) % 360.0, 1)
+
+
+def angular_distance(a, b):
+    """Smallest absolute difference between two angles (degrees)."""
+    d = abs((a - b) % 360.0)
+    return min(d, 360.0 - d)
 
 
 def occupied_base_cells(pieces):
@@ -153,22 +166,39 @@ def rebuild_level(level):
     interlocks = []
 
     # 2. Dependency clips + interlocks --------------------------------------
+    # Each blocker clip sits at the geometric contact point between the blocker
+    # ring and the ring it holds (contactPointMode=betweenCenters), reads "over"
+    # the blocked ring, and rolls with its (open) owner.
     for p in level["pieces"]:
         blocked = p["id"]
         blocked_rc = parse_cell(p["cell"])
+        blocked_kind = p.get("kind")
+        blocked_exit = EXIT_ANGLE.get(p.get("exitDirection"), 0.0)
         for blocker in p.get("requires", []):
-            blocker_rc = parse_cell(ring_by_id[blocker]["cell"])
+            blocker_piece = ring_by_id[blocker]
+            blocker_rc = parse_cell(blocker_piece["cell"])
             angle = scene_angle(blocker_rc, blocked_rc)
+            # The blocker lies in the blocked ring's escape path when it sits
+            # roughly opposite the blocked ring's exit.
+            blocked_to_blocker = (angle + 180.0) % 360.0
+            blocks_exit = angular_distance(blocked_to_blocker, blocked_exit) <= 60.0
+            is_knot = blocked_kind == "copper" and blocker_piece.get("kind") == "copper"
             clip_id = f"K_{blocker}_{blocked}"
             clips.append({
                 "id": clip_id,
                 "ownerRingId": blocker,
                 "angleDegrees": angle,
                 "material": "inherited",
-                "kind": "blocker",
+                "kind": "bridge" if is_knot else "blocker",
                 "blocksRingIds": [blocked],
-                "visualWidthScale": 1.0,
+                "visualWidthScale": 1.15 if is_knot else 1.0,
                 "rotatesWithOwner": True,
+                "depthRole": "bridge" if is_knot else "over",
+                "contactRingId": blocked,
+                "contactPointMode": "betweenCenters",
+                "visualLayer": "foreground",
+                "clampStyle": "bridgeBand" if is_knot else "rivetedBand",
+                "blocksExitDirection": bool(blocks_exit),
             })
             interlocks.append({
                 "id": f"IL_{blocker}_{blocked}",
@@ -179,6 +209,11 @@ def rebuild_level(level):
                 "description": (
                     f"{blocked} is caught by {blocker}'s clamp until "
                     f"{blocker} is pulled free."
+                ),
+                "visualContactMode": "ringHeldByBridge" if is_knot else "clipBlocksGap",
+                "requiredGapClearanceAngleDegrees": 30.0,
+                "contactDescription": (
+                    f"Rotate {blocked}'s gap clear of {blocker}'s clamp, then pull."
                 ),
             })
 
@@ -205,8 +240,14 @@ def rebuild_level(level):
                 "material": "inherited",
                 "kind": "connector",
                 "blocksRingIds": [],
-                "visualWidthScale": 1.0,
+                "visualWidthScale": 1.1,
                 "rotatesWithOwner": False,
+                "depthRole": "connector",
+                "contactRingId": rid,
+                "contactPointMode": "betweenCenters",
+                "visualLayer": "midground",
+                "clampStyle": "wideBand",
+                "blocksExitDirection": False,
             })
             used += 1
 

@@ -80,11 +80,12 @@ final class RingNode: SKNode {
 
         super.init()
 
+        addBacking(diameter: diameter)
         addChild(glow)
         addChild(sprite)
         addChild(readyRing)
-        rollingClipLayer.zPosition = 3
-        staticClipLayer.zPosition = 3
+        rollingClipLayer.zPosition = 4
+        staticClipLayer.zPosition = 4
         addChild(staticClipLayer)
         addChild(rollingClipLayer)
         position = homePosition
@@ -102,31 +103,81 @@ final class RingNode: SKNode {
 
     /// Build the clamp-band child nodes for this ring. Rolling clips (open rings)
     /// go in `rollingClipLayer` so they spin with the ring; static clips (anchors)
-    /// stay in `staticClipLayer`.
+    /// stay in `staticClipLayer`. Phase 6B: contact-point placement, per-style
+    /// silhouettes, over/under z-depth, and a soft contact shadow on the ring
+    /// the clamp crosses.
     private func buildClips(diameter: CGFloat) {
         guard !clips.isEmpty else { return }
-        let clipRadius = diameter * 0.385
         for clip in clips {
-            let widthAcross = diameter * 0.22 * CGFloat(clip.visualWidthScale)   // radial
-            let lengthAlong = diameter * 0.15                                    // tangential
+            // Silhouette per clamp style (across-tube width × along-ring length).
+            let (acrossF, alongF): (CGFloat, CGFloat)
+            switch clip.clampStyle {
+            case .shortBand:   (acrossF, alongF) = (0.22, 0.15)
+            case .rivetedBand: (acrossF, alongF) = (0.24, 0.15)
+            case .wideBand:    (acrossF, alongF) = (0.27, 0.17)
+            case .bridgeBand:  (acrossF, alongF) = (0.30, 0.16)
+            }
+            let widthAcross = diameter * acrossF * CGFloat(clip.visualWidthScale)
+            let lengthAlong = diameter * alongF
+
+            // Contact-point placement.
+            let angle = RingNode.radians(fromDegrees: clip.angleDegrees)
+            let position: CGPoint
+            switch clip.contactPointMode {
+            case .explicit:
+                if let off = clip.explicitPositionOffset {
+                    position = CGPoint(x: CGFloat(off.x) * cellSize,
+                                       y: CGFloat(off.y) * cellSize)
+                } else {
+                    position = CGPoint(x: cos(angle) * diameter * 0.385,
+                                       y: sin(angle) * diameter * 0.385)
+                }
+            case .betweenCenters:
+                // Push the clamp out to the contact rim between the two rings so
+                // it sits where the tubes actually meet / bridges the gap.
+                let r = diameter * (clip.clampStyle == .bridgeBand ? 0.54 : 0.50)
+                position = CGPoint(x: cos(angle) * r, y: sin(angle) * r)
+            case .ownerAngle:
+                position = CGPoint(x: cos(angle) * diameter * 0.385,
+                                   y: sin(angle) * diameter * 0.385)
+            }
+
             let texture = RingTextureFactory.clipTexture(
                 for: clip.material,
                 owner: ring.kind,
-                size: CGSize(width: widthAcross, height: lengthAlong)
+                size: CGSize(width: widthAcross, height: lengthAlong),
+                style: clip.clampStyle
             )
             let band = SKSpriteNode(texture: texture,
                                     size: CGSize(width: widthAcross, height: lengthAlong))
-            let angle = RingNode.radians(fromDegrees: clip.angleDegrees)
-            band.position = CGPoint(x: cos(angle) * clipRadius, y: sin(angle) * clipRadius)
+            band.position = position
             band.zRotation = angle
-            // Subtle depth: connectors sit a touch behind blockers so overlapping
-            // bands between rings read as interlocked rather than flat.
-            band.zPosition = clip.kind == .connector ? -0.5 : 0.5
-            if clip.rotatesWithOwner && !isAnchor {
-                rollingClipLayer.addChild(band)
-            } else {
-                staticClipLayer.addChild(band)
-            }
+            band.zPosition = RingNode.clipZPosition(for: clip.depthRole)
+
+            // Soft contact shadow cast onto the ring the clamp crosses.
+            let shadow = SKShapeNode(ellipseOf: CGSize(width: widthAcross * 0.95,
+                                                       height: lengthAlong * 1.15))
+            shadow.fillColor = UIColor.black.withAlphaComponent(0.28)
+            shadow.strokeColor = .clear
+            shadow.position = CGPoint(x: position.x, y: position.y - lengthAlong * 0.12)
+            shadow.zRotation = angle
+            shadow.zPosition = band.zPosition - 0.5
+
+            let layer = (clip.rotatesWithOwner && !isAnchor) ? rollingClipLayer : staticClipLayer
+            layer.addChild(shadow)
+            layer.addChild(band)
+        }
+    }
+
+    /// Relative z within the clip layer for each depth role. Combined with the
+    /// scene's `ignoresSiblingOrder`, this lets blocker clamps read above the
+    /// rings they hold while decorative connectors tuck in at mid-depth.
+    private static func clipZPosition(for role: ClipDepthRole) -> CGFloat {
+        switch role {
+        case .over:      return 6
+        case .bridge:    return 5
+        case .connector: return 1
+        case .under:     return -3
         }
     }
 
@@ -134,6 +185,34 @@ final class RingNode: SKNode {
 
     private static func radians(fromDegrees degrees: Double) -> CGFloat {
         CGFloat(degrees * .pi / 180.0)
+    }
+
+    /// Backing behind the ring sprite: a heavier drop shadow for fixed anchors so
+    /// they feel planted, and a warm sheen behind copper so the knot reads as the
+    /// premium centre of the board. (Phase 6B.)
+    private func addBacking(diameter: CGFloat) {
+        if isAnchor {
+            let shadow = SKShapeNode(circleOfRadius: diameter * 0.52)
+            shadow.fillColor = UIColor.black.withAlphaComponent(0.45)
+            shadow.strokeColor = .clear
+            shadow.position = CGPoint(x: 0, y: -diameter * 0.05)
+            shadow.zPosition = -2
+            addChild(shadow)
+        }
+        if ring.kind == .copper {
+            let sheen = SKShapeNode(circleOfRadius: diameter * 0.6)
+            sheen.fillColor = UIColor(red: 1.0, green: 0.66, blue: 0.36, alpha: 0.18)
+            sheen.strokeColor = .clear
+            sheen.zPosition = -1
+            sheen.blendMode = .add
+            if !reduceMotion {
+                sheen.run(SKAction.repeatForever(SKAction.sequence([
+                    SKAction.fadeAlpha(to: 0.32, duration: 1.4),
+                    SKAction.fadeAlpha(to: 0.16, duration: 1.4)
+                ])))
+            }
+            addChild(sheen)
+        }
     }
 
     private func applyVisualOffset() {
@@ -234,6 +313,27 @@ final class RingNode: SKNode {
     func showSelection(_ active: Bool) {
         glow.strokeColor = active ? RingPalette.selectionGlow : .clear
         glow.alpha = active ? 1.0 : 0
+    }
+
+    /// Briefly flash this ring (and its blocking clamps) amber to show it is the
+    /// thing still holding a ring the player just tried to pull. (Phase 6B.)
+    func pulseAsBlocker(reduceMotion: Bool) {
+        removeAction(forKey: "blocker")
+        glow.strokeColor = RingPalette.hintGlow
+        glow.alpha = 0.0
+        let flashes = reduceMotion ? 1 : 2
+        let seq = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.95, duration: 0.12),
+            SKAction.fadeAlpha(to: 0.0, duration: 0.28)
+        ])
+        glow.run(SKAction.repeat(seq, count: flashes), withKey: "blocker")
+        guard !reduceMotion else { return }
+        let bump = SKAction.sequence([
+            SKAction.scale(to: 1.06, duration: 0.10),
+            SKAction.scale(to: 1.0, duration: 0.14)
+        ])
+        rollingClipLayer.run(bump, withKey: "blocker")
+        staticClipLayer.run(bump, withKey: "blocker")
     }
 
     /// Calm "this is a fixed anchor" feedback for a tap on a closed anchor: a

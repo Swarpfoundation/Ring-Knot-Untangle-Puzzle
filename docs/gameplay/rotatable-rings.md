@@ -151,3 +151,10 @@ is the cross-platform oracle.
 - [ ] Tapping an anchor leaves the move counter unchanged.
 - [ ] Each level shows at least one full closed anchor with a clamp band.
 - See `docs/gameplay/anchor-blocker-system.md` for the full model.
+
+## Blocked feedback (Phase 6B)
+
+- Pulling a ring before its gap clears the clip is refused; the accessibility
+  summary says to rotate the gap clear of the clip.
+- Pulling an aligned but still-blocked ring flashes the blocker ring(s) and their
+  clamps amber, pointing at what to clear first (`flashBlockers`).

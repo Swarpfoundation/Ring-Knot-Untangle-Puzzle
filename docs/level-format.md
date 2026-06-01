@@ -125,3 +125,17 @@ Each level may also declare two arrays:
 
 These are generated reproducibly by `tools/apply_anchor_blockers.py` and checked
 by `tools/replay_validator.py`. See `docs/gameplay/anchor-blocker-system.md`.
+
+## Phase 6B clip/interlock fields
+
+`clips[]` entries may add: `depthRole` (over|under|bridge|connector),
+`contactRingId`, `contactPointMode` (ownerAngle|betweenCenters|explicit),
+`explicitPositionOffset {x,y}`, `visualLayer` (foreground|midground|background),
+`clampStyle` (shortBand|wideBand|bridgeBand|rivetedBand), `blocksExitDirection`.
+
+`interlocks[]` entries may add: `visualContactMode` (clipBlocksGap|
+ringPassesUnderAnchor|ringHeldByBridge|decorativeConnector),
+`requiredGapClearanceAngleDegrees`, `contactDescription`.
+
+All optional and backward compatible; invalid enum strings are rejected by the
+loader and the replay validator. `abstractOnly` is forbidden in the shipped pack.

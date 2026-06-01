@@ -33,6 +33,16 @@ import sys
 
 VALID_DIRECTIONS = {"N", "NE", "E", "SE", "S", "SW", "W", "NW"}
 
+# Phase 6B enum vocabularies (mirror the Swift enums in Engine/Clip.swift).
+VALID_DEPTH_ROLE = {"over", "under", "bridge", "connector"}
+VALID_CONTACT_MODE = {"ownerAngle", "betweenCenters", "explicit"}
+VALID_VISUAL_LAYER = {"foreground", "midground", "background"}
+VALID_CLAMP_STYLE = {"shortBand", "wideBand", "bridgeBand", "rivetedBand"}
+VALID_VISUAL_CONTACT = {"clipBlocksGap", "ringPassesUnderAnchor",
+                        "ringHeldByBridge", "decorativeConnector"}
+# Interlock modes that actually explain a dependency (non-decorative).
+NON_DECORATIVE_CONTACT = VALID_VISUAL_CONTACT - {"decorativeConnector"}
+
 # Gap angle (screen convention, CCW from East) at which a gap faces each exit.
 EXIT_ANGLE = {
     "E": 0.0, "NE": 45.0, "N": 90.0, "NW": 135.0,
@@ -219,6 +229,19 @@ def validate_level(level):
             if blocked not in rings:
                 raise ValidationError(
                     f"Level {level_id}: clip '{cid}' blocks unknown ring '{blocked}'")
+        # Phase 6B enum fields are optional, but must be valid when present.
+        for field, vocab in (("depthRole", VALID_DEPTH_ROLE),
+                             ("contactPointMode", VALID_CONTACT_MODE),
+                             ("visualLayer", VALID_VISUAL_LAYER),
+                             ("clampStyle", VALID_CLAMP_STYLE)):
+            val = clip.get(field)
+            if val is not None and val not in vocab:
+                raise ValidationError(
+                    f"Level {level_id}: clip '{cid}' has invalid {field} '{val}'")
+        contact = clip.get("contactRingId")
+        if contact is not None and contact not in rings:
+            raise ValidationError(
+                f"Level {level_id}: clip '{cid}' contactRingId '{contact}' unknown")
         clips[cid] = clip
 
     # Every closed anchor must carry at least one clip.
@@ -230,7 +253,8 @@ def validate_level(level):
 
     # --- Interlocks -------------------------------------------------------
     interlocks = level.get("interlocks", [])
-    # An interlock "covers" a dependency edge (blocker -> blocked).
+    # An interlock "covers" a dependency edge only when its visual contact mode is
+    # non-decorative (it actually explains the hold).
     covered_edges = set()
     for lock in interlocks:
         lid = lock.get("id", "?")
@@ -244,17 +268,26 @@ def validate_level(level):
         if clip_id not in clips:
             raise ValidationError(
                 f"Level {level_id}: interlock '{lid}' references unknown clip '{clip_id}'")
-        covered_edges.add((blocker, blocked))
+        mode = lock.get("visualContactMode", "clipBlocksGap")
+        if mode not in VALID_VISUAL_CONTACT:
+            raise ValidationError(
+                f"Level {level_id}: interlock '{lid}' invalid visualContactMode '{mode}'")
+        if mode in NON_DECORATIVE_CONTACT:
+            covered_edges.add((blocker, blocked))
 
-    # Every dependency edge must be visually explained by an interlock/clip,
-    # unless the level opts into abstractOnly (not used in the shipped pack).
-    if not level.get("abstractOnly", False):
-        for ring in rings.values():
-            for dep in ring["requires"]:
-                if (dep, ring["id"]) not in covered_edges:
-                    raise ValidationError(
-                        f"Level {level_id}: dependency '{dep}' -> '{ring['id']}' "
-                        f"has no matching interlock/clip (set abstractOnly to allow)")
+    # Phase 6B: shipped levels must never use abstractOnly.
+    if level.get("abstractOnly", False):
+        raise ValidationError(
+            f"Level {level_id}: abstractOnly is not allowed in the shipped pack")
+
+    # Every dependency edge must be visually explained by a NON-DECORATIVE
+    # interlock with a real clip.
+    for ring in rings.values():
+        for dep in ring["requires"]:
+            if (dep, ring["id"]) not in covered_edges:
+                raise ValidationError(
+                    f"Level {level_id}: dependency '{dep}' -> '{ring['id']}' "
+                    f"has no non-decorative interlock/clip")
 
     # Solution must reference existing, removable, non-anchor rings only.
     solution = level.get("solution", [])
@@ -461,10 +494,23 @@ def selftest():
          "blockerClipId": "GHOSTCLIP", "contactAngleDegrees": 0}]},
         "unknown clip")
 
-    # A dependency with no interlock fails (unless abstractOnly).
-    expect_fail({**good, "interlocks": []}, "no matching interlock")
-    abstract = {**good, "interlocks": [], "abstractOnly": True}
-    assert validate_level(abstract)[1] == 1   # anchors still present
+    # A dependency with no interlock fails.
+    expect_fail({**good, "interlocks": []}, "no non-decorative interlock")
+    # A dependency covered only by a decorative connector still fails.
+    expect_fail({**good, "interlocks": [
+        {"id": "IL1", "blockerRingId": "S1", "blockedRingId": "C1",
+         "blockerClipId": "K1", "contactAngleDegrees": 270,
+         "visualContactMode": "decorativeConnector"}]}, "no non-decorative interlock")
+    # abstractOnly is no longer permitted in the shipped pack.
+    expect_fail({**good, "abstractOnly": True}, "abstractOnly is not allowed")
+    # Invalid Phase 6B enum values are rejected.
+    expect_fail({**good, "clips": good["clips"] + [
+        {"id": "KZ", "ownerRingId": "S1", "angleDegrees": 0,
+         "depthRole": "sideways"}]}, "invalid depthRole")
+    expect_fail({**good, "interlocks": [
+        {"id": "IL1", "blockerRingId": "S1", "blockedRingId": "C1",
+         "blockerClipId": "K1", "contactAngleDegrees": 270,
+         "visualContactMode": "telepathy"}]}, "invalid visualContactMode")
 
     # The solution may not reference a non-removable anchor.
     expect_fail({**good, "solution": good["solution"] + [{"id": "A1", "drag": "N"}]},

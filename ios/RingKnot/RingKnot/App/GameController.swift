@@ -82,8 +82,8 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
         var summary = "Level \(id) board. \(scene.remainingRingCount) of \(scene.totalRingCount) rings remaining."
         if let aligned = scene.selectedRingIsAligned {
             summary += aligned
-                ? " Selected ring is aligned with its opening and ready to pull out."
-                : " Selected ring's gap is not yet aligned — rotate it to its opening."
+                ? " Selected ring is aligned and ready to pull free past the clip."
+                : " Selected ring's gap is not yet clear of the clip — rotate it to its opening."
         }
         return summary
     }
@@ -95,6 +95,10 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
 
     func bridgePerformInvalidMove() {
         currentScene?.bridgePerformInvalidMove()
+    }
+
+    func bridgeTryReleaseBlockedRing() {
+        currentScene?.bridgeTryReleaseBlockedRing()
     }
 
     func bridgeRotateNextSolutionRingToAligned() {

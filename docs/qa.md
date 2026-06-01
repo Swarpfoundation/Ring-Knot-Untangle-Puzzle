@@ -217,3 +217,16 @@ so the recording can be captured on a host where the render server is stable
 - Screenshots: `docs/screenshots/phase-6a-*.png` (anchor level 1, anchor
   tutorial, blocker-clip close-up, level 10 multi-anchor, level 20 final knot,
   level-complete-anchor-remains).
+
+## Phase 6B — interlock geometry & art polish
+
+- Unit tests: `RingKnotTests/InterlockArtTests` (depthRole/clampStyle/
+  contactPointMode/visualContactMode parsing + defaults, invalid-enum rejection,
+  every dependency has a non-decorative interlock, no abstractOnly, blocker clips
+  use contact-point geometry, blocker clip identifiable for a blocked ring).
+- UI tests: `RingKnotUITests/RingKnotPhase6bUITests` (tutorial mentions anchor +
+  clip; six genuine screenshots incl. a real blocked-feedback flash via
+  `bridge.tryReleaseBlocked`).
+- Replay validator additionally checks Phase 6B enum values, non-decorative
+  interlock coverage per dependency, and that no level uses abstractOnly.
+- Screenshots: `docs/screenshots/phase-6b-*.png`.
