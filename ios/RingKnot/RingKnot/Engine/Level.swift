@@ -66,6 +66,12 @@ public struct Level: Hashable, Sendable {
         clips.filter { $0.ownerRingId == ringID }
     }
 
+    /// Clips that visually hold a given ring (its `blocksRingIds` include it).
+    /// Used by hints / blocked feedback to point at the right clamp.
+    public func clipsBlocking(_ ringID: String) -> [BlockerClip] {
+        clips.filter { $0.blocksRingIds.contains(ringID) }
+    }
+
     /// Rotation state for a ring at the start of the level (gap misaligned).
     public func rotation(for ring: Ring) -> RingRotation {
         RingRotation(

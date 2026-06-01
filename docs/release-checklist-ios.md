@@ -125,3 +125,12 @@ Run against a Release build of `RingKnot.app` (e.g. `-configuration Release
 - [x] Clips/anchors drawn procedurally — no downloaded or copied art.
 - [x] DEBUG-only `-uiTestUnlockAll` is gated out of Release (artifact scan).
 - [x] Genuine `phase-6a-*` screenshots captured on iPhone 17 Pro simulator.
+
+## Phase 6B gate (interlock geometry & art)
+
+- [x] Backward-compatible clip/interlock fields; Phase 6A JSON still loads.
+- [x] Every dependency has a non-decorative interlock; no abstractOnly in the pack.
+- [x] Clamps drawn procedurally (bevel/rivets/contact shadow) — no copied art.
+- [x] Background remains original/subtle — no copied reference equation/hand/UI.
+- [x] DEBUG `bridge.tryReleaseBlocked` excluded from Release (artifact scan).
+- [x] Genuine `phase-6b-*` screenshots on iPhone 17 Pro simulator.

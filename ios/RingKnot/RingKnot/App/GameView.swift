@@ -165,9 +165,9 @@ private struct TutorialPanel: View {
 
     private var text: String {
         switch step {
-        case 0:  return "The full ring is an anchor — it stays put. Rotate the open ring until its gap clears the clip."
-        case 1:  return "Now pull it free through the gap."
-        default: return "Some rings are caught by clips on others. Clear the blockers, then free the copper knot."
+        case 0:  return "Full rings are anchors — they stay fixed. Rotate the open ring until its gap clears the clip."
+        case 1:  return "Now pull it free."
+        default: return "Small clips show where rings are caught. Clear them, then free the copper knot."
         }
     }
 
@@ -407,6 +407,7 @@ private struct TestBridgeOverlay: View {
                     bridgeButton("bridge.rotateMisaligned") { controller.bridgeRotateSelectedRingToMisaligned() }
                     bridgeButton("bridge.tryRelease") { controller.bridgeTryReleaseNextSolutionRing() }
                     bridgeButton("bridge.rotationMove") { controller.bridgePerformNextSolutionMoveWithRotation() }
+                    bridgeButton("bridge.tryReleaseBlocked") { controller.bridgeTryReleaseBlockedRing() }
                 }
                 .padding(.bottom, 4)
             }

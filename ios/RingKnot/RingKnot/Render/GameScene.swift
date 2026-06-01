@@ -82,6 +82,9 @@ final class GameScene: SKScene {
     override func didMove(to view: SKView) {
         view.isMultipleTouchEnabled = false
         view.allowsTransparency = true
+        // Phase 6B: make absolute zPosition authoritative so over/under clip
+        // layering reads correctly regardless of node insertion order.
+        view.ignoresSiblingOrder = true
         rebuildScene()
     }
 
@@ -287,6 +290,20 @@ final class GameScene: SKScene {
     /// move counter advances and the ring exits).
     func bridgePerformNextSolutionMove() {
         bridgePerformNextSolutionMoveWithRotation()
+    }
+
+    /// Align the first still-blocked removable ring and try to pull it: the
+    /// release is refused with `.blockedByPrerequisite`, flashing the blocker
+    /// ring + its clamp. Used by the Phase 6B blocked-feedback screenshot.
+    func bridgeTryReleaseBlockedRing() {
+        guard let blocked = level.rings.first(where: { ring in
+            ring.removable
+                && !state.clearedRingIds.contains(ring.id)
+                && !ring.requires.allSatisfy { state.clearedRingIds.contains($0) }
+        }), let node = ringNodes[blocked.id] else { return }
+        selectForBridge(node)
+        node.alignGapToExit()
+        releaseSelected(node)
     }
 
     func bridgePerformInvalidMove() {
@@ -505,16 +522,32 @@ final class GameScene: SKScene {
                     self.gameDelegate?.gameScene(self, didCompleteLevel: self.level, moves: self.state.moveCount)
                 }
             }
-        case .blockedByPrerequisite:
+        case .blockedByPrerequisite(let missing):
             gameDelegate?.gameSceneRequestsHaptic(self, kind: .warning)
             spawnInvalidFX(at: node.position)
             node.snapBack(reduceMotion: reduceMotion) {}
+            // Point at what still holds this ring: flash the blocking ring(s) and
+            // their clamps so the dependency reads as physical, not arbitrary.
+            flashBlockers(missing, blocking: node.ring.id)
         case .notRemovable:
             // A fixed anchor somehow reached release (anchors aren't selectable):
             // calm anchor feedback rather than an error.
             node.showAnchorFeedback()
         case .notAligned, .wrongDirection, .alreadyCleared, .unknownRing:
             node.snapBack(reduceMotion: reduceMotion) {}
+        }
+    }
+
+    /// Flash the ring(s) still holding `blockedId` so the player can see what to
+    /// clear first. Prefers blockers whose clip actually references the blocked
+    /// ring (a real visual interlock) so the highlight lands on the right clamp.
+    private func flashBlockers(_ missing: [String], blocking blockedId: String) {
+        let withClip = missing.filter { blocker in
+            level.clips(forOwner: blocker).contains { $0.blocksRingIds.contains(blockedId) }
+        }
+        let targets = withClip.isEmpty ? missing : withClip
+        for id in targets {
+            ringNodes[id]?.pulseAsBlocker(reduceMotion: reduceMotion)
         }
     }
 

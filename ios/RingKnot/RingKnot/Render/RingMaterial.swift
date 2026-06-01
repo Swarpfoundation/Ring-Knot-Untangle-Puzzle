@@ -173,14 +173,16 @@ enum RingTextureFactory {
         }
     }
 
-    /// A small metallic clamp band (rounded rectangle with a brushed-metal
-    /// gradient, dark seam edges and two rivet ridges) drawn procedurally — no
-    /// downloaded art. `size.width` runs across the ring tube; `size.height`
-    /// runs along the ring. Returned upright; the caller rotates it into place.
+    /// A small metallic clamp band drawn procedurally — no downloaded art. It has
+    /// a brushed-metal gradient, a raised bevel, dark seam edges, and rivet
+    /// ridges whose count/weight depend on `style`. `size.width` runs across the
+    /// ring tube; `size.height` runs along the ring. Returned upright; the caller
+    /// rotates it into place. (Phase 6B: bevel + per-style rivets.)
     static func clipTexture(
         for material: ClipMaterial,
         owner: RingKind,
         size: CGSize,
+        style: ClampStyle = .shortBand,
         scale: CGFloat = 2.0
     ) -> SKTexture {
         let px = CGSize(width: max(16, size.width * scale), height: max(8, size.height * scale))
@@ -191,12 +193,13 @@ enum RingTextureFactory {
             let inset: CGFloat = px.width * 0.06
             let rect = CGRect(x: inset, y: inset,
                               width: px.width - inset * 2, height: px.height - inset * 2)
-            let radius = min(rect.width, rect.height) * 0.32
+            let radius = min(rect.width, rect.height) * 0.34
 
+            // Drop shadow + base fill.
             cg.saveGState()
-            cg.setShadow(offset: CGSize(width: 0, height: px.height * 0.06),
-                         blur: px.height * 0.18,
-                         color: UIColor.black.withAlphaComponent(0.6).cgColor)
+            cg.setShadow(offset: CGSize(width: 0, height: px.height * 0.08),
+                         blur: px.height * 0.22,
+                         color: UIColor.black.withAlphaComponent(0.65).cgColor)
             let body = UIBezierPath(roundedRect: rect, cornerRadius: radius)
             cg.addPath(body.cgPath)
             cg.setFillColor(colors.base.cgColor)
@@ -210,8 +213,8 @@ enum RingTextureFactory {
             let grad = CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [colors.highlight.cgColor, colors.base.cgColor,
-                         colors.shadow.cgColor] as CFArray,
-                locations: [0.0, 0.5, 1.0]
+                         colors.shadow.cgColor, colors.shadow.cgColor] as CFArray,
+                locations: [0.0, 0.42, 0.86, 1.0]
             )
             if let grad {
                 cg.drawLinearGradient(
@@ -220,20 +223,50 @@ enum RingTextureFactory {
                     end: CGPoint(x: rect.midX, y: rect.maxY),
                     options: [])
             }
-            // Two rivet ridges so it reads as a clamp at phone size.
+
+            // Bevel: a bright top edge and a darker bottom edge inside the band.
+            let bevelInset = rect.insetBy(dx: rect.width * 0.10, dy: rect.height * 0.16)
+            cg.setLineWidth(max(1, px.height * 0.06))
+            cg.setStrokeColor(colors.highlight.withAlphaComponent(0.65).cgColor)
+            cg.move(to: CGPoint(x: bevelInset.minX, y: bevelInset.minY))
+            cg.addLine(to: CGPoint(x: bevelInset.maxX, y: bevelInset.minY))
+            cg.strokePath()
+            cg.setStrokeColor(colors.shadow.withAlphaComponent(0.7).cgColor)
+            cg.move(to: CGPoint(x: bevelInset.minX, y: bevelInset.maxY))
+            cg.addLine(to: CGPoint(x: bevelInset.maxX, y: bevelInset.maxY))
+            cg.strokePath()
+
+            // Rivet ridges. Wider/bridge clamps carry more ridges.
+            let ridgeXs: [CGFloat]
+            switch style {
+            case .shortBand:   ridgeXs = [0.32, 0.68]
+            case .rivetedBand: ridgeXs = [0.24, 0.5, 0.76]
+            case .wideBand:    ridgeXs = [0.22, 0.42, 0.58, 0.78]
+            case .bridgeBand:  ridgeXs = [0.2, 0.4, 0.6, 0.8]
+            }
+            cg.setLineCap(.round)
             cg.setStrokeColor(colors.shadow.withAlphaComponent(0.85).cgColor)
-            cg.setLineWidth(max(1, px.width * 0.05))
-            for fx in [0.32, 0.68] as [CGFloat] {
+            cg.setLineWidth(max(1, px.width * 0.045))
+            for fx in ridgeXs {
                 let x = rect.minX + rect.width * fx
-                cg.move(to: CGPoint(x: x, y: rect.minY + rect.height * 0.18))
-                cg.addLine(to: CGPoint(x: x, y: rect.maxY - rect.height * 0.18))
+                cg.move(to: CGPoint(x: x, y: rect.minY + rect.height * 0.22))
+                cg.addLine(to: CGPoint(x: x, y: rect.maxY - rect.height * 0.22))
+            }
+            cg.strokePath()
+            // Tiny highlight next to each ridge for a forged look.
+            cg.setStrokeColor(colors.highlight.withAlphaComponent(0.4).cgColor)
+            cg.setLineWidth(max(1, px.width * 0.02))
+            for fx in ridgeXs {
+                let x = rect.minX + rect.width * fx - px.width * 0.03
+                cg.move(to: CGPoint(x: x, y: rect.minY + rect.height * 0.28))
+                cg.addLine(to: CGPoint(x: x, y: rect.maxY - rect.height * 0.28))
             }
             cg.strokePath()
             cg.restoreGState()
 
             // Crisp dark edge so adjacent rings/clips stay legible.
             cg.addPath(body.cgPath)
-            cg.setStrokeColor(UIColor.black.withAlphaComponent(0.55).cgColor)
+            cg.setStrokeColor(UIColor.black.withAlphaComponent(0.6).cgColor)
             cg.setLineWidth(max(1, px.width * 0.05))
             cg.strokePath()
         }

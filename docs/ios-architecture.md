@@ -184,3 +184,16 @@ The pure engine gains a rotation layer that the renderer drives:
   procedurally. `GameScene` treats anchor taps as non-moves.
 - **DEBUG**: `-uiTestUnlockAll` unlocks every level for screenshot tours (gated
   out of Release). See `docs/gameplay/anchor-blocker-system.md`.
+
+## Phase 6B — interlock geometry & art
+
+- **Model**: `Engine/Clip.swift` gains `ClipDepthRole`, `ClipContactPointMode`,
+  `ClipVisualLayer`, `ClampStyle`, `ClipOffset`, and `InterlockVisualContactMode`
+  with `explainsDependency`. All fields backward compatible.
+- **Render**: `RingTextureFactory.clipTexture` adds bevel + per-style rivets;
+  `RingNode.buildClips` places clamps by `contactPointMode`, layers by
+  `depthRole`, and adds a contact shadow; anchors get a drop shadow and copper a
+  warm sheen. `GameScene` sets `ignoresSiblingOrder` and `flashBlockers(...)`.
+- **DEBUG**: `bridge.tryReleaseBlocked` triggers a genuine blocked-feedback flash
+  for the screenshot tour (excluded from Release). See
+  `docs/art/interlock-visual-style.md`.

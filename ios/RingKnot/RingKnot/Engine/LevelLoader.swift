@@ -240,6 +240,23 @@ public enum LevelLoader {
         let blocks = (obj["blocksRingIds"] as? [String]) ?? []
         let widthScale = (obj["visualWidthScale"] as? NSNumber)?.doubleValue ?? 1.0
         let rotates = (obj["rotatesWithOwner"] as? Bool) ?? true
+        // Phase 6B fields. A present-but-invalid enum string is a real data bug.
+        let depthRole = try enumField(obj["depthRole"], ClipDepthRole.init(rawValue:),
+                                      field: "depthRole", levelID: levelID, ownerID: id)
+        let contactMode = try enumField(obj["contactPointMode"], ClipContactPointMode.init(rawValue:),
+                                        field: "contactPointMode", levelID: levelID, ownerID: id)
+        let visualLayer = try enumField(obj["visualLayer"], ClipVisualLayer.init(rawValue:),
+                                        field: "visualLayer", levelID: levelID, ownerID: id)
+        let clampStyle = try enumField(obj["clampStyle"], ClampStyle.init(rawValue:),
+                                       field: "clampStyle", levelID: levelID, ownerID: id)
+        let contactRingId = obj["contactRingId"] as? String
+        var explicitOffset: ClipOffset? = nil
+        if let off = obj["explicitPositionOffset"] as? [String: Any],
+           let x = (off["x"] as? NSNumber)?.doubleValue,
+           let y = (off["y"] as? NSNumber)?.doubleValue {
+            explicitOffset = ClipOffset(x: x, y: y)
+        }
+        let blocksExit = (obj["blocksExitDirection"] as? Bool) ?? false
         return BlockerClip(
             id: id,
             ownerRingId: owner,
@@ -248,8 +265,32 @@ public enum LevelLoader {
             kind: kind,
             blocksRingIds: blocks,
             visualWidthScale: widthScale,
-            rotatesWithOwner: rotates
+            rotatesWithOwner: rotates,
+            depthRole: depthRole,
+            contactRingId: contactRingId,
+            contactPointMode: contactMode ?? .ownerAngle,
+            explicitPositionOffset: explicitOffset,
+            visualLayer: visualLayer,
+            clampStyle: clampStyle,
+            blocksExitDirection: blocksExit
         )
+    }
+
+    /// Parse an optional enum string: `nil` when absent, throws when present but
+    /// not a valid case.
+    private static func enumField<T>(
+        _ raw: Any?,
+        _ make: (String) -> T?,
+        field: String,
+        levelID: Int,
+        ownerID: String
+    ) throws -> T? {
+        guard let str = raw as? String else { return nil }
+        guard let value = make(str) else {
+            throw LevelLoaderError.malformedJSON(
+                "level \(levelID) clip/interlock '\(ownerID)' has invalid \(field) '\(str)'")
+        }
+        return value
     }
 
     private static func parseInterlock(_ obj: [String: Any], levelID: Int) throws -> Interlock {
@@ -263,13 +304,21 @@ public enum LevelLoader {
         }
         let contact = (obj["contactAngleDegrees"] as? NSNumber)?.doubleValue ?? 0
         let description = (obj["description"] as? String) ?? ""
+        let mode = try enumField(obj["visualContactMode"],
+                                 InterlockVisualContactMode.init(rawValue:),
+                                 field: "visualContactMode", levelID: levelID, ownerID: id)
+        let clearance = (obj["requiredGapClearanceAngleDegrees"] as? NSNumber)?.doubleValue
+        let contactDesc = (obj["contactDescription"] as? String) ?? ""
         return Interlock(
             id: id,
             blockerRingId: blocker,
             blockedRingId: blocked,
             blockerClipId: clip,
             contactAngleDegrees: contact,
-            description: description
+            description: description,
+            visualContactMode: mode ?? .clipBlocksGap,
+            requiredGapClearanceAngleDegrees: clearance,
+            contactDescription: contactDesc
         )
     }
 
