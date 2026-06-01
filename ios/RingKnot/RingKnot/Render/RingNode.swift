@@ -94,7 +94,7 @@ final class RingNode: SKNode {
     /// Applies a subtle magnetic snap when the gap comes within `snapDegrees` of
     /// the exit. Returns whether the ring *became* aligned and whether a snap fired.
     @discardableResult
-    func rotateGap(byRadians delta: CGFloat, snapDegrees: Double = 7) -> (becameAligned: Bool, didSnap: Bool) {
+    func rotateGap(byRadians delta: CGFloat, snapDegrees: Double = 6) -> (becameAligned: Bool, didSnap: Bool) {
         let wasAligned = rotation.isAligned
         rotation.rotate(byDegrees: Double(delta) * 180.0 / .pi)
         let didSnap = rotation.snapToTargetIfWithin(snapDegrees)
@@ -209,7 +209,9 @@ final class RingNode: SKNode {
     /// resistance. Only meaningful once the gap is aligned; the rotation centre is
     /// always `homePosition`, so this translation never affects angle maths.
     func pullAlong(exitVector: CGVector, distance: CGFloat) {
-        let clamped = max(0, min(distance, cellSize * 0.35))
+        // Let the ring travel a little under the release distance so the pull
+        // reads ("about to come free") before it actually pops out.
+        let clamped = max(0, min(distance, cellSize * 0.42))
         position = CGPoint(
             x: homePosition.x + exitVector.dx * clamped,
             y: homePosition.y + exitVector.dy * clamped

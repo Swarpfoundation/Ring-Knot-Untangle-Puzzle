@@ -4,6 +4,51 @@ A pre-TestFlight checklist. This phase delivers ship-readiness hygiene; the item
 that still require an Apple Developer account / signing are called out as
 **[needs account]**.
 
+## Release-candidate status (Phase 4B)
+
+| Area | Status | Notes |
+| --- | --- | --- |
+| Local CI gate (`ci_local.sh`) | **done** | assets, validator, Debug build, unit+UI tests, Release build |
+| Rotatable-ring mechanic + tuning | **done** | values in `docs/gameplay/rotatable-rings.md` |
+| Real-gesture coverage | **done** | `RingKnotRealGestureUITests` (pull-refuse + aligned-release) |
+| Privacy manifest in app bundle | **done** | `PrivacyInfo.xcprivacy`, verified in built `.app` |
+| No ads / analytics / Firebase / backend / accounts / IAP / network | **done** | dependency + string scan, see below |
+| DEBUG bridge excluded from Release | **done** | Release build + `nm`/`strings` scan |
+| App icon configured | **done** | `ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon` |
+| Small-device layout check | **done** | iPhone 17e simulator launch + screenshots |
+| Genuine screenshots / evidence | **done** | `docs/screenshots/phase-4a-*` + `phase-4b-*` |
+| Physical-device pass | **owner-needed** | signing required; see `docs/physical-device-qa.md` |
+| Distribution signing (`DEVELOPMENT_TEAM`) | **owner-needed** | currently empty / simulator-only |
+| App Store Connect record + metadata | **owner-needed** | description, keywords, support URL, age rating |
+| App Privacy questionnaire | **owner-needed** | confirm "Data Not Collected" |
+| TestFlight upload | **blocked** (by signing) | not part of this phase by design |
+
+### Owner-needed values (do not invent these)
+
+- Apple Developer **Team ID** → `DEVELOPMENT_TEAM`
+- Distribution **signing certificate / profile** (Automatic or manual)
+- **App Store Connect** app record (bundle id `com.swarpfoundation.ringknot`)
+- **Support URL** and marketing/privacy URLs
+- **App description**, keywords, age rating, category
+- **Final marketing screenshots** at required device sizes
+- **Privacy questionnaire** confirmation ("Data Not Collected")
+
+### Release artifact safety scan (Phase 4B)
+
+Run against a Release build of `RingKnot.app` (e.g. `-configuration Release
+-derivedDataPath /tmp/rcdd build`):
+
+- [x] `PrivacyInfo.xcprivacy` present in the built `.app`.
+- [x] App icon present (`AppIcon*` PNGs + `Assets.car`).
+- [x] **No** DEBUG bridge strings in the binary — `strings RingKnot | grep -iE
+  'bridge\.(nextMove|invalidMove|rotateAligned|rotateMisaligned|tryRelease|rotationMove)|TestBridgeOverlay|uiTest'`
+  returns nothing (the `#if DEBUG` overlay/actions are compiled out).
+- [x] No app-owned network URLs — `strings` shows no `http(s)://` beyond system
+  framework boilerplate.
+- [x] No analytics / ads / Firebase — `otool -L` lists only Apple system
+  frameworks (Foundation, AVFAudio, Combine, CoreGraphics, CoreHaptics, SpriteKit,
+  SwiftUI, UIKit). No third-party Swift packages.
+
 ## Build & correctness gate
 
 - [x] `bash tools/ci_local.sh` passes end to end:

@@ -77,6 +77,25 @@ def main():
         data = json.load(handle, object_pairs_hook=OrderedDict)
 
     mechanics = data.setdefault("mechanics", OrderedDict())
+    # Phase 4B: the mechanics prose is rotate-then-pull, not the old projection-only
+    # drag model. These keys are descriptive (the loader ignores them) but must read
+    # truthfully for anyone — including a future Android port — using the JSON.
+    mechanics["dragModel"] = (
+        "Rotate then pull. Roll the selected ring by dragging tangentially around "
+        "its centre until the gap is within alignmentToleranceDegrees of the "
+        "exitDirection, then pull it outward along that direction to release. "
+        "Releasing needs both exit-projected travel past releaseThresholdCellUnits "
+        "and genuine outward travel past radialPullThresholdCellUnits, so a purely "
+        "tangential roll never releases the ring."
+    )
+    mechanics["invalidMove"] = (
+        "Pulling a ring whose gap is not yet aligned is refused with a 'rotate "
+        "first' nudge; pulling a ring whose requires are not all cleared shows the "
+        "blocked feedback. Both snap the ring back, and neither counts as a move."
+    )
+    mechanics["releaseThresholdCellUnits"] = 0.50
+    mechanics["radialPullThresholdCellUnits"] = 0.16
+    mechanics["exitDistanceCellUnits"] = 1.6
     mechanics["rotationModel"] = (
         "Each ring is an open circle with one gap. The player rolls the selected "
         "ring (dragging tangentially around its centre) until the gap is within "
@@ -89,6 +108,8 @@ def main():
         ("levels1to5", 22), ("levels6to10", 18),
         ("levels11to15", 15), ("levels16to20", 12),
     ])
+    ring_defaults["rotationBeginRadiusCellUnits"] = 0.10
+    ring_defaults["snapDegrees"] = 6
     ring_defaults["initialGapAngleField"] = (
         "initialGapAngle: gap angle in degrees (E=0, N=90, CCW+) the ring starts "
         "at; offset from exitDirection so the player must rotate to align."

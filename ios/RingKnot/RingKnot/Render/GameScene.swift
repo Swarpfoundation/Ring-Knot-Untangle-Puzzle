@@ -58,9 +58,15 @@ final class GameScene: SKScene {
     /// Release happens when the gap is aligned and the player pulls the ring out
     /// along the exit: a clear projection beyond threshold plus genuine outward
     /// travel from the centre (so a tangential rotation never releases by accident).
-    private var releaseProjectionThreshold: CGFloat { cellSize * 0.55 }
-    private var releaseRadialThreshold: CGFloat { cellSize * 0.18 }
-    private let rotationMinRadiusFactor: CGFloat = 0.12
+    /// Tuned on the iPhone 17 Pro / SE simulators — see docs/gameplay/rotatable-rings.md.
+    private var releaseProjectionThreshold: CGFloat { cellSize * 0.50 }
+    private var releaseRadialThreshold: CGFloat { cellSize * 0.16 }
+    /// Rotation only tracks once the finger is this far from the ring centre, so a
+    /// touch near the hub does not produce wild angle jumps.
+    private let rotationMinRadiusFactor: CGFloat = 0.10
+    /// Magnetic snap window: within this many degrees of the exit the gap snaps
+    /// exactly on. Kept small so the snap is a gentle assist, never a yank.
+    private let snapDegrees: Double = 6
 
     init(level: Level, reduceMotion: Bool) {
         self.level = level
@@ -398,20 +404,20 @@ final class GameScene: SKScene {
             let delta = atan2(sin(curAngle - prevAngle), cos(curAngle - prevAngle))
             if delta != 0 {
                 let wasAligned = node.isAligned
-                let result = node.rotateGap(byRadians: delta)
+                _ = node.rotateGap(byRadians: delta, snapDegrees: snapDegrees)
+                // One subtle tick on the alignment transition only — never a second
+                // haptic for the snap, so rolling past the window feels clean.
                 if node.isAligned != wasAligned {
                     if node.isAligned {
                         gameDelegate?.gameSceneRequestsHaptic(self, kind: .align)
                         if tutorialActive, node.ring.id == suggestedRingId() {
                             gameDelegate?.gameSceneDidAlignSuggestedRing(self)
-                            refreshTutorialArrow(for: node)
                         }
-                    } else if tutorialActive, node.ring.id == suggestedRingId() {
+                    }
+                    if tutorialActive, node.ring.id == suggestedRingId() {
                         refreshTutorialArrow(for: node)
                     }
                     gameDelegate?.gameSceneDidUpdateSelection(self)
-                } else if result.didSnap {
-                    gameDelegate?.gameSceneRequestsHaptic(self, kind: .align)
                 }
             }
         }

@@ -41,10 +41,10 @@
   },
   "mechanics": {
     "objective": "Remove all silver blocker rings and copper goal rings from the board.",
-    "dragModel": "A selected ring projects touch movement onto its exitDirection. If the drag progress passes the release threshold and all requires have been cleared, the ring exits the board in that direction.",
-    "invalidMove": "If the player drags a locked ring or drags against the exitDirection, the piece snaps back with shake feedback.",
-    "releaseThresholdCellUnits": 0.65,
-    "exitDistanceCellUnits": 1.35,
+    "dragModel": "Rotate then pull. Roll the selected ring by dragging tangentially around its centre until the gap is within alignmentToleranceDegrees of the exitDirection, then pull it outward along that direction to release. Releasing needs both exit-projected travel past releaseThresholdCellUnits and genuine outward travel past radialPullThresholdCellUnits, so a purely tangential roll never releases the ring.",
+    "invalidMove": "Pulling a ring whose gap is not yet aligned is refused with a 'rotate first' nudge; pulling a ring whose requires are not all cleared shows the blocked feedback. Both snap the ring back, and neither counts as a move.",
+    "releaseThresholdCellUnits": 0.5,
+    "exitDistanceCellUnits": 1.6,
     "ringDefaults": {
       "outerRadiusCellUnits": 0.44,
       "tubeWidthCellUnits": 0.14,
@@ -56,9 +56,12 @@
         "levels11to15": 15,
         "levels16to20": 12
       },
-      "initialGapAngleField": "initialGapAngle: gap angle in degrees (E=0, N=90, CCW+) the ring starts at; offset from exitDirection so the player must rotate to align."
+      "initialGapAngleField": "initialGapAngle: gap angle in degrees (E=0, N=90, CCW+) the ring starts at; offset from exitDirection so the player must rotate to align.",
+      "rotationBeginRadiusCellUnits": 0.1,
+      "snapDegrees": 6
     },
-    "rotationModel": "Each ring is an open circle with one gap. The player rolls the selected ring (dragging tangentially around its centre) until the gap is within alignmentToleranceDegrees of its exitDirection, then pulls it out through the gap along that direction. A ring never releases while its gap is misaligned or while any requires dependency is still on the board."
+    "rotationModel": "Each ring is an open circle with one gap. The player rolls the selected ring (dragging tangentially around its centre) until the gap is within alignmentToleranceDegrees of its exitDirection, then pulls it out through the gap along that direction. A ring never releases while its gap is misaligned or while any requires dependency is still on the board.",
+    "radialPullThresholdCellUnits": 0.16
   },
   "levels": [
     {

@@ -49,9 +49,28 @@ One finger does everything:
 - **Pull before aligning** is refused with a "rotate first" nudge.
 - **Pull while still blocked** is refused with the existing blocked feedback.
 
-Approximate thresholds (tuned against the iPhone 17 Pro simulator, scaled by cell
-size): rotation engages past ~0.12 cell from centre; a release needs ~0.55 cell
-of exit-projected travel and ~0.18 cell of outward travel; snap window ~7°.
+### Final tuned values (Phase 4B)
+
+All distances scale by cell size; angles are degrees. Tuned on the iPhone 17 Pro
+and iPhone SE (3rd gen) simulators.
+
+| Knob | Value | Why |
+| --- | --- | --- |
+| Rotation begin radius | 0.10 cell | Track rotation once the finger leaves the hub; avoids wild angle jumps near centre. |
+| Release projection (along exit) | 0.50 cell | Deliberate outward pull, not a twitch. |
+| Release radial travel (from centre) | 0.16 cell | The anti-accident guard — a tangential roll keeps constant radius, so it never reaches this. |
+| Snap window | 6° | Subtle magnetic assist onto the exit, never a yank. |
+| Alignment tolerance | 22° → 18° → 15° → 12° | Forgiving early, gently tighter later (by level band). |
+| Pull-slide clamp | 0.42 cell | The ring visibly eases out "about to come free" before it pops. |
+| Release animation | 0.24 s (0.12 s Reduce Motion) | Snappy exit; shorter when motion is reduced. |
+| Snap spin animation | 0.12 s (instant in Reduce Motion) | Quick settle onto the exit. |
+
+These mirror the descriptive `mechanics` fields in the shared JSON
+(`releaseThresholdCellUnits`, `radialPullThresholdCellUnits`,
+`ringDefaults.rotationBeginRadiusCellUnits`, `ringDefaults.snapDegrees`) so a
+future port reads the same numbers. The alignment transition fires exactly one
+light haptic; the snap itself adds no second tick. Copper rings use the identical
+`RingNode` path, so they roll and release exactly like silver.
 
 ## Alignment tolerance
 

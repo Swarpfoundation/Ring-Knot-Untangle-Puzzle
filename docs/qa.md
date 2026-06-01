@@ -127,6 +127,41 @@ Because the overlay is `#if DEBUG`, it is compiled out of Release builds — ste
 of `ci_local.sh` (a Release build) is the guard that proves it cannot leak into a
 shipping binary.
 
+### Real gestures vs. the deterministic bridge
+
+Coverage is split deliberately:
+
+| Concern | Covered by |
+| --- | --- |
+| Pull a **misaligned** ring → no release (real touch) | `RingKnotRealGestureUITests.test40` — a real coordinate drag straight up on Level 1's first ring |
+| Pull a bridge-**aligned** ring → real outward drag releases it | `RingKnotRealGestureUITests.test41` — bridge aligns, a real drag releases |
+| Rotation alignment, move-counter semantics, blocked feedback, completion, unlock | `RingKnotPhase4UITests` via the bridge (deterministic) |
+
+`RingKnotRealGestureUITests` reproduces the scene's layout maths from the
+`game.board` element frame to land the drag on cell B3, and uses a **straight
+radial** drag (constant bearing from the ring centre) so it isolates the *pull*
+half of the gesture without adding rotation. Circular rotation itself stays
+bridge-driven because raw circular drags around a SpriteKit node are not a stable
+XCUITest primitive; the bridge is the deterministic oracle for the alignment
+logic, and the real-gesture tests prove the pull/refuse path works under an actual
+touch. Both real-gesture tests were confirmed stable across repeated runs.
+
+### Small-device layout check
+
+Main tests run on **iPhone 17 Pro** (1206×2622). Layout was also verified on the
+smaller **iPhone 17e** (1170×2532) by running `test_capturePhase3Screens` there and
+inspecting the captures:
+
+- Gameplay HUD (Back / Level / Moves / Hint / Restart) sits above the board and
+  does not overlap the rings; the tutorial panel fits under it.
+- Onboarding and Settings remain scrollable.
+- The completion overlay (emblem, Moves/Par/Best, Next Level, Replay, Level
+  Select) fits inside its card with correct margins — no clipping or overlap.
+
+No iPhone SE-class (compact, 4.7″) simulator is installed on this host; the 17e is
+the smallest available iPhone. Available simulators: iPhone 17 Pro / 17 Pro Max /
+17e / Air / 17.
+
 ### Manual VoiceOver check (rotation)
 
 With VoiceOver on, open Level 1: the board element announces the rings remaining
@@ -150,3 +185,19 @@ xcodebuild -project ios/RingKnot/RingKnot.xcodeproj -scheme RingKnot \
 xcrun xcresulttool export attachments --path /tmp/ss.xcresult --output-path /tmp/ss_att
 # then copy the phase-4a-* attachments (see manifest.json) into docs/screenshots/
 ```
+
+`ScreenshotTour.test_capturePhase4bScreens` adds three Phase 4B stills:
+`phase-4b-ready-state.png` (silver ring aligned + ready glow), `phase-4b-pull-release.png`
+(board right after a **real** outward drag releases that ring — move counter at 1,
+only the copper core left), and `phase-4b-copper-ready.png` (copper ring aligned +
+ready glow).
+
+**Screen recording.** `tools/capture_phase4b_demo.sh` drives
+`ScreenshotTour.test_phase4bDemoWalkthrough` while `xcrun simctl io recordVideo`
+captures the screen, to produce `docs/screenshots/phase-4b-rotation-demo.mov`. On
+this machine the simulator's `recordVideo` failed intermittently with
+`SimRenderServer.SimulatorError Code=2` (the headless render server drops its LCD
+display between capture sessions), so the `.mov` was **not** produced here; the
+three genuine stills above stand in as the required evidence. The script is kept
+so the recording can be captured on a host where the render server is stable
+(typically with the Simulator app fronted in an interactive GUI session).

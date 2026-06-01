@@ -146,3 +146,11 @@ drawn procedurally with `SKShapeNode` (arc + arrowhead, no bitmap). The straight
 exit arrow reuses `ui_drag_arrow_master`. The four Phase 4A screenshots in
 `docs/screenshots/phase-4a-*.png` are genuine simulator captures from
 `ScreenshotTour.test_capturePhase4Screens`.
+
+Phase 4B adds three more genuine stills (`docs/screenshots/phase-4b-ready-state.png`,
+`phase-4b-pull-release.png`, `phase-4b-copper-ready.png`) from
+`ScreenshotTour.test_capturePhase4bScreens`. No new art — the ready glow and
+rotation cue remain procedural. A screen recording driver
+(`tools/capture_phase4b_demo.sh` + `test_phase4bDemoWalkthrough`) is included; the
+`.mov` was not produced on this host because the simulator render server's
+`recordVideo` was unstable (documented in `docs/qa.md`).

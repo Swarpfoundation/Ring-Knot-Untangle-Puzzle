@@ -10,6 +10,7 @@
 		0030DCFC97E13ACED796BB28 /* RingKnotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */; };
 		01A44B9D728399EEFC8913F0 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C9FDACF4D2F709482A5DBA /* GameController.swift */; };
 		0C7E0686F4F73C83AF4772AD /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2D66C86E72CDB7448A7FD1 /* AudioManager.swift */; };
+		1213AE26F682B613EC9172C3 /* RingKnotRealGestureUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E472A965C5612BCFE062336E /* RingKnotRealGestureUITests.swift */; };
 		1487253267E35C4E9709E2D2 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF379D7855F3BBBA4C8C601 /* Cell.swift */; };
 		22A6C40594790308F124C8DE /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D153E26C2D028355D5800E /* ProgressStore.swift */; };
 		28444D2B575D36B2701DA0F9 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 32D40866D28A9DBC5D0D63E2 /* sfx */; };
@@ -110,6 +111,7 @@
 		B6B373C5464991D5A46F4F37 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BF27EDE68A06D7BB0A80724B /* LevelLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLoader.swift; sourceTree = "<group>"; };
 		E1C9755F4FC9FB9B57447A92 /* RingKnotPhase4UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotPhase4UITests.swift; sourceTree = "<group>"; };
+		E472A965C5612BCFE062336E /* RingKnotRealGestureUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotRealGestureUITests.swift; sourceTree = "<group>"; };
 		E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		EED3537AE57FE06E23C9E41B /* ProgressStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStoreTests.swift; sourceTree = "<group>"; };
 		F0C78231BC5DE449C6C6C24B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 			children = (
 				425D490F9E073699275A9297 /* RingKnotPhase3UITests.swift */,
 				E1C9755F4FC9FB9B57447A92 /* RingKnotPhase4UITests.swift */,
+				E472A965C5612BCFE062336E /* RingKnotRealGestureUITests.swift */,
 				F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */,
 				018A9F7902E59C7E854CF652 /* ScreenshotTour.swift */,
 			);
@@ -391,6 +394,7 @@
 			files = (
 				519DD5516800B767CA78E59D /* RingKnotPhase3UITests.swift in Sources */,
 				DC31774365A983C650AAEEBE /* RingKnotPhase4UITests.swift in Sources */,
+				1213AE26F682B613EC9172C3 /* RingKnotRealGestureUITests.swift in Sources */,
 				0030DCFC97E13ACED796BB28 /* RingKnotUITests.swift in Sources */,
 				532A9345B9F155B8EEB2A0F5 /* ScreenshotTour.swift in Sources */,
 			);
