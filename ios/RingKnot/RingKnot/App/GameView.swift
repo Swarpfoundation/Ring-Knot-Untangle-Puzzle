@@ -9,7 +9,7 @@ struct GameView: View {
 
     @StateObject private var controller = GameController()
     @State private var currentLevel: Level
-    /// nil = no tutorial; 0 = "drag toward opening"; 1 = "clear blockers".
+    /// nil = no tutorial; 0 = "rotate to align"; 1 = "pull it out"; 2 = "clear blockers".
     @State private var tutorialStep: Int?
 
     init(level: Level) {
@@ -49,6 +49,9 @@ struct GameView: View {
                         .accessibilityElement()
                         .accessibilityLabel(controller.boardAccessibilitySummary)
                         .accessibilityIdentifier("game.board")
+                        .accessibilityAction(named: "Rotate ring to opening") {
+                            controller.rotateSuggestedRingToExit()
+                        }
                         .accessibilityAction(named: "Show Hint") {
                             AudioManager.shared.play(.hint)
                             controller.hint()
@@ -96,6 +99,10 @@ struct GameView: View {
             controller.scene(for: currentLevel, reduceMotion: reduceMotion)
             startTutorialIfNeeded()
         }
+        .onChange(of: controller.tutorialAlignedTick) { _, _ in
+            // The highlighted ring's gap lined up: move from "rotate" to "pull".
+            if tutorialStep == 0 { tutorialStep = 1 }
+        }
         .onChange(of: controller.clearedCount) { _, count in
             advanceTutorial(clearedCount: count)
         }
@@ -138,7 +145,8 @@ struct GameView: View {
         if clearedCount >= 2 {
             finishTutorial()
         } else if clearedCount == 1 {
-            tutorialStep = 1
+            // First ring is out — teach that some rings are blocked.
+            tutorialStep = 2
         }
     }
 
@@ -156,9 +164,11 @@ private struct TutorialPanel: View {
     let step: Int
 
     private var text: String {
-        step == 0
-            ? "Drag this ring toward its opening."
-            : "Clear blockers first, then free the copper knot."
+        switch step {
+        case 0:  return "Rotate the ring until the opening faces the arrow."
+        case 1:  return "Now pull it out through the gap."
+        default: return "Some rings are blocked. Clear them first, then free the copper knot."
+        }
     }
 
     var body: some View {
@@ -391,21 +401,25 @@ private struct TestBridgeOverlay: View {
             VStack {
                 Spacer()
                 HStack(spacing: 6) {
-                    Button(action: { controller.bridgePerformNextSolutionMove() }) {
-                        Color.clear.frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .accessibilityIdentifier("bridge.nextMove")
-                    Button(action: { controller.bridgePerformInvalidMove() }) {
-                        Color.clear.frame(width: 44, height: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .accessibilityIdentifier("bridge.invalidMove")
+                    bridgeButton("bridge.nextMove") { controller.bridgePerformNextSolutionMove() }
+                    bridgeButton("bridge.invalidMove") { controller.bridgePerformInvalidMove() }
+                    bridgeButton("bridge.rotateAligned") { controller.bridgeRotateNextSolutionRingToAligned() }
+                    bridgeButton("bridge.rotateMisaligned") { controller.bridgeRotateSelectedRingToMisaligned() }
+                    bridgeButton("bridge.tryRelease") { controller.bridgeTryReleaseNextSolutionRing() }
+                    bridgeButton("bridge.rotationMove") { controller.bridgePerformNextSolutionMoveWithRotation() }
                 }
                 .padding(.bottom, 4)
             }
             .allowsHitTesting(true)
         }
+    }
+
+    private func bridgeButton(_ id: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Color.clear.frame(width: 30, height: 44)
+                .contentShape(Rectangle())
+        }
+        .accessibilityIdentifier(id)
     }
 }
 #endif

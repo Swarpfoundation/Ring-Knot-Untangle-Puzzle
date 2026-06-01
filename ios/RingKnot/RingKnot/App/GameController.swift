@@ -18,6 +18,12 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
     @Published private(set) var clearedCount: Int = 0
     @Published private(set) var didComplete: Bool = false
     @Published private(set) var completion: CompletionInfo?
+    /// Monotonic counter bumped each time the tutorial's highlighted ring rolls
+    /// into alignment, so the tutorial advances "rotate" → "pull" reliably.
+    @Published private(set) var tutorialAlignedTick: Int = 0
+    /// Bumped whenever the selected ring changes, so the accessibility summary
+    /// re-renders with the held ring's alignment.
+    @Published private(set) var selectionVersion: Int = 0
 
     private var currentScene: GameScene?
     private weak var environment: AppEnvironment?
@@ -63,10 +69,23 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
         currentScene?.setTutorialGuidance(active: active)
     }
 
-    /// Accessibility summary of the board for the current level.
+    /// Accessibility action: roll the next solvable ring onto its exit.
+    func rotateSuggestedRingToExit() {
+        currentScene?.rotateSuggestedRingToExit()
+    }
+
+    /// Accessibility summary of the board for the current level. Mentions the
+    /// remaining rings and, when a ring is held, whether its gap is aligned.
     var boardAccessibilitySummary: String {
         guard let scene = currentScene, let id = currentLevelID else { return "Game board" }
-        return "Level \(id) board. \(scene.remainingRingCount) of \(scene.totalRingCount) rings remaining."
+        _ = selectionVersion // keep this recomputed when selection changes
+        var summary = "Level \(id) board. \(scene.remainingRingCount) of \(scene.totalRingCount) rings remaining."
+        if let aligned = scene.selectedRingIsAligned {
+            summary += aligned
+                ? " Selected ring is aligned with its opening and ready to pull out."
+                : " Selected ring's gap is not yet aligned — rotate it to its opening."
+        }
+        return summary
     }
 
     #if DEBUG
@@ -76,6 +95,22 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
 
     func bridgePerformInvalidMove() {
         currentScene?.bridgePerformInvalidMove()
+    }
+
+    func bridgeRotateNextSolutionRingToAligned() {
+        currentScene?.bridgeRotateNextSolutionRingToAligned()
+    }
+
+    func bridgeRotateSelectedRingToMisaligned() {
+        currentScene?.bridgeRotateSelectedRingToMisaligned()
+    }
+
+    func bridgeTryReleaseNextSolutionRing() {
+        currentScene?.bridgeTryReleaseNextSolutionRing()
+    }
+
+    func bridgePerformNextSolutionMoveWithRotation() {
+        currentScene?.bridgePerformNextSolutionMoveWithRotation()
     }
     #endif
 
@@ -111,10 +146,19 @@ final class GameController: NSObject, ObservableObject, GameSceneDelegate {
             Haptics.shared.fire(kind)
             switch kind {
             case .select:     AudioManager.shared.play(.ringSelect)
+            case .align:      break   // haptic only — no continuous rotation audio
             case .success:    AudioManager.shared.play(.ringRelease)
             case .warning:    AudioManager.shared.play(.ringInvalid)
             case .completion: AudioManager.shared.play(.levelComplete)
             }
         }
+    }
+
+    nonisolated func gameSceneDidAlignSuggestedRing(_ scene: GameScene) {
+        Task { @MainActor in self.tutorialAlignedTick += 1 }
+    }
+
+    nonisolated func gameSceneDidUpdateSelection(_ scene: GameScene) {
+        Task { @MainActor in self.selectionVersion += 1 }
     }
 }

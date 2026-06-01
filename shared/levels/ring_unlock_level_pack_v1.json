@@ -49,14 +49,23 @@
       "outerRadiusCellUnits": 0.44,
       "tubeWidthCellUnits": 0.14,
       "gapDegrees": 72,
-      "connectorWidthCellUnits": 0.16
-    }
+      "connectorWidthCellUnits": 0.16,
+      "alignmentToleranceDegreesByBand": {
+        "levels1to5": 22,
+        "levels6to10": 18,
+        "levels11to15": 15,
+        "levels16to20": 12
+      },
+      "initialGapAngleField": "initialGapAngle: gap angle in degrees (E=0, N=90, CCW+) the ring starts at; offset from exitDirection so the player must rotate to align."
+    },
+    "rotationModel": "Each ring is an open circle with one gap. The player rolls the selected ring (dragging tangentially around its centre) until the gap is within alignmentToleranceDegrees of its exitDirection, then pulls it out through the gap along that direction. A ring never releases while its gap is misaligned or while any requires dependency is still on the board."
   },
   "levels": [
     {
       "id": 1,
       "name": "Single Hook",
       "difficulty": 1,
+      "alignmentToleranceDegrees": 22,
       "board": {
         "rows": 5,
         "cols": 5
@@ -67,7 +76,8 @@
           "kind": "silver",
           "cell": "B3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 150
         },
         {
           "id": "C1",
@@ -76,7 +86,8 @@
           "exitDirection": "E",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 285
         }
       ],
       "solution": [
@@ -94,6 +105,7 @@
       "id": 2,
       "name": "Two Side Pins",
       "difficulty": 1,
+      "alignmentToleranceDegrees": 22,
       "board": {
         "rows": 5,
         "cols": 5
@@ -104,14 +116,16 @@
           "kind": "silver",
           "cell": "B2",
           "exitDirection": "W",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 240
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "B4",
           "exitDirection": "E",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 285
         },
         {
           "id": "C1",
@@ -121,7 +135,8 @@
           "requires": [
             "S1",
             "S2"
-          ]
+          ],
+          "initialGapAngle": 0
         }
       ],
       "solution": [
@@ -143,6 +158,7 @@
       "id": 3,
       "name": "Top Cap",
       "difficulty": 1,
+      "alignmentToleranceDegrees": 22,
       "board": {
         "rows": 5,
         "cols": 5
@@ -153,7 +169,8 @@
           "kind": "silver",
           "cell": "A3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 150
         },
         {
           "id": "S2",
@@ -162,7 +179,8 @@
           "exitDirection": "W",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 105
         },
         {
           "id": "S3",
@@ -171,7 +189,8 @@
           "exitDirection": "E",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 90
         },
         {
           "id": "C1",
@@ -181,7 +200,8 @@
           "requires": [
             "S2",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 215
         }
       ],
       "solution": [
@@ -207,6 +227,7 @@
       "id": 4,
       "name": "First Fork",
       "difficulty": 2,
+      "alignmentToleranceDegrees": 22,
       "board": {
         "rows": 5,
         "cols": 5
@@ -217,7 +238,8 @@
           "kind": "silver",
           "cell": "B3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 150
         },
         {
           "id": "S2",
@@ -226,7 +248,8 @@
           "exitDirection": "SW",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 150
         },
         {
           "id": "S3",
@@ -235,7 +258,8 @@
           "exitDirection": "SE",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 45
         },
         {
           "id": "S4",
@@ -245,7 +269,8 @@
           "requires": [
             "S2",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 215
         },
         {
           "id": "C1",
@@ -254,7 +279,8 @@
           "exitDirection": "E",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 70
         }
       ],
       "solution": [
@@ -284,6 +310,7 @@
       "id": 5,
       "name": "Bridge Latch",
       "difficulty": 2,
+      "alignmentToleranceDegrees": 22,
       "board": {
         "rows": 5,
         "cols": 5
@@ -294,14 +321,16 @@
           "kind": "silver",
           "cell": "A2",
           "exitDirection": "NW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 195
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "A4",
           "exitDirection": "NE",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 330
         },
         {
           "id": "S3",
@@ -311,7 +340,8 @@
           "requires": [
             "S1",
             "S2"
-          ]
+          ],
+          "initialGapAngle": 180
         },
         {
           "id": "S4",
@@ -320,7 +350,8 @@
           "exitDirection": "W",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 125
         },
         {
           "id": "S5",
@@ -329,7 +360,8 @@
           "exitDirection": "E",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 70
         },
         {
           "id": "C1",
@@ -339,7 +371,8 @@
           "requires": [
             "S4",
             "S5"
-          ]
+          ],
+          "initialGapAngle": 170
         }
       ],
       "solution": [
@@ -373,6 +406,7 @@
       "id": 6,
       "name": "Split Core",
       "difficulty": 2,
+      "alignmentToleranceDegrees": 18,
       "board": {
         "rows": 5,
         "cols": 5
@@ -383,14 +417,16 @@
           "kind": "silver",
           "cell": "B1",
           "exitDirection": "W",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 240
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "B5",
           "exitDirection": "E",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 285
         },
         {
           "id": "S3",
@@ -400,7 +436,8 @@
           "requires": [
             "S1",
             "S2"
-          ]
+          ],
+          "initialGapAngle": 180
         },
         {
           "id": "S4",
@@ -409,7 +446,8 @@
           "exitDirection": "SW",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 170
         },
         {
           "id": "S5",
@@ -418,7 +456,8 @@
           "exitDirection": "SE",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 25
         },
         {
           "id": "C1",
@@ -428,7 +467,8 @@
           "requires": [
             "S4",
             "S5"
-          ]
+          ],
+          "initialGapAngle": 80
         },
         {
           "id": "C2",
@@ -437,7 +477,8 @@
           "exitDirection": "E",
           "requires": [
             "C1"
-          ]
+          ],
+          "initialGapAngle": 50
         }
       ],
       "solution": [
@@ -475,6 +516,7 @@
       "id": 7,
       "name": "Lower Trap",
       "difficulty": 3,
+      "alignmentToleranceDegrees": 18,
       "board": {
         "rows": 5,
         "cols": 5
@@ -485,28 +527,32 @@
           "kind": "silver",
           "cell": "D2",
           "exitDirection": "SW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 285
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "D4",
           "exitDirection": "SE",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 240
         },
         {
           "id": "S3",
           "kind": "silver",
           "cell": "B2",
           "exitDirection": "W",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 270
         },
         {
           "id": "S4",
           "kind": "silver",
           "cell": "B4",
           "exitDirection": "E",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 305
         },
         {
           "id": "S5",
@@ -516,7 +562,8 @@
           "requires": [
             "S3",
             "S4"
-          ]
+          ],
+          "initialGapAngle": 160
         },
         {
           "id": "S6",
@@ -527,7 +574,8 @@
             "S1",
             "S2",
             "S5"
-          ]
+          ],
+          "initialGapAngle": 170
         },
         {
           "id": "C1",
@@ -536,7 +584,8 @@
           "exitDirection": "W",
           "requires": [
             "S6"
-          ]
+          ],
+          "initialGapAngle": 230
         },
         {
           "id": "C2",
@@ -545,7 +594,8 @@
           "exitDirection": "E",
           "requires": [
             "C1"
-          ]
+          ],
+          "initialGapAngle": 275
         }
       ],
       "solution": [
@@ -587,6 +637,7 @@
       "id": 8,
       "name": "Outer Arms",
       "difficulty": 3,
+      "alignmentToleranceDegrees": 18,
       "board": {
         "rows": 5,
         "cols": 5
@@ -597,21 +648,24 @@
           "kind": "silver",
           "cell": "A3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 150
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "B1",
           "exitDirection": "W",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 105
         },
         {
           "id": "S3",
           "kind": "silver",
           "cell": "B5",
           "exitDirection": "E",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 90
         },
         {
           "id": "S4",
@@ -621,7 +675,8 @@
           "requires": [
             "S1",
             "S2"
-          ]
+          ],
+          "initialGapAngle": 170
         },
         {
           "id": "S5",
@@ -631,7 +686,8 @@
           "requires": [
             "S1",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 25
         },
         {
           "id": "S6",
@@ -640,7 +696,8 @@
           "exitDirection": "W",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 80
         },
         {
           "id": "S7",
@@ -649,7 +706,8 @@
           "exitDirection": "E",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 50
         },
         {
           "id": "C1",
@@ -659,7 +717,8 @@
           "requires": [
             "S6",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 185
         }
       ],
       "solution": [
@@ -701,6 +760,7 @@
       "id": 9,
       "name": "Bottom First",
       "difficulty": 3,
+      "alignmentToleranceDegrees": 18,
       "board": {
         "rows": 5,
         "cols": 5
@@ -711,7 +771,8 @@
           "kind": "silver",
           "cell": "E3",
           "exitDirection": "S",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 330
         },
         {
           "id": "S2",
@@ -720,7 +781,8 @@
           "exitDirection": "SW",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 150
         },
         {
           "id": "S3",
@@ -729,14 +791,16 @@
           "exitDirection": "SE",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 45
         },
         {
           "id": "S4",
           "kind": "silver",
           "cell": "B3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 35
         },
         {
           "id": "S5",
@@ -746,7 +810,8 @@
           "requires": [
             "S4",
             "S2"
-          ]
+          ],
+          "initialGapAngle": 250
         },
         {
           "id": "S6",
@@ -756,7 +821,8 @@
           "requires": [
             "S4",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 260
         },
         {
           "id": "S7",
@@ -765,7 +831,8 @@
           "exitDirection": "NW",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 185
         },
         {
           "id": "S8",
@@ -774,7 +841,8 @@
           "exitDirection": "NE",
           "requires": [
             "S6"
-          ]
+          ],
+          "initialGapAngle": 320
         },
         {
           "id": "C1",
@@ -784,7 +852,8 @@
           "requires": [
             "S7",
             "S8"
-          ]
+          ],
+          "initialGapAngle": 20
         }
       ],
       "solution": [
@@ -830,6 +899,7 @@
       "id": 10,
       "name": "Inner Clamp",
       "difficulty": 4,
+      "alignmentToleranceDegrees": 18,
       "board": {
         "rows": 5,
         "cols": 5
@@ -840,14 +910,16 @@
           "kind": "silver",
           "cell": "A2",
           "exitDirection": "NW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 195
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "A4",
           "exitDirection": "NE",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 330
         },
         {
           "id": "S3",
@@ -857,7 +929,8 @@
           "requires": [
             "S1",
             "S2"
-          ]
+          ],
+          "initialGapAngle": 180
         },
         {
           "id": "S4",
@@ -866,7 +939,8 @@
           "exitDirection": "W",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 125
         },
         {
           "id": "S5",
@@ -875,7 +949,8 @@
           "exitDirection": "E",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 70
         },
         {
           "id": "S6",
@@ -884,7 +959,8 @@
           "exitDirection": "SW",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 125
         },
         {
           "id": "S7",
@@ -893,7 +969,8 @@
           "exitDirection": "SE",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 5
         },
         {
           "id": "S8",
@@ -903,7 +980,8 @@
           "requires": [
             "S6",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 185
         },
         {
           "id": "C1",
@@ -912,7 +990,8 @@
           "exitDirection": "W",
           "requires": [
             "S8"
-          ]
+          ],
+          "initialGapAngle": 290
         },
         {
           "id": "C2",
@@ -921,7 +1000,8 @@
           "exitDirection": "E",
           "requires": [
             "C1"
-          ]
+          ],
+          "initialGapAngle": 295
         }
       ],
       "solution": [
@@ -971,6 +1051,7 @@
       "id": 11,
       "name": "Four-Way Latch",
       "difficulty": 4,
+      "alignmentToleranceDegrees": 15,
       "board": {
         "rows": 5,
         "cols": 5
@@ -981,28 +1062,32 @@
           "kind": "silver",
           "cell": "C1",
           "exitDirection": "W",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 240
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "C5",
           "exitDirection": "E",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 285
         },
         {
           "id": "S3",
           "kind": "silver",
           "cell": "A3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 180
         },
         {
           "id": "S4",
           "kind": "silver",
           "cell": "E3",
           "exitDirection": "S",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 215
         },
         {
           "id": "S5",
@@ -1012,7 +1097,8 @@
           "requires": [
             "S1",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 205
         },
         {
           "id": "S6",
@@ -1022,7 +1108,8 @@
           "requires": [
             "S2",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 305
         },
         {
           "id": "S7",
@@ -1032,7 +1119,8 @@
           "requires": [
             "S1",
             "S4"
-          ]
+          ],
+          "initialGapAngle": 275
         },
         {
           "id": "S8",
@@ -1042,7 +1130,8 @@
           "requires": [
             "S2",
             "S4"
-          ]
+          ],
+          "initialGapAngle": 230
         },
         {
           "id": "C1",
@@ -1052,7 +1141,8 @@
           "requires": [
             "S5",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 290
         },
         {
           "id": "C2",
@@ -1063,7 +1153,8 @@
             "S6",
             "S8",
             "C1"
-          ]
+          ],
+          "initialGapAngle": 295
         }
       ],
       "solution": [
@@ -1113,6 +1204,7 @@
       "id": 12,
       "name": "Rim Gate",
       "difficulty": 4,
+      "alignmentToleranceDegrees": 15,
       "board": {
         "rows": 5,
         "cols": 5
@@ -1123,28 +1215,32 @@
           "kind": "silver",
           "cell": "A3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 150
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "B1",
           "exitDirection": "W",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 105
         },
         {
           "id": "S3",
           "kind": "silver",
           "cell": "B5",
           "exitDirection": "E",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 90
         },
         {
           "id": "S4",
           "kind": "silver",
           "cell": "E3",
           "exitDirection": "S",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 215
         },
         {
           "id": "S5",
@@ -1153,7 +1249,8 @@
           "exitDirection": "SW",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 295
         },
         {
           "id": "S6",
@@ -1162,7 +1259,8 @@
           "exitDirection": "SE",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 215
         },
         {
           "id": "S7",
@@ -1173,7 +1271,8 @@
             "S1",
             "S2",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 140
         },
         {
           "id": "S8",
@@ -1183,7 +1282,8 @@
           "requires": [
             "S5",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 95
         },
         {
           "id": "S9",
@@ -1193,7 +1293,8 @@
           "requires": [
             "S6",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 110
         },
         {
           "id": "C1",
@@ -1203,7 +1304,8 @@
           "requires": [
             "S8",
             "S9"
-          ]
+          ],
+          "initialGapAngle": 205
         },
         {
           "id": "C2",
@@ -1212,7 +1314,8 @@
           "exitDirection": "N",
           "requires": [
             "C1"
-          ]
+          ],
+          "initialGapAngle": 170
         }
       ],
       "solution": [
@@ -1266,6 +1369,7 @@
       "id": 13,
       "name": "Clockwise Spiral",
       "difficulty": 5,
+      "alignmentToleranceDegrees": 15,
       "board": {
         "rows": 5,
         "cols": 5
@@ -1276,7 +1380,8 @@
           "kind": "silver",
           "cell": "A1",
           "exitDirection": "NW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 195
         },
         {
           "id": "S2",
@@ -1285,7 +1390,8 @@
           "exitDirection": "N",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 15
         },
         {
           "id": "S3",
@@ -1294,7 +1400,8 @@
           "exitDirection": "NE",
           "requires": [
             "S2"
-          ]
+          ],
+          "initialGapAngle": 135
         },
         {
           "id": "S4",
@@ -1303,7 +1410,8 @@
           "exitDirection": "E",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 305
         },
         {
           "id": "S5",
@@ -1312,7 +1420,8 @@
           "exitDirection": "SE",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 25
         },
         {
           "id": "S6",
@@ -1321,7 +1430,8 @@
           "exitDirection": "S",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 170
         },
         {
           "id": "S7",
@@ -1330,7 +1440,8 @@
           "exitDirection": "SW",
           "requires": [
             "S6"
-          ]
+          ],
+          "initialGapAngle": 275
         },
         {
           "id": "S8",
@@ -1339,7 +1450,8 @@
           "exitDirection": "W",
           "requires": [
             "S7"
-          ]
+          ],
+          "initialGapAngle": 95
         },
         {
           "id": "S9",
@@ -1348,7 +1460,8 @@
           "exitDirection": "NW",
           "requires": [
             "S8"
-          ]
+          ],
+          "initialGapAngle": 245
         },
         {
           "id": "S10",
@@ -1357,7 +1470,8 @@
           "exitDirection": "N",
           "requires": [
             "S9"
-          ]
+          ],
+          "initialGapAngle": 25
         },
         {
           "id": "C1",
@@ -1366,7 +1480,8 @@
           "exitDirection": "W",
           "requires": [
             "S10"
-          ]
+          ],
+          "initialGapAngle": 260
         },
         {
           "id": "C2",
@@ -1375,7 +1490,8 @@
           "exitDirection": "E",
           "requires": [
             "C1"
-          ]
+          ],
+          "initialGapAngle": 310
         }
       ],
       "solution": [
@@ -1433,6 +1549,7 @@
       "id": 14,
       "name": "Double Key",
       "difficulty": 5,
+      "alignmentToleranceDegrees": 15,
       "board": {
         "rows": 5,
         "cols": 5
@@ -1443,14 +1560,16 @@
           "kind": "silver",
           "cell": "A2",
           "exitDirection": "NW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 195
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "A4",
           "exitDirection": "NE",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 330
         },
         {
           "id": "S3",
@@ -1459,7 +1578,8 @@
           "exitDirection": "W",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 270
         },
         {
           "id": "S4",
@@ -1468,7 +1588,8 @@
           "exitDirection": "E",
           "requires": [
             "S2"
-          ]
+          ],
+          "initialGapAngle": 305
         },
         {
           "id": "S5",
@@ -1477,7 +1598,8 @@
           "exitDirection": "W",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 250
         },
         {
           "id": "S6",
@@ -1486,7 +1608,8 @@
           "exitDirection": "E",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 260
         },
         {
           "id": "S7",
@@ -1495,7 +1618,8 @@
           "exitDirection": "SW",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 275
         },
         {
           "id": "S8",
@@ -1504,7 +1628,8 @@
           "exitDirection": "SE",
           "requires": [
             "S6"
-          ]
+          ],
+          "initialGapAngle": 230
         },
         {
           "id": "S9",
@@ -1514,7 +1639,8 @@
           "requires": [
             "S3",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 200
         },
         {
           "id": "S10",
@@ -1524,7 +1650,8 @@
           "requires": [
             "S4",
             "S8"
-          ]
+          ],
+          "initialGapAngle": 205
         },
         {
           "id": "C1",
@@ -1533,7 +1660,8 @@
           "exitDirection": "W",
           "requires": [
             "S9"
-          ]
+          ],
+          "initialGapAngle": 260
         },
         {
           "id": "C2",
@@ -1543,7 +1671,8 @@
           "requires": [
             "S10",
             "C1"
-          ]
+          ],
+          "initialGapAngle": 310
         }
       ],
       "solution": [
@@ -1601,6 +1730,7 @@
       "id": 15,
       "name": "Stacked Bridge",
       "difficulty": 5,
+      "alignmentToleranceDegrees": 15,
       "board": {
         "rows": 5,
         "cols": 5
@@ -1611,7 +1741,8 @@
           "kind": "silver",
           "cell": "A3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 150
         },
         {
           "id": "S2",
@@ -1620,7 +1751,8 @@
           "exitDirection": "NW",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 60
         },
         {
           "id": "S3",
@@ -1629,7 +1761,8 @@
           "exitDirection": "NE",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 135
         },
         {
           "id": "S4",
@@ -1638,7 +1771,8 @@
           "exitDirection": "W",
           "requires": [
             "S2"
-          ]
+          ],
+          "initialGapAngle": 125
         },
         {
           "id": "S5",
@@ -1647,7 +1781,8 @@
           "exitDirection": "E",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 70
         },
         {
           "id": "S6",
@@ -1656,7 +1791,8 @@
           "exitDirection": "SW",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 125
         },
         {
           "id": "S7",
@@ -1665,7 +1801,8 @@
           "exitDirection": "SE",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 5
         },
         {
           "id": "S8",
@@ -1675,7 +1812,8 @@
           "requires": [
             "S6",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 185
         },
         {
           "id": "S9",
@@ -1685,7 +1823,8 @@
           "requires": [
             "S2",
             "S6"
-          ]
+          ],
+          "initialGapAngle": 290
         },
         {
           "id": "S10",
@@ -1695,7 +1834,8 @@
           "requires": [
             "S3",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 295
         },
         {
           "id": "C1",
@@ -1706,7 +1846,8 @@
             "S8",
             "S9",
             "S10"
-          ]
+          ],
+          "initialGapAngle": 350
         },
         {
           "id": "C2",
@@ -1715,7 +1856,8 @@
           "exitDirection": "W",
           "requires": [
             "C1"
-          ]
+          ],
+          "initialGapAngle": 130
         },
         {
           "id": "C3",
@@ -1724,7 +1866,8 @@
           "exitDirection": "E",
           "requires": [
             "C2"
-          ]
+          ],
+          "initialGapAngle": 95
         }
       ],
       "solution": [
@@ -1786,6 +1929,7 @@
       "id": 16,
       "name": "Outer Shell",
       "difficulty": 6,
+      "alignmentToleranceDegrees": 12,
       "board": {
         "rows": 6,
         "cols": 6
@@ -1796,14 +1940,16 @@
           "kind": "silver",
           "cell": "A2",
           "exitDirection": "NW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 195
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "A5",
           "exitDirection": "NE",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 330
         },
         {
           "id": "S3",
@@ -1812,7 +1958,8 @@
           "exitDirection": "W",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 270
         },
         {
           "id": "S4",
@@ -1821,7 +1968,8 @@
           "exitDirection": "E",
           "requires": [
             "S2"
-          ]
+          ],
+          "initialGapAngle": 305
         },
         {
           "id": "S5",
@@ -1830,7 +1978,8 @@
           "exitDirection": "SW",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 295
         },
         {
           "id": "S6",
@@ -1839,7 +1988,8 @@
           "exitDirection": "SE",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 215
         },
         {
           "id": "S7",
@@ -1848,7 +1998,8 @@
           "exitDirection": "S",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 320
         },
         {
           "id": "S8",
@@ -1857,7 +2008,8 @@
           "exitDirection": "S",
           "requires": [
             "S6"
-          ]
+          ],
+          "initialGapAngle": 185
         },
         {
           "id": "S9",
@@ -1867,7 +2019,8 @@
           "requires": [
             "S1",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 200
         },
         {
           "id": "S10",
@@ -1877,7 +2030,8 @@
           "requires": [
             "S2",
             "S4"
-          ]
+          ],
+          "initialGapAngle": 25
         },
         {
           "id": "S11",
@@ -1887,7 +2041,8 @@
           "requires": [
             "S9",
             "S5"
-          ]
+          ],
+          "initialGapAngle": 260
         },
         {
           "id": "S12",
@@ -1897,7 +2052,8 @@
           "requires": [
             "S10",
             "S6"
-          ]
+          ],
+          "initialGapAngle": 310
         },
         {
           "id": "C1",
@@ -1907,7 +2063,8 @@
           "requires": [
             "S7",
             "S11"
-          ]
+          ],
+          "initialGapAngle": 275
         },
         {
           "id": "C2",
@@ -1918,7 +2075,8 @@
             "S8",
             "S12",
             "C1"
-          ]
+          ],
+          "initialGapAngle": 290
         }
       ],
       "solution": [
@@ -1984,6 +2142,7 @@
       "id": 17,
       "name": "Alternating Locks",
       "difficulty": 6,
+      "alignmentToleranceDegrees": 12,
       "board": {
         "rows": 6,
         "cols": 6
@@ -1994,28 +2153,32 @@
           "kind": "silver",
           "cell": "A3",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 150
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "F3",
           "exitDirection": "S",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 195
         },
         {
           "id": "S3",
           "kind": "silver",
           "cell": "C1",
           "exitDirection": "W",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 270
         },
         {
           "id": "S4",
           "kind": "silver",
           "cell": "C6",
           "exitDirection": "E",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 305
         },
         {
           "id": "S5",
@@ -2025,7 +2188,8 @@
           "requires": [
             "S1",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 205
         },
         {
           "id": "S6",
@@ -2035,7 +2199,8 @@
           "requires": [
             "S1",
             "S4"
-          ]
+          ],
+          "initialGapAngle": 305
         },
         {
           "id": "S7",
@@ -2045,7 +2210,8 @@
           "requires": [
             "S2",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 275
         },
         {
           "id": "S8",
@@ -2055,7 +2221,8 @@
           "requires": [
             "S2",
             "S4"
-          ]
+          ],
+          "initialGapAngle": 230
         },
         {
           "id": "S9",
@@ -2065,7 +2232,8 @@
           "requires": [
             "S5",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 290
         },
         {
           "id": "S10",
@@ -2075,7 +2243,8 @@
           "requires": [
             "S6",
             "S8"
-          ]
+          ],
+          "initialGapAngle": 295
         },
         {
           "id": "S11",
@@ -2084,7 +2253,8 @@
           "exitDirection": "S",
           "requires": [
             "S9"
-          ]
+          ],
+          "initialGapAngle": 350
         },
         {
           "id": "S12",
@@ -2093,7 +2263,8 @@
           "exitDirection": "S",
           "requires": [
             "S10"
-          ]
+          ],
+          "initialGapAngle": 220
         },
         {
           "id": "C1",
@@ -2102,7 +2273,8 @@
           "exitDirection": "N",
           "requires": [
             "S11"
-          ]
+          ],
+          "initialGapAngle": 185
         },
         {
           "id": "C2",
@@ -2111,7 +2283,8 @@
           "exitDirection": "N",
           "requires": [
             "S12"
-          ]
+          ],
+          "initialGapAngle": 20
         },
         {
           "id": "C3",
@@ -2121,7 +2294,8 @@
           "requires": [
             "C1",
             "C2"
-          ]
+          ],
+          "initialGapAngle": 105
         }
       ],
       "solution": [
@@ -2191,6 +2365,7 @@
       "id": 18,
       "name": "Corkscrew",
       "difficulty": 7,
+      "alignmentToleranceDegrees": 12,
       "board": {
         "rows": 6,
         "cols": 6
@@ -2201,7 +2376,8 @@
           "kind": "silver",
           "cell": "A1",
           "exitDirection": "NW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 195
         },
         {
           "id": "S2",
@@ -2210,7 +2386,8 @@
           "exitDirection": "N",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 15
         },
         {
           "id": "S3",
@@ -2219,7 +2396,8 @@
           "exitDirection": "N",
           "requires": [
             "S2"
-          ]
+          ],
+          "initialGapAngle": 180
         },
         {
           "id": "S4",
@@ -2228,7 +2406,8 @@
           "exitDirection": "NE",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 350
         },
         {
           "id": "S5",
@@ -2237,7 +2416,8 @@
           "exitDirection": "E",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 70
         },
         {
           "id": "S6",
@@ -2246,7 +2426,8 @@
           "exitDirection": "SE",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 215
         },
         {
           "id": "S7",
@@ -2255,7 +2436,8 @@
           "exitDirection": "S",
           "requires": [
             "S6"
-          ]
+          ],
+          "initialGapAngle": 320
         },
         {
           "id": "S8",
@@ -2264,7 +2446,8 @@
           "exitDirection": "S",
           "requires": [
             "S7"
-          ]
+          ],
+          "initialGapAngle": 185
         },
         {
           "id": "S9",
@@ -2273,7 +2456,8 @@
           "exitDirection": "SW",
           "requires": [
             "S8"
-          ]
+          ],
+          "initialGapAngle": 335
         },
         {
           "id": "S10",
@@ -2282,7 +2466,8 @@
           "exitDirection": "W",
           "requires": [
             "S9"
-          ]
+          ],
+          "initialGapAngle": 115
         },
         {
           "id": "S11",
@@ -2291,7 +2476,8 @@
           "exitDirection": "W",
           "requires": [
             "S10"
-          ]
+          ],
+          "initialGapAngle": 260
         },
         {
           "id": "S12",
@@ -2300,7 +2486,8 @@
           "exitDirection": "NW",
           "requires": [
             "S11"
-          ]
+          ],
+          "initialGapAngle": 85
         },
         {
           "id": "S13",
@@ -2309,7 +2496,8 @@
           "exitDirection": "N",
           "requires": [
             "S12"
-          ]
+          ],
+          "initialGapAngle": 185
         },
         {
           "id": "S14",
@@ -2318,7 +2506,8 @@
           "exitDirection": "N",
           "requires": [
             "S13"
-          ]
+          ],
+          "initialGapAngle": 20
         },
         {
           "id": "C1",
@@ -2327,7 +2516,8 @@
           "exitDirection": "W",
           "requires": [
             "S14"
-          ]
+          ],
+          "initialGapAngle": 285
         },
         {
           "id": "C2",
@@ -2336,7 +2526,8 @@
           "exitDirection": "E",
           "requires": [
             "C1"
-          ]
+          ],
+          "initialGapAngle": 300
         }
       ],
       "solution": [
@@ -2410,6 +2601,7 @@
       "id": 19,
       "name": "Two-Phase Center",
       "difficulty": 7,
+      "alignmentToleranceDegrees": 12,
       "board": {
         "rows": 6,
         "cols": 6
@@ -2420,14 +2612,16 @@
           "kind": "silver",
           "cell": "A2",
           "exitDirection": "NW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 195
         },
         {
           "id": "S2",
           "kind": "silver",
           "cell": "A5",
           "exitDirection": "NE",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 330
         },
         {
           "id": "S3",
@@ -2436,7 +2630,8 @@
           "exitDirection": "W",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 270
         },
         {
           "id": "S4",
@@ -2445,21 +2640,24 @@
           "exitDirection": "E",
           "requires": [
             "S2"
-          ]
+          ],
+          "initialGapAngle": 305
         },
         {
           "id": "S5",
           "kind": "silver",
           "cell": "F2",
           "exitDirection": "SW",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 295
         },
         {
           "id": "S6",
           "kind": "silver",
           "cell": "F5",
           "exitDirection": "SE",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 215
         },
         {
           "id": "S7",
@@ -2468,7 +2666,8 @@
           "exitDirection": "W",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 230
         },
         {
           "id": "S8",
@@ -2477,7 +2676,8 @@
           "exitDirection": "E",
           "requires": [
             "S6"
-          ]
+          ],
+          "initialGapAngle": 275
         },
         {
           "id": "S9",
@@ -2487,7 +2687,8 @@
           "requires": [
             "S1",
             "S3"
-          ]
+          ],
+          "initialGapAngle": 200
         },
         {
           "id": "S10",
@@ -2497,7 +2698,8 @@
           "requires": [
             "S2",
             "S4"
-          ]
+          ],
+          "initialGapAngle": 25
         },
         {
           "id": "S11",
@@ -2507,7 +2709,8 @@
           "requires": [
             "S5",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 350
         },
         {
           "id": "S12",
@@ -2517,7 +2720,8 @@
           "requires": [
             "S6",
             "S8"
-          ]
+          ],
+          "initialGapAngle": 220
         },
         {
           "id": "S13",
@@ -2527,7 +2731,8 @@
           "requires": [
             "S9",
             "S11"
-          ]
+          ],
+          "initialGapAngle": 275
         },
         {
           "id": "S14",
@@ -2537,7 +2742,8 @@
           "requires": [
             "S10",
             "S12"
-          ]
+          ],
+          "initialGapAngle": 290
         },
         {
           "id": "C1",
@@ -2546,7 +2752,8 @@
           "exitDirection": "W",
           "requires": [
             "S13"
-          ]
+          ],
+          "initialGapAngle": 285
         },
         {
           "id": "C2",
@@ -2556,7 +2763,8 @@
           "requires": [
             "S14",
             "C1"
-          ]
+          ],
+          "initialGapAngle": 300
         },
         {
           "id": "C3",
@@ -2565,7 +2773,8 @@
           "exitDirection": "N",
           "requires": [
             "C2"
-          ]
+          ],
+          "initialGapAngle": 175
         }
       ],
       "solution": [
@@ -2643,6 +2852,7 @@
       "id": 20,
       "name": "Final Knot",
       "difficulty": 8,
+      "alignmentToleranceDegrees": 12,
       "board": {
         "rows": 6,
         "cols": 6
@@ -2653,7 +2863,8 @@
           "kind": "silver",
           "cell": "A4",
           "exitDirection": "N",
-          "requires": []
+          "requires": [],
+          "initialGapAngle": 150
         },
         {
           "id": "S2",
@@ -2662,7 +2873,8 @@
           "exitDirection": "N",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 15
         },
         {
           "id": "S3",
@@ -2671,7 +2883,8 @@
           "exitDirection": "W",
           "requires": [
             "S2"
-          ]
+          ],
+          "initialGapAngle": 270
         },
         {
           "id": "S4",
@@ -2680,7 +2893,8 @@
           "exitDirection": "E",
           "requires": [
             "S1"
-          ]
+          ],
+          "initialGapAngle": 305
         },
         {
           "id": "S5",
@@ -2689,7 +2903,8 @@
           "exitDirection": "W",
           "requires": [
             "S3"
-          ]
+          ],
+          "initialGapAngle": 250
         },
         {
           "id": "S6",
@@ -2698,7 +2913,8 @@
           "exitDirection": "W",
           "requires": [
             "S5"
-          ]
+          ],
+          "initialGapAngle": 80
         },
         {
           "id": "S7",
@@ -2707,7 +2923,8 @@
           "exitDirection": "E",
           "requires": [
             "S4"
-          ]
+          ],
+          "initialGapAngle": 50
         },
         {
           "id": "S8",
@@ -2716,7 +2933,8 @@
           "exitDirection": "E",
           "requires": [
             "S7"
-          ]
+          ],
+          "initialGapAngle": 275
         },
         {
           "id": "S9",
@@ -2725,7 +2943,8 @@
           "exitDirection": "SW",
           "requires": [
             "S6"
-          ]
+          ],
+          "initialGapAngle": 335
         },
         {
           "id": "S10",
@@ -2734,7 +2953,8 @@
           "exitDirection": "SE",
           "requires": [
             "S8"
-          ]
+          ],
+          "initialGapAngle": 250
         },
         {
           "id": "S11",
@@ -2743,7 +2963,8 @@
           "exitDirection": "S",
           "requires": [
             "S9"
-          ]
+          ],
+          "initialGapAngle": 350
         },
         {
           "id": "S12",
@@ -2752,7 +2973,8 @@
           "exitDirection": "S",
           "requires": [
             "S10"
-          ]
+          ],
+          "initialGapAngle": 220
         },
         {
           "id": "S13",
@@ -2762,7 +2984,8 @@
           "requires": [
             "S2",
             "S4"
-          ]
+          ],
+          "initialGapAngle": 185
         },
         {
           "id": "S14",
@@ -2773,7 +2996,8 @@
             "S13",
             "S6",
             "S7"
-          ]
+          ],
+          "initialGapAngle": 290
         },
         {
           "id": "S15",
@@ -2784,7 +3008,8 @@
             "S14",
             "S11",
             "S12"
-          ]
+          ],
+          "initialGapAngle": 15
         },
         {
           "id": "C1",
@@ -2794,7 +3019,8 @@
           "requires": [
             "S13",
             "S14"
-          ]
+          ],
+          "initialGapAngle": 120
         },
         {
           "id": "C2",
@@ -2804,7 +3030,8 @@
           "requires": [
             "C1",
             "S15"
-          ]
+          ],
+          "initialGapAngle": 175
         },
         {
           "id": "C3",
@@ -2813,7 +3040,8 @@
           "exitDirection": "E",
           "requires": [
             "C2"
-          ]
+          ],
+          "initialGapAngle": 265
         }
       ],
       "solution": [

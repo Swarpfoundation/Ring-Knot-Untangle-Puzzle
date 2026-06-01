@@ -38,7 +38,33 @@ public struct GameState: Sendable {
             if isComplete { completedAt = now }
         case .blockedByPrerequisite, .wrongDirection:
             moveCount += 1
-        case .alreadyCleared, .unknownRing:
+        case .notAligned, .alreadyCleared, .unknownRing:
+            break
+        }
+        return outcome
+    }
+
+    /// Rotation-aware release. A move is only counted when the ring actually
+    /// leaves the board — rolling the gap into place, or a failed pull because the
+    /// gap is off or the ring is still blocked, does not increment the counter.
+    @discardableResult
+    public mutating func attemptRelease(
+        ringId: String,
+        gapAngleDegrees: Double,
+        now: Date = Date()
+    ) -> MoveOutcome {
+        let outcome = validator.evaluateRelease(
+            ringId: ringId,
+            gapAngleDegrees: gapAngleDegrees,
+            clearedIds: clearedRingIds
+        )
+        switch outcome {
+        case .accepted:
+            clearedRingIds.insert(ringId)
+            moveCount += 1
+            if isComplete { completedAt = now }
+        case .blockedByPrerequisite, .notAligned, .wrongDirection,
+             .alreadyCleared, .unknownRing:
             break
         }
         return outcome

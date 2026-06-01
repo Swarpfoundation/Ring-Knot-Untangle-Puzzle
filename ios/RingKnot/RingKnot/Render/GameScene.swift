@@ -6,10 +6,17 @@ protocol GameSceneDelegate: AnyObject {
     func gameScene(_ scene: GameScene, didCompleteLevel level: Level, moves: Int)
     func gameScene(_ scene: GameScene, didUpdateClearedCount count: Int)
     func gameSceneRequestsHaptic(_ scene: GameScene, kind: HapticKind)
+    /// Fired once when the ring the tutorial is pointing at rolls into alignment,
+    /// so the SwiftUI tutorial can advance from "rotate" to "pull".
+    func gameSceneDidAlignSuggestedRing(_ scene: GameScene)
+    /// Fired when the selected ring (or selection) changes, so the accessibility
+    /// summary can mention whether the held ring is aligned.
+    func gameSceneDidUpdateSelection(_ scene: GameScene)
 }
 
 enum HapticKind {
     case select
+    case align
     case success
     case warning
     case completion
@@ -23,6 +30,7 @@ final class GameScene: SKScene {
     private var ringNodes: [String: RingNode] = [:]
     private var selectedNode: RingNode?
     private var dragStartLocation: CGPoint = .zero
+    private var previousLocation: CGPoint = .zero
 
     private var cellSize: CGFloat = 0
     private var boardOrigin: CGPoint = .zero
@@ -30,7 +38,7 @@ final class GameScene: SKScene {
     private var fxLayer: SKNode = SKNode()
     private var hintArrowNode: SKSpriteNode?
     private var selectionGlowNode: SKSpriteNode?
-    private var tutorialArrowNode: SKSpriteNode?
+    private var tutorialArrowNode: SKNode?
     private var tutorialActive = false
 
     weak var gameDelegate: GameSceneDelegate?
@@ -38,6 +46,21 @@ final class GameScene: SKScene {
     /// Rings still on the board — used for the accessibility summary.
     var remainingRingCount: Int { level.rings.count - state.clearedRingIds.count }
     var totalRingCount: Int { level.rings.count }
+
+    /// Accessibility: the held ring's id and whether its gap is aligned (nil when
+    /// nothing is selected).
+    private(set) var selectedRingId: String?
+    var selectedRingIsAligned: Bool? {
+        guard let id = selectedRingId, let node = ringNodes[id] else { return nil }
+        return node.isAligned
+    }
+
+    /// Release happens when the gap is aligned and the player pulls the ring out
+    /// along the exit: a clear projection beyond threshold plus genuine outward
+    /// travel from the centre (so a tangential rotation never releases by accident).
+    private var releaseProjectionThreshold: CGFloat { cellSize * 0.55 }
+    private var releaseRadialThreshold: CGFloat { cellSize * 0.18 }
+    private let rotationMinRadiusFactor: CGFloat = 0.12
 
     init(level: Level, reduceMotion: Bool) {
         self.level = level
@@ -76,6 +99,24 @@ final class GameScene: SKScene {
         showHintArrow(for: node)
     }
 
+    /// Accessibility helper: roll the next solvable ring onto its exit so VoiceOver
+    /// users can align without performing a rotation gesture. Then a normal pull
+    /// (or the Show Hint action) finishes the move.
+    func rotateSuggestedRingToExit() {
+        guard let id = suggestedRingId(), let node = ringNodes[id] else { return }
+        selectedNode?.showSelection(false)
+        selectedNode = node
+        selectedRingId = node.ring.id
+        node.showSelection(true)
+        node.alignGapToExit()
+        gameDelegate?.gameSceneRequestsHaptic(self, kind: .align)
+        if tutorialActive {
+            gameDelegate?.gameSceneDidAlignSuggestedRing(self)
+            refreshTutorialArrow(for: node)
+        }
+        gameDelegate?.gameSceneDidUpdateSelection(self)
+    }
+
     // MARK: - Tutorial guidance (Level 1)
 
     /// Turns the persistent tutorial highlight + directional arrow on/off. The
@@ -96,23 +137,82 @@ final class GameScene: SKScene {
               let id = state.validator.nextSuggestedRingId(clearedIds: state.clearedRingIds),
               let node = ringNodes[id] else { return }
         node.setTutorialHighlight(true, reduceMotion: reduceMotion)
-        guard let texture = textureNamed("ui_drag_arrow_master") else { return }
-        let arrow = SKSpriteNode(texture: texture)
-        arrow.size = CGSize(width: cellSize * 0.9, height: cellSize * 0.9)
-        let v = node.ring.exitDirection.unitVector
-        arrow.position = CGPoint(
-            x: node.position.x + v.dx * cellSize * 0.7,
-            y: node.position.y + v.dy * cellSize * 0.7
-        )
-        arrow.zRotation = atan2(v.dy, v.dx)
-        arrow.zPosition = 220
-        fxLayer.addChild(arrow)
-        tutorialArrowNode = arrow
+        refreshTutorialArrow(for: node)
+    }
+
+    /// Show the right cue for the highlighted ring: a curved "roll me" arc while
+    /// the gap is still off, and the straight exit arrow once it is aligned.
+    private func refreshTutorialArrow(for node: RingNode) {
+        tutorialArrowNode?.removeFromParent()
+        tutorialArrowNode = nil
+        guard tutorialActive else { return }
+        let cue: SKNode = node.isAligned ? makeExitArrow(for: node) : makeRotationCue(for: node)
+        cue.zPosition = 220
+        fxLayer.addChild(cue)
+        tutorialArrowNode = cue
         guard !reduceMotion else { return }
-        arrow.run(SKAction.repeatForever(SKAction.sequence([
+        cue.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.fadeAlpha(to: 0.45, duration: 0.6),
             SKAction.fadeAlpha(to: 1.0, duration: 0.6)
         ])))
+    }
+
+    private func makeExitArrow(for node: RingNode) -> SKNode {
+        let v = node.ring.exitDirection.sceneUnitVector
+        guard let texture = textureNamed("ui_drag_arrow_master") else {
+            // Procedural fallback so the cue still reads without the asset.
+            let dot = SKShapeNode(circleOfRadius: cellSize * 0.1)
+            dot.fillColor = RingPalette.readyGlow
+            dot.strokeColor = .clear
+            dot.position = CGPoint(x: node.position.x + v.dx * cellSize * 0.7,
+                                   y: node.position.y + v.dy * cellSize * 0.7)
+            return dot
+        }
+        let arrow = SKSpriteNode(texture: texture)
+        arrow.size = CGSize(width: cellSize * 0.9, height: cellSize * 0.9)
+        arrow.position = CGPoint(x: node.position.x + v.dx * cellSize * 0.7,
+                                 y: node.position.y + v.dy * cellSize * 0.7)
+        arrow.zRotation = node.ring.exitDirection.sceneRadians
+        return arrow
+    }
+
+    /// A procedural curved arrow arcing around the ring, hinting "rotate me".
+    /// Drawn with SKShapeNode so no bitmap asset is needed.
+    private func makeRotationCue(for node: RingNode) -> SKNode {
+        let container = SKNode()
+        container.position = node.position
+        let radius = cellSize * 0.62
+        // Sweep the arc toward the exit so it reads as "roll the gap this way".
+        let end = node.ring.exitDirection.sceneRadians
+        let start = end - .pi * 0.9
+        let path = CGMutablePath()
+        path.addArc(center: .zero, radius: radius, startAngle: start, endAngle: end, clockwise: false)
+        let arc = SKShapeNode(path: path)
+        arc.strokeColor = RingPalette.hintGlow
+        arc.lineWidth = 3.5
+        arc.lineCap = .round
+        arc.fillColor = .clear
+        container.addChild(arc)
+
+        // Arrowhead at the leading (exit) end of the arc.
+        let tip = CGPoint(x: cos(end) * radius, y: sin(end) * radius)
+        let tangent = end + .pi / 2          // direction of travel along the arc
+        let headLength = cellSize * 0.18
+        let headWidth = cellSize * 0.12
+        let back = CGPoint(x: tip.x - cos(tangent) * headLength,
+                           y: tip.y - sin(tangent) * headLength)
+        let left = CGPoint(x: back.x - cos(end) * headWidth, y: back.y - sin(end) * headWidth)
+        let right = CGPoint(x: back.x + cos(end) * headWidth, y: back.y + sin(end) * headWidth)
+        let head = CGMutablePath()
+        head.move(to: tip)
+        head.addLine(to: left)
+        head.addLine(to: right)
+        head.closeSubpath()
+        let headNode = SKShapeNode(path: head)
+        headNode.fillColor = RingPalette.hintGlow
+        headNode.strokeColor = .clear
+        container.addChild(headNode)
+        return container
     }
 
     private func clearTutorialGuidance() {
@@ -124,25 +224,63 @@ final class GameScene: SKScene {
     }
 
     #if DEBUG
-    func bridgePerformNextSolutionMove() {
-        guard let id = state.validator.nextSuggestedRingId(clearedIds: state.clearedRingIds),
-              let ring = level.ring(id),
-              let node = ringNodes[id] else { return }
-        let outcome = state.attempt(ringId: ring.id, dragDirection: ring.exitDirection)
-        if outcome == .accepted {
-            gameDelegate?.gameSceneRequestsHaptic(self, kind: .success)
-            spawnReleaseFX(at: node.position, direction: ring.exitDirection)
-            node.performExit(reduceMotion: reduceMotion) { [weak self] in
-                guard let self else { return }
-                self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
-                self.gameDelegate?.gameScene(self, didUpdateClearedCount: self.state.clearedRingIds.count)
-                if self.tutorialActive { self.applyTutorialGuidance() }
-                if self.state.isComplete {
-                    self.gameDelegate?.gameSceneRequestsHaptic(self, kind: .completion)
-                    self.gameDelegate?.gameScene(self, didCompleteLevel: self.level, moves: self.state.moveCount)
-                }
-            }
+    private func nextSolutionNode() -> RingNode? {
+        guard let id = state.validator.nextSuggestedRingId(clearedIds: state.clearedRingIds) else { return nil }
+        return ringNodes[id]
+    }
+
+    private func selectForBridge(_ node: RingNode) {
+        selectedNode?.showSelection(false)
+        selectedNode = node
+        selectedRingId = node.ring.id
+        node.showSelection(true)
+        gameDelegate?.gameSceneDidUpdateSelection(self)
+    }
+
+    /// Roll the next solution ring exactly onto its exit (no drag needed).
+    func bridgeRotateNextSolutionRingToAligned() {
+        guard let node = nextSolutionNode() else { return }
+        selectForBridge(node)
+        node.alignGapToExit()
+        gameDelegate?.gameSceneRequestsHaptic(self, kind: .align)
+        if tutorialActive, node.ring.id == suggestedRingId() {
+            gameDelegate?.gameSceneDidAlignSuggestedRing(self)
+            refreshTutorialArrow(for: node)
         }
+        gameDelegate?.gameSceneDidUpdateSelection(self)
+    }
+
+    /// Force the next solution ring's gap to a clearly misaligned angle.
+    func bridgeRotateSelectedRingToMisaligned() {
+        guard let node = nextSolutionNode() else { return }
+        selectForBridge(node)
+        node.setGapMisaligned()
+        if tutorialActive, node.ring.id == suggestedRingId() {
+            refreshTutorialArrow(for: node)
+        }
+        gameDelegate?.gameSceneDidUpdateSelection(self)
+    }
+
+    /// Attempt to pull the next solution ring out using its *current* gap. Removes
+    /// it only if aligned and unblocked — the deterministic hook UI tests use to
+    /// prove alignment is enforced.
+    func bridgeTryReleaseNextSolutionRing() {
+        guard let node = nextSolutionNode() else { return }
+        releaseSelected(node)
+    }
+
+    /// Align then release in one deterministic step (a full rotation-aware move).
+    func bridgePerformNextSolutionMoveWithRotation() {
+        guard let node = nextSolutionNode() else { return }
+        node.alignGapToExit()
+        releaseSelected(node)
+    }
+
+    /// Legacy hook kept for the Phase 2/3 completion + unlock tests: aligns then
+    /// releases the next solution ring (same observable result as before — the
+    /// move counter advances and the ring exits).
+    func bridgePerformNextSolutionMove() {
+        bridgePerformNextSolutionMoveWithRotation()
     }
 
     func bridgePerformInvalidMove() {
@@ -197,6 +335,7 @@ final class GameScene: SKScene {
             let center = pointForCell(ring.cell)
             let node = RingNode(
                 ring: ring,
+                rotation: level.rotation(for: ring),
                 cellSize: cellSize,
                 homePosition: center,
                 reduceMotion: reduceMotion
@@ -234,71 +373,140 @@ final class GameScene: SKScene {
         }
         selectedNode?.showSelection(false)
         selectedNode = target
+        selectedRingId = target.ring.id
         dragStartLocation = point
+        previousLocation = point
         target.showSelection(true)
         showSelectionGlow(for: target)
         hideHintArrow()
         gameDelegate?.gameSceneRequestsHaptic(self, kind: .select)
+        gameDelegate?.gameSceneDidUpdateSelection(self)
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first, let node = selectedNode else { return }
         let point = touch.location(in: self)
-        let local = CGPoint(x: point.x - dragStartLocation.x, y: point.y - dragStartLocation.y)
-        node.resistanceDrag(toLocal: local, exitVector: node.ring.exitDirection.unitVector)
+        let center = node.homePosition
+
+        // 1. Rotation: roll the gap by the angular change of the finger around the
+        //    ring centre. Radial (pull) motion barely changes this angle, so it
+        //    does not spin the ring — exactly what we want.
+        let radius = hypot(point.x - center.x, point.y - center.y)
+        if radius > cellSize * rotationMinRadiusFactor {
+            let prevAngle = atan2(previousLocation.y - center.y, previousLocation.x - center.x)
+            let curAngle = atan2(point.y - center.y, point.x - center.x)
+            let delta = atan2(sin(curAngle - prevAngle), cos(curAngle - prevAngle))
+            if delta != 0 {
+                let wasAligned = node.isAligned
+                let result = node.rotateGap(byRadians: delta)
+                if node.isAligned != wasAligned {
+                    if node.isAligned {
+                        gameDelegate?.gameSceneRequestsHaptic(self, kind: .align)
+                        if tutorialActive, node.ring.id == suggestedRingId() {
+                            gameDelegate?.gameSceneDidAlignSuggestedRing(self)
+                            refreshTutorialArrow(for: node)
+                        }
+                    } else if tutorialActive, node.ring.id == suggestedRingId() {
+                        refreshTutorialArrow(for: node)
+                    }
+                    gameDelegate?.gameSceneDidUpdateSelection(self)
+                } else if result.didSnap {
+                    gameDelegate?.gameSceneRequestsHaptic(self, kind: .align)
+                }
+            }
+        }
+
+        // 2. Pull feedback: only an aligned ring slides outward along its exit.
+        let exit = node.ring.exitDirection.sceneUnitVector
+        let fromStart = CGPoint(x: point.x - dragStartLocation.x, y: point.y - dragStartLocation.y)
+        let projection = fromStart.x * exit.dx + fromStart.y * exit.dy
+        if node.isAligned && projection > 0 {
+            node.pullAlong(exitVector: exit, distance: projection)
+        } else {
+            node.settleHome(reduceMotion: reduceMotion)
+        }
+
+        previousLocation = point
     }
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first, let node = selectedNode else { return }
+        guard let touch = touches.first, let node = selectedNode else {
+            clearSelection()
+            return
+        }
         let point = touch.location(in: self)
-        let dx = point.x - dragStartLocation.x
-        let dy = point.y - dragStartLocation.y
-        let v = node.ring.exitDirection.unitVector
-        let projection = dx * v.dx + dy * v.dy
-        let cellUnits = projection / cellSize
-        let threshold: CGFloat = 0.65
-        if cellUnits >= threshold {
-            let outcome = state.attempt(ringId: node.ring.id, dragDirection: node.ring.exitDirection)
-            switch outcome {
-            case .accepted:
-                gameDelegate?.gameSceneRequestsHaptic(self, kind: .success)
-                spawnReleaseFX(at: node.position, direction: node.ring.exitDirection)
-                node.performExit(reduceMotion: reduceMotion) { [weak self] in
-                    guard let self else { return }
-                    self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
-                    self.gameDelegate?.gameScene(self, didUpdateClearedCount: self.state.clearedRingIds.count)
-                    if self.tutorialActive { self.applyTutorialGuidance() }
-                    if self.state.isComplete {
-                        self.gameDelegate?.gameSceneRequestsHaptic(self, kind: .completion)
-                        self.gameDelegate?.gameScene(self, didCompleteLevel: self.level, moves: self.state.moveCount)
-                    }
-                }
-            case .blockedByPrerequisite, .wrongDirection:
+        let center = node.homePosition
+        let exit = node.ring.exitDirection.sceneUnitVector
+
+        let fromStart = CGPoint(x: point.x - dragStartLocation.x, y: point.y - dragStartLocation.y)
+        let projection = fromStart.x * exit.dx + fromStart.y * exit.dy
+        let startRadius = hypot(dragStartLocation.x - center.x, dragStartLocation.y - center.y)
+        let endRadius = hypot(point.x - center.x, point.y - center.y)
+        let radialGain = endRadius - startRadius
+
+        let isPull = projection >= releaseProjectionThreshold && radialGain >= releaseRadialThreshold
+
+        if isPull {
+            if node.isAligned {
+                releaseSelected(node)
+            } else {
+                // Pulled before lining the gap up: refuse, nudge, ask to rotate.
                 gameDelegate?.gameSceneRequestsHaptic(self, kind: .warning)
                 spawnInvalidFX(at: node.position)
-                node.snapBack(reduceMotion: reduceMotion) { [weak self] in
-                    guard let self else { return }
-                    self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
-                }
-            case .alreadyCleared, .unknownRing:
                 node.snapBack(reduceMotion: reduceMotion) {}
+                if tutorialActive, node.ring.id == suggestedRingId() {
+                    refreshTutorialArrow(for: node)
+                }
             }
         } else {
-            node.snapBack(reduceMotion: reduceMotion) {}
+            // Pure rotation (or a too-short pull): keep the rolled gap, settle home.
+            node.settleHome(reduceMotion: reduceMotion)
         }
         hideSelectionGlow()
         clearSelection()
     }
 
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        selectedNode?.snapBack(reduceMotion: reduceMotion) {}
+        selectedNode?.settleHome(reduceMotion: reduceMotion)
         hideSelectionGlow()
         clearSelection()
+    }
+
+    /// Apply the rotation-aware release rules to the selected ring and animate.
+    private func releaseSelected(_ node: RingNode) {
+        let outcome = state.attemptRelease(ringId: node.ring.id, gapAngleDegrees: node.gapAngleDegrees)
+        switch outcome {
+        case .accepted:
+            gameDelegate?.gameSceneRequestsHaptic(self, kind: .success)
+            spawnReleaseFX(at: node.position, direction: node.ring.exitDirection)
+            node.performExit(reduceMotion: reduceMotion) { [weak self] in
+                guard let self else { return }
+                self.gameDelegate?.gameScene(self, didChangeMoves: self.state.moveCount)
+                self.gameDelegate?.gameScene(self, didUpdateClearedCount: self.state.clearedRingIds.count)
+                if self.tutorialActive { self.applyTutorialGuidance() }
+                if self.state.isComplete {
+                    self.gameDelegate?.gameSceneRequestsHaptic(self, kind: .completion)
+                    self.gameDelegate?.gameScene(self, didCompleteLevel: self.level, moves: self.state.moveCount)
+                }
+            }
+        case .blockedByPrerequisite:
+            gameDelegate?.gameSceneRequestsHaptic(self, kind: .warning)
+            spawnInvalidFX(at: node.position)
+            node.snapBack(reduceMotion: reduceMotion) {}
+        case .notAligned, .wrongDirection, .alreadyCleared, .unknownRing:
+            node.snapBack(reduceMotion: reduceMotion) {}
+        }
     }
 
     private func clearSelection() {
         selectedNode?.showSelection(false)
         selectedNode = nil
+        selectedRingId = nil
+        gameDelegate?.gameSceneDidUpdateSelection(self)
+    }
+
+    private func suggestedRingId() -> String? {
+        state.validator.nextSuggestedRingId(clearedIds: state.clearedRingIds)
     }
 
     // MARK: - FX
@@ -332,12 +540,12 @@ final class GameScene: SKScene {
         guard let texture = textureNamed("ui_drag_arrow_master") else { return }
         let arrow = SKSpriteNode(texture: texture)
         arrow.size = CGSize(width: cellSize * 0.9, height: cellSize * 0.9)
-        let v = node.ring.exitDirection.unitVector
+        let v = node.ring.exitDirection.sceneUnitVector
         arrow.position = CGPoint(
             x: node.position.x + v.dx * cellSize * 0.7,
             y: node.position.y + v.dy * cellSize * 0.7
         )
-        arrow.zRotation = atan2(v.dy, v.dx)
+        arrow.zRotation = node.ring.exitDirection.sceneRadians
         arrow.zPosition = 200
         arrow.alpha = 0
         fxLayer.addChild(arrow)
@@ -361,12 +569,12 @@ final class GameScene: SKScene {
         let streak = SKSpriteNode(texture: streakTexture)
         streak.size = CGSize(width: cellSize * 2.2, height: cellSize * 0.6)
         streak.position = point
-        streak.zRotation = direction.radians
+        streak.zRotation = direction.sceneRadians
         streak.blendMode = .add
         streak.alpha = 0.0
         streak.zPosition = 300
         fxLayer.addChild(streak)
-        let v = direction.unitVector
+        let v = direction.sceneUnitVector
         let endPoint = CGPoint(x: point.x + v.dx * cellSize * 1.4,
                                y: point.y + v.dy * cellSize * 1.4)
         let appear = SKAction.fadeAlpha(to: 0.85, duration: 0.08)

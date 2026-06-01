@@ -12,6 +12,8 @@ public enum LevelLoaderError: Error, CustomStringConvertible, Equatable {
     case missingCopper(levelID: Int)
     case dependencyCycle(levelID: Int, involving: [String])
     case unknownKind(levelID: Int, ringID: String, raw: String)
+    case invalidGapAngle(levelID: Int, ringID: String, raw: Double)
+    case invalidTolerance(levelID: Int, raw: Double)
 
     public var description: String {
         switch self {
@@ -38,6 +40,10 @@ public enum LevelLoaderError: Error, CustomStringConvertible, Equatable {
             return "Dependency cycle in level \(levelID): \(chain)"
         case .unknownKind(let levelID, let ringID, let raw):
             return "Ring \(ringID) in level \(levelID) has unknown kind '\(raw)'"
+        case .invalidGapAngle(let levelID, let ringID, let raw):
+            return "Ring \(ringID) in level \(levelID) has invalid initialGapAngle \(raw)"
+        case .invalidTolerance(let levelID, let raw):
+            return "Level \(levelID) has invalid alignmentToleranceDegrees \(raw)"
         }
     }
 }
@@ -99,6 +105,16 @@ public enum LevelLoader {
         }
         let solutionRaw = (obj["solution"] as? [[String: Any]]) ?? []
 
+        // Optional per-level alignment tolerance; otherwise defaulted by band.
+        var tolerance: Double? = nil
+        if let raw = obj["alignmentToleranceDegrees"] as? NSNumber {
+            let value = raw.doubleValue
+            guard value > 0, value <= 90, value.isFinite else {
+                throw LevelLoaderError.invalidTolerance(levelID: id, raw: value)
+            }
+            tolerance = value
+        }
+
         var rings: [Ring] = []
         for piece in piecesRaw {
             rings.append(try parseRing(piece, levelID: id))
@@ -113,7 +129,8 @@ public enum LevelLoader {
             difficulty: difficulty,
             board: board,
             rings: rings,
-            solution: steps
+            solution: steps,
+            alignmentToleranceDegrees: tolerance
         )
     }
 
@@ -146,12 +163,23 @@ public enum LevelLoader {
             )
         }
         let requires = (obj["requires"] as? [String]) ?? []
+        // Optional explicit initial gap angle; otherwise derived deterministically
+        // inside `Ring` so older packs without the field still load.
+        var initialGapAngle: Double? = nil
+        if let raw = obj["initialGapAngle"] as? NSNumber {
+            let value = raw.doubleValue
+            guard value.isFinite else {
+                throw LevelLoaderError.invalidGapAngle(levelID: levelID, ringID: id, raw: value)
+            }
+            initialGapAngle = value
+        }
         return Ring(
             id: id,
             kind: kind,
             cell: cell,
             exitDirection: direction,
-            requires: requires
+            requires: requires,
+            initialGapAngleDegrees: initialGapAngle
         )
     }
 

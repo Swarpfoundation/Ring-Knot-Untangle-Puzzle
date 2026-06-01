@@ -45,17 +45,27 @@ that still require an Apple Developer account / signing are called out as
 - [x] Dynamic Type supported (scrolling onboarding, adaptive level grid).
 - [x] Reduce Motion honoured (no particles/shake, simplified effects, static
   tutorial highlight).
-- [ ] Manual VoiceOver sweep on a physical device (recommended before submission).
+- [x] Board summary names the held ring's alignment; "Rotate ring to opening"
+  custom action aligns the next solvable ring without a gesture.
+- [ ] Manual VoiceOver sweep on a physical device (incl. the rotation action;
+  recommended before submission).
 
 ## Content & QA
 
-- [x] Onboarding shows once, re-openable from Settings.
-- [x] Level 1 tutorial uses the solution path (no hard-coded ring ids).
+- [x] Onboarding shows once, re-openable from Settings (rotation-mechanic copy).
+- [x] Level 1 tutorial uses the solution path (no hard-coded ring ids) and teaches
+  rotate → pull → clear blockers.
+- [x] Rotatable rings: every ring starts misaligned, snaps + glows when aligned,
+  refuses a pull before alignment, and only counts a move on release
+  (`docs/gameplay/rotatable-rings.md`).
+- [x] `python3 tools/replay_validator.py` passes the rotation-aware replay for all
+  20 levels.
 - [x] Settings: Sound, Haptics, Replay onboarding, Replay tutorial, Reset
   progress (with confirmation), credits note, version/build.
 - [x] Completion screen shows moves/par/best, New Best, and "All Levels Complete"
   on level 20.
-- [x] Six genuine screenshots in `docs/screenshots/phase-3-*.png`.
+- [x] Genuine screenshots in `docs/screenshots/phase-3-*.png` and
+  `docs/screenshots/phase-4a-*.png`.
 
 ## Store listing (later phase)
 

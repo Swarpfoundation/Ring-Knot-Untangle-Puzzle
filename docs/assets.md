@@ -135,3 +135,14 @@ rings stay procedural):
 The six Phase 3 screenshots in `docs/screenshots/phase-3-*.png` are genuine
 captures from the iPhone 17 Pro simulator, produced by the
 `ScreenshotTour.test_capturePhase3Screens` UI test (see `docs/qa.md`).
+
+## Phase 4A usage
+
+No new art was added for the rotatable-ring mechanic. The gameplay rings stay
+procedural (`RingTextureFactory`) — the gap is baked at screen-east and the
+visible gap is driven by the sprite's rotation, so a single texture serves every
+angle. The tutorial's "roll me" rotation cue and the "ready" alignment ring are
+drawn procedurally with `SKShapeNode` (arc + arrowhead, no bitmap). The straight
+exit arrow reuses `ui_drag_arrow_master`. The four Phase 4A screenshots in
+`docs/screenshots/phase-4a-*.png` are genuine simulator captures from
+`ScreenshotTour.test_capturePhase4Screens`.

@@ -18,6 +18,9 @@ enum RingPalette {
     static let boardTint       = UIColor(red: 0.10, green: 0.12, blue: 0.18, alpha: 1.0)
     static let selectionGlow   = UIColor(red: 0.55, green: 0.85, blue: 1.00, alpha: 0.9)
     static let hintGlow        = UIColor(red: 1.00, green: 0.82, blue: 0.40, alpha: 0.9)
+    /// Shown when a ring's gap is rolled into alignment with its exit — a bright
+    /// "ready to pull" cyan-green that reads as distinct from selection.
+    static let readyGlow       = UIColor(red: 0.45, green: 1.00, blue: 0.80, alpha: 0.95)
 }
 
 enum RingTextureFactory {

@@ -27,16 +27,25 @@ Override the simulator with `SIM_DEST='platform=iOS Simulator,name=...,OS=...'`.
 ## Replay validator
 
 `tools/replay_validator.py` is a standard-library Python port of the in-app
-`MoveValidator`. For **every** level in
+`MoveValidator`, including the Phase 4A rotation rules. For **every** level in
 `shared/levels/ring_unlock_level_pack_v1.json` it:
 
 - rejects duplicate ring ids and invalid `exitDirection` values,
+- validates `alignmentToleranceDegrees` and every ring's `initialGapAngle`
+  (finite; falling back to a derived, non-aligned angle if absent),
+- asserts no ring starts already aligned (the mechanic requires a deliberate roll),
 - checks that every `requires` dependency and every `solution` step references a
   ring that exists,
-- asserts blocked rings (those with unmet prerequisites) are **not** removable
-  before their prerequisites are cleared,
-- replays the `solution` path in order — every step must be `accepted` —
+- asserts blocked rings are **not** removable before their prerequisites — even
+  with the gap aligned,
+- replays the `solution` path in order: a pull at the ring's misaligned initial
+  gap must be refused, then the gap is rolled onto the exit and the release must
+  be `accepted`,
 - and asserts the level is fully cleared at the end.
+
+The shared JSON's rotation fields are written reproducibly by
+`tools/apply_rotation_fields.py` (deterministic; re-running yields identical
+numbers).
 
 `--selftest` runs synthetic levels that must each fail for a specific reason, so
 the validator's own logic is verified before it is trusted on the real pack.
@@ -50,13 +59,22 @@ The shared JSON is the source of truth; the validator never edits it. If a level
 ever fails to replay, that is a data bug to fix in the JSON (and document), not a
 reason to weaken the validator.
 
-## Unit tests (`RingKnotTests`, 25 tests)
+## Unit tests (`RingKnotTests`, 38 tests)
 
 `@testable import RingKnot`, exercising the pure-Swift engine: JSON loading, all
 loader validation errors, direction/cell parsing, dependency unlock logic,
 invalid-move rejection, valid-move acceptance, full completion via the canonical
 solution, persistence round-trips, all 20 levels solvable, and blocked rings not
 removable early.
+
+`RingRotationTests` (13) cover the Phase 4A rotatable-ring mechanic: angle
+normalization, shortest angular distance, alignment true/false (including
+wrap-around), rotating through many whole turns without drift, the snap window,
+`Direction.exitAngleDegrees`, every ring loading a misaligned `initialGapAngle`,
+the tolerance bands, an unaligned ring being unreleasable, an aligned/unblocked
+ring releasing (and counting exactly one move), an aligned-but-blocked ring still
+blocked, rotation never counting as a move, and all 20 levels completing when each
+ring is aligned before the pull.
 
 ## UI tests (XCUITest)
 
@@ -83,27 +101,52 @@ across a relaunch, the Level 1 tutorial appears, Hint works, the completion
 screen shows moves/par/best/New Best, Level 2 is unlocked after Level 1, and
 Reset Progress re-shows onboarding.
 
+**`RingKnotPhase4UITests` (6 tests)** — the Level 1 tutorial prompts to *rotate*
+the ring, a pull before alignment does not remove the ring, rolling the gap into
+alignment then pulling removes it and counts exactly one move (rotation alone
+counts nothing), a hint on an unaligned ring keeps the HUD and counts no move, a
+full rotate-then-pull move completes Level 1 and unlocks Level 2, and Settings →
+"Replay Level 1 tutorial" re-arms the rotation tutorial.
+
 ### The DEBUG test bridge
 
 `GameView` includes a `TestBridgeOverlay` guarded by `#if DEBUG` and only rendered
-when launched with `-uiTestBridge`. It exposes two off-screen buttons
-(`bridge.nextMove`, `bridge.invalidMove`) that drive deterministic moves without
-simulating drags on the SpriteKit board. Because it is `#if DEBUG`, it is compiled
-out of Release builds — step 6 of `ci_local.sh` (a Release build) is the guard
-that proves it cannot leak into a shipping binary.
+when launched with `-uiTestBridge`. It exposes off-screen buttons that drive
+deterministic moves without simulating drags on the SpriteKit board:
+
+| Button | Action |
+| --- | --- |
+| `bridge.nextMove` | Align + release the next solution ring (legacy completion hook) |
+| `bridge.invalidMove` | Attempt a still-blocked ring (blocked feedback) |
+| `bridge.rotateAligned` | Roll the next solution ring exactly onto its exit |
+| `bridge.rotateMisaligned` | Roll it to a clearly misaligned angle |
+| `bridge.tryRelease` | Pull at the current gap (removes only if aligned + unblocked) |
+| `bridge.rotationMove` | Full rotate-then-pull move |
+
+Because the overlay is `#if DEBUG`, it is compiled out of Release builds — step 6
+of `ci_local.sh` (a Release build) is the guard that proves it cannot leak into a
+shipping binary.
+
+### Manual VoiceOver check (rotation)
+
+With VoiceOver on, open Level 1: the board element announces the rings remaining
+and, after using the **"Rotate ring to opening"** custom action, that the held
+ring is *aligned and ready to pull*. Confirm "Show Hint" and "Restart Level"
+actions still work, and that the tutorial text is read aloud.
 
 ## Screenshots
 
-`ScreenshotTour.test_capturePhase3Screens` navigates each screen with the
-appropriate intro state and attaches a screenshot. To regenerate the six images
-in `docs/screenshots/phase-3-*.png`:
+`ScreenshotTour.test_capturePhase3Screens` and `test_capturePhase4Screens`
+navigate each screen with the appropriate intro/bridge state and attach a
+screenshot. The Phase 4A set is `docs/screenshots/phase-4a-*.png`
+(rotation-tutorial, gap-unaligned, gap-aligned, level-complete). To regenerate:
 
 ```bash
 xcodebuild -project ios/RingKnot/RingKnot.xcodeproj -scheme RingKnot \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=latest' \
   -configuration Debug test \
-  -only-testing:RingKnotUITests/ScreenshotTour/test_capturePhase3Screens \
+  -only-testing:RingKnotUITests/ScreenshotTour/test_capturePhase4Screens \
   -resultBundlePath /tmp/ss.xcresult
 xcrun xcresulttool export attachments --path /tmp/ss.xcresult --output-path /tmp/ss_att
-# then copy the phase-3-* attachments (see manifest.json) into docs/screenshots/
+# then copy the phase-4a-* attachments (see manifest.json) into docs/screenshots/
 ```

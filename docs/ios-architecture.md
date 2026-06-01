@@ -33,11 +33,21 @@ The pure Swift engine has no UIKit, no SwiftUI, no SpriteKit imports. It is the 
 
 Cell `A1` is the top-left of the board. Rows increase downward. The SpriteKit scene flips this when it positions nodes because SpriteKit's y-axis points up. The conversion happens in `GameScene.pointForCell(_:)`.
 
-The eight exit directions match the JSON contract. `Direction.unitVector` provides a normalized `CGVector` so diagonals do not overshoot orthogonals during drag projection.
+The eight exit directions match the JSON contract. `Direction.unitVector` is the raw JSON vector; **`Direction.sceneUnitVector` / `sceneRadians`** are the scene-space (SpriteKit y-up) versions used by all rendering, drag, and gap-alignment maths so "North" reads as up. `Direction.exitAngleDegrees` gives the target gap angle (E=0°, N=90°, CCW+).
 
-## Input projection
+## Input model (Phase 4A — rotate then pull)
 
-`touchesMoved` projects the touch delta onto the selected ring's exit unit vector. The ring slides only along that axis. A drag against the exit direction yields a small clamped negative offset that springs back. A drag past `0.65` cell units on release with no unmet prerequisites releases the ring; otherwise the ring snaps back with a shake.
+`touchesMoved` does two things on the selected ring. **Rotation:** the gap angle
+changes by the angular delta of the finger about the ring's home centre, so
+dragging *around* the ring rolls it while radial motion barely turns it. A gap
+within ~7° of the exit snaps onto it with a light haptic and a "ready" glow.
+**Pull:** only an aligned ring slides outward along its exit. On release, a pull is
+recognised when the exit-projected travel passes threshold **and** the finger has
+moved genuinely outward from the centre — so a tangential roll never releases a
+ring by accident. An aligned, unblocked pull removes the ring; a pull before
+aligning ("rotate first") or while blocked snaps back with a warning. Rolling the
+gap is never a move; only an accepted release counts. See
+`docs/gameplay/rotatable-rings.md`.
 
 ## Persistence
 
@@ -135,3 +145,27 @@ pool; turning Sound off mutes all SFX immediately. There is no music or looping.
 `PrivacyInfo.xcprivacy` ships in the app bundle (declared `false` tracking, empty
 tracking domains, no collected data, `UserDefaults` required-reason `CA92.1`).
 See `docs/privacy.md` for the full audit.
+
+## Phase 4A — rotatable ring release
+
+The pure engine gains a rotation layer that the renderer drives:
+
+- **`RingRotation`** (engine) — gap/target/tolerance with stable angle maths
+  (normalize, shortest signed distance, alignment, snap). Multiple whole turns
+  never change the alignment verdict. Free functions are reused by the validator.
+- **`Ring.initialGapAngleDegrees`** and **`Level.alignmentToleranceDegrees`** load
+  from the shared JSON (`LevelLoader`), with deterministic fallbacks. `Level.rotation(for:)`
+  builds a ring's starting `RingRotation`.
+- **`MoveValidator.evaluateRelease(ringId:gapAngleDegrees:clearedIds:)`** returns
+  `.notAligned` when the gap is off (prerequisites are checked first), and
+  `GameState.attemptRelease` only counts a move on `.accepted`.
+- **`RingNode`** bakes its texture with the gap at screen-east and drives the
+  visible gap with `sprite.zRotation` (so rotation is a cheap node transform, not a
+  per-frame redraw). It owns its live `RingRotation`, the snap, and the "ready"
+  glow. **`GameScene`** implements the rotate/pull gesture, a procedural curved
+  rotation cue for the tutorial, and `gameSceneDidAlignSuggestedRing` /
+  `gameSceneDidUpdateSelection` callbacks. The DEBUG test bridge adds
+  rotate-to-aligned / rotate-to-misaligned / try-release / rotate-then-pull hooks.
+- **Accessibility**: the board summary names the held ring's alignment, and a
+  "Rotate ring to opening" custom action aligns the next solvable ring without a
+  gesture.

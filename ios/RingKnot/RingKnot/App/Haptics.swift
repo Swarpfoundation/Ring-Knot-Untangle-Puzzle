@@ -38,6 +38,9 @@ final class Haptics {
         switch kind {
         case .select:
             light.impactOccurred(intensity: 0.6)
+        case .align:
+            // Subtle tick when the gap snaps onto the exit — lighter than select.
+            light.impactOccurred(intensity: 0.4)
         case .success:
             notification.notificationOccurred(.success)
         case .warning:
