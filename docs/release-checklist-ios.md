@@ -143,3 +143,12 @@ Run against a Release build of `RingKnot.app` (e.g. `-configuration Release
 - [x] Bands/art procedural; faint original background motif (no copied reference).
 - [x] DEBUG bridge strings excluded from Release (artifact scan).
 - [x] Genuine `phase-6c-*` screenshots on iPhone 17 Pro simulator.
+
+## Phase 6D gate (split-tube occlusion)
+
+- [x] Split-tube over-arcs read tube-over-band at crossings; copper knot protected.
+- [x] Crossing zones derived in memory; no JSON / ring / solution changes.
+- [x] Bands + over-arcs retire (fade+scale+slide) when a ring leaves.
+- [x] Motion polish respects Reduce Motion; no continuous audio.
+- [x] DEBUG bridge strings excluded from Release (artifact scan).
+- [x] Genuine `phase-6d-*` screenshots on iPhone 17 Pro simulator.

@@ -410,6 +410,11 @@ final class GameScene: SKScene {
     private func buildContactBands() {
         let diameter = cellSize * 0.88
         let outerR = diameter * 0.5 * 0.94
+        // Phase 6D: split-tube crossings — short arc segments of a ring's tube
+        // redrawn above the band so the tube visibly passes over it.
+        let crossingsByClip = Dictionary(
+            grouping: level.crossingZones().filter { $0.occlusionRole == .tubeOverClip },
+            by: { $0.clipId })
         for clip in level.clips where clip.isContactBand {
             guard let owner = ringNodes[clip.ownerRingId] else { continue }
             let ownerCenter = owner.homePosition
@@ -484,6 +489,16 @@ final class GameScene: SKScene {
             let container = SKNode()
             container.addChild(shadow)
             container.addChild(band)
+
+            // Split-tube over-arcs: redraw the crossed tube segment above this
+            // band so it threads under the tube. Lives in the same container so it
+            // fades/retires together with the band.
+            for zone in crossingsByClip[clip.id] ?? [] {
+                if let arc = makeTubeOverArc(zone: zone, diameter: diameter, z: bandZ + 2) {
+                    container.addChild(arc)
+                }
+            }
+
             if state.clearedRingIds.contains(clip.ownerRingId)
                 || (clip.contactRingId.map { state.clearedRingIds.contains($0) } ?? false) {
                 container.alpha = 0
@@ -496,15 +511,67 @@ final class GameScene: SKScene {
         }
     }
 
-    /// Fade out any contact bands attached to a ring that has just left the board.
+    /// A short arc segment of a ring's tube, redrawn at `z` (above a band) so the
+    /// tube reads as passing over the band at the crossing. Returns nil when the
+    /// ring's gap currently sits at the crossing angle (no tube there to draw).
+    private func makeTubeOverArc(zone: CrossingZone, diameter: CGFloat, z: CGFloat) -> SKNode? {
+        guard let node = ringNodes[zone.ringId] else { return nil }
+        // Open rings: skip when the gap covers the crossing angle (the tube wall
+        // is absent there). Anchors have no gap.
+        if !node.ring.isAnchor {
+            let gap = node.gapAngleDegrees
+            let diff = abs(RingRotation.shortestAngularDistanceDegrees(
+                from: gap, to: zone.angleDegrees))
+            if diff < Level.openRingGapDegrees / 2 + 4 { return nil }
+        }
+        let center = node.homePosition
+        let radius = diameter * 0.39
+        let thickness = diameter * 0.16
+        let halfW = CGFloat(zone.arcWidthDegrees) * .pi / 180 / 2
+        let mid = CGFloat(zone.angleDegrees) * .pi / 180
+        let colors = RingTextureFactory.clipColors(for: .inherited, owner: node.ring.kind)
+
+        let container = SKNode()
+        func arc(width: CGFloat, color: UIColor, inset: CGFloat, zOff: CGFloat) {
+            let path = CGMutablePath()
+            path.addArc(center: .zero, radius: radius - inset,
+                        startAngle: mid - halfW, endAngle: mid + halfW, clockwise: false)
+            let shape = SKShapeNode(path: path)
+            shape.strokeColor = color
+            shape.lineWidth = width
+            shape.lineCap = .round
+            shape.fillColor = .clear
+            shape.zPosition = zOff
+            container.addChild(shape)
+        }
+        // Soft contact shadow on the band beneath, then the tube body + highlight.
+        arc(width: thickness * 1.15, color: UIColor.black.withAlphaComponent(0.5),
+            inset: 0, zOff: -0.4)
+        arc(width: thickness, color: colors.base, inset: 0, zOff: 0)
+        arc(width: thickness * 0.4, color: colors.highlight.withAlphaComponent(0.7),
+            inset: thickness * 0.28, zOff: 0.1)
+        container.position = center
+        container.zPosition = z
+        return container
+    }
+
+    /// Retire any contact bands attached to a ring that has just left the board.
+    /// They fade while sliding a few pixels along the departing ring's exit and
+    /// scaling down a touch, so they leave with the ring rather than blinking out.
     private func retireBands(forRing ringID: String) {
+        let exit = level.ring(ringID)?.exitDirection.sceneUnitVector ?? CGVector(dx: 0, dy: 0)
+        let slide = CGVector(dx: exit.dx * cellSize * 0.18, dy: exit.dy * cellSize * 0.18)
         for entry in bandEntries where entry.ownerID == ringID || entry.contactID == ringID {
             guard entry.node.parent != nil, entry.node.alpha > 0 else { continue }
             if reduceMotion {
                 entry.node.alpha = 0
-            } else {
-                entry.node.run(SKAction.fadeOut(withDuration: 0.24))
+                continue
             }
+            entry.node.run(SKAction.group([
+                SKAction.fadeOut(withDuration: 0.26),
+                SKAction.scale(to: 0.82, duration: 0.26),
+                SKAction.moveBy(x: slide.dx, y: slide.dy, duration: 0.26)
+            ]))
         }
     }
 
@@ -619,6 +686,7 @@ final class GameScene: SKScene {
                 if node.isAligned != wasAligned {
                     if node.isAligned {
                         gameDelegate?.gameSceneRequestsHaptic(self, kind: .align)
+                        node.settlePop()   // Phase 6D: tiny pop as the gap clears the clip
                         if tutorialActive, node.ring.id == suggestedRingId() {
                             gameDelegate?.gameSceneDidAlignSuggestedRing(self)
                         }

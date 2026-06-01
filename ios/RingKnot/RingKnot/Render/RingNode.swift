@@ -320,13 +320,25 @@ final class RingNode: SKNode {
         glow.alpha = active ? 1.0 : 0
     }
 
+    /// A tiny settle "pop" when the gap rolls into alignment past a fixed clamp —
+    /// a subtle tactile cue that the ring just cleared the clip. (Phase 6D.)
+    func settlePop() {
+        guard !reduceMotion, !isAnchor else { return }
+        sprite.removeAction(forKey: "settle")
+        sprite.run(SKAction.sequence([
+            SKAction.scale(to: 1.05, duration: 0.07),
+            SKAction.scale(to: 1.0, duration: 0.11)
+        ]), withKey: "settle")
+    }
+
     /// Briefly flash this ring (and its blocking clamps) amber to show it is the
-    /// thing still holding a ring the player just tried to pull. (Phase 6B.)
+    /// thing still holding a ring the player just tried to pull. Pulses once.
+    /// (Phase 6B; single pulse in 6D.)
     func pulseAsBlocker(reduceMotion: Bool) {
         removeAction(forKey: "blocker")
         glow.strokeColor = RingPalette.hintGlow
         glow.alpha = 0.0
-        let flashes = reduceMotion ? 1 : 2
+        let flashes = 1
         let seq = SKAction.sequence([
             SKAction.fadeAlpha(to: 0.95, duration: 0.12),
             SKAction.fadeAlpha(to: 0.0, duration: 0.28)

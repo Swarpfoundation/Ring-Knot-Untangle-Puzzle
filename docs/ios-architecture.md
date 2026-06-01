@@ -208,3 +208,12 @@ The pure engine gains a rotation layer that the renderer drives:
 - **Model**: `BlockerClip.isContactBand` classifies scene-level vs rolling clips.
 - **Background**: `addBoardMotif(...)` adds a faint original graphite motif (abstract
   arcs + non-readable strokes, alpha 0.05) — no copied reference content.
+
+## Phase 6D — split-tube occlusion
+
+- **Model**: `Engine/CrossingZone.swift` — `OcclusionRole`, `CrossingZone`, and the
+  pure `Level.crossingZones()` / `tubeCoverageDegrees(for:)` helpers.
+- **Render**: `GameScene.makeTubeOverArc(...)` draws short tube over-arcs above the
+  contact bands at `tubeOverClip` crossings (built once, in the band's container so
+  they retire together). `retireBands(forRing:)` now fades + scales + slides.
+  `RingNode.settlePop()` adds the alignment pop; `pulseAsBlocker` pulses once.
