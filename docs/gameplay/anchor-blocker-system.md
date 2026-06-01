@@ -144,3 +144,12 @@ lower tube and under the higher one). `BlockerClip.isContactBand` selects scene-
 rendering (any clip with a `contactRingId` or non-`ownerAngle` placement); legacy
 owner-attached clips still roll with their open ring. Bands fade when their owner or
 contact ring leaves. See `docs/art/interlock-visual-style.md` → "Tube occlusion model".
+
+## Phase 6D — split-tube occlusion
+
+Contact bands now have **split-tube over-arcs**: `Level.crossingZones()` derives
+crossing zones from the contact clips, and the renderer redraws short arc segments
+of a ring's tube above the band so the tube threads over it. Copper tubes are always
+redrawn over bands (knot protection). Bands and their over-arcs retire together
+(fade + scale + slide) when a ring leaves. See
+`docs/art/interlock-visual-style.md` → "Split-tube occlusion model".

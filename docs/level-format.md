@@ -146,3 +146,9 @@ No new JSON fields. The renderer now treats any clip with a `contactRingId` (or 
 non-`ownerAngle` `contactPointMode`) as a neighbour-aware contact band. `bridgeBand`
 clips must carry a `contactRingId` (enforced by the replay validator) so they can
 span between two rings.
+
+## Phase 6D notes
+
+No new JSON fields. Crossing zones for split-tube rendering are derived in memory by
+`Level.crossingZones()` from the existing `clips`/`interlocks`. Ring IDs,
+dependencies, solution paths, board sizes, and exit directions are unchanged.

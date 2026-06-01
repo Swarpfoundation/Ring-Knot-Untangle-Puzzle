@@ -98,3 +98,51 @@ for performance; over/under is achieved with layered z + contact shadows.
 **Android parity.** The Android port must reproduce: neighbour-aware band placement
 from both ring centres, the unique per-ring render z, the depthRole→z mapping, and
 the fixed-contact-band vs rolling-clip split — all procedural, no copied art.
+
+## Split-tube occlusion model (Phase 6D)
+
+**Ring segment layers.** The base tube sprite is unchanged (full circle for closed
+anchors; full circle minus the 72° gap for open rings — `tubeCoverageDegrees`).
+On top of the contact bands the renderer draws short **over-arc segments** of a
+ring's tube so the tube visibly passes *over* a band at a crossing — deterministic
+split-arc overlays (the documented, stable alternative to per-pixel masking).
+
+**Crossing zones.** `Level.crossingZones()` derives, in memory, one or more
+`CrossingZone`s per contact band: `{ crossingId, ringId, contactRingId, clipId,
+angleDegrees, arcWidthDegrees, occlusionRole }`. No JSON changes; computed purely
+from existing clip/interlock metadata.
+
+**depthRole → occlusion.**
+- `over` clamp → `clipOverTube` (band over the tube; no over-arc, contact shadow).
+- `bridge` → `tubeOverClip` on the contact ring (its tube threads over the band).
+- `connector` → `tubeOverClip` on the owner (anchor) tube.
+- `under` → `tubeOverClip` on the contact tube.
+
+**Bridge over/under.** A bridge band sits between the two ring z's (over the lower
+tube, under the higher); the higher tube is also redrawn as an over-arc so the
+weave reads clearly.
+
+**Copper protection.** Any band touching a copper ring additionally redraws the
+copper tube over the band, so the central knot is never hidden by a silver clip.
+
+**Clip retirement.** When a ring leaves the board, its contact bands and their
+over-arcs (same container) fade, scale down slightly, and slide a few pixels along
+the departing ring's exit.
+
+**Motion polish.** A tiny settle "pop" plays when an open ring's gap rolls into
+alignment past a fixed clamp. Blocked pulls flash the blocker ring and the exact
+band once.
+
+**Performance.** All over-arcs are built once at scene construction (a handful of
+`SKShapeNode` arcs per band); there is no per-frame masking. Over-arcs for open
+rings are skipped when the gap currently sits at the crossing angle.
+
+**Reduce Motion.** No pulsing loops or pops; retirement is an instant fade.
+
+**Known tradeoffs.** Over-arcs are computed from each ring's gap at scene-build
+time, so a copper ring rotated so its gap lands exactly on a crossing can briefly
+show a tube segment over a gap; this is rare and visually minor. Occlusion is
+simulated with layered arcs + shadows, not true geometric tube masking.
+
+**Android parity.** Reproduce `crossingZones` generation, the depthRole→occlusion
+mapping, copper protection, and the over-arc/retirement behaviour — all procedural.

@@ -241,3 +241,12 @@ so the recording can be captured on a host where the render server is stable
   a blocked-band highlight and the copper knot staying visible on Level 20).
 - Replay validator additionally enforces `bridgeBand` clips carry a `contactRingId`.
 - Screenshots: `docs/screenshots/phase-6c-*.png`.
+
+## Phase 6D — split-tube masking & motion polish
+
+- Unit tests: `RingKnotTests/SplitTubeTests` (crossing-zone generation + validity,
+  tube coverage preserved, bridge→tubeOverClip, over→clipOverTube, copper protection,
+  Level 1 ≥1 crossing, Level 20 ≥4 crossings).
+- UI tests: `RingKnotUITests/RingKnotPhase6dUITests` (six genuine screenshots incl.
+  split-tube, gap-clears-clip, blocked-band pulse, and clean retirement).
+- Screenshots: `docs/screenshots/phase-6d-*.png`.

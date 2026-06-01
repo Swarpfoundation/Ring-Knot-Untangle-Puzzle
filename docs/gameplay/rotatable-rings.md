@@ -165,3 +165,9 @@ Contact clamps are now fixed at the true contact point between two rings (the ri
 gap rotates past the fixed clamp, rather than the clamp rolling with the ring).
 Blocked pulls flash both the blocker ring and the exact contact band/bridge holding
 the selected ring.
+
+## Phase 6D motion polish
+
+A small settle "pop" plays when an open ring's gap rolls into alignment past its
+fixed clamp. Blocked pulls flash the blocker ring and the exact band once (no
+jitter). Reduce Motion replaces pops/pulses with static highlights and instant fades.
