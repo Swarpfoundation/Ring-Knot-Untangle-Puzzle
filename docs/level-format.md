@@ -139,3 +139,10 @@ ringPassesUnderAnchor|ringHeldByBridge|decorativeConnector),
 
 All optional and backward compatible; invalid enum strings are rejected by the
 loader and the replay validator. `abstractOnly` is forbidden in the shipped pack.
+
+## Phase 6C notes
+
+No new JSON fields. The renderer now treats any clip with a `contactRingId` (or a
+non-`ownerAngle` `contactPointMode`) as a neighbour-aware contact band. `bridgeBand`
+clips must carry a `contactRingId` (enforced by the replay validator) so they can
+span between two rings.

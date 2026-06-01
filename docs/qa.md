@@ -230,3 +230,14 @@ so the recording can be captured on a host where the render server is stable
 - Replay validator additionally checks Phase 6B enum values, non-decorative
   interlock coverage per dependency, and that no level uses abstractOnly.
 - Screenshots: `docs/screenshots/phase-6b-*.png`.
+
+## Phase 6C — tube occlusion & neighbour-aware bridges
+
+- Unit tests: `RingKnotTests/TubeOcclusionTests` (isContactBand classification,
+  contact bands have resolvable owner+contact rings, bridgeBand has contactRingId,
+  no dependency interlock is decorative, blocked feedback resolves the exact blocker
+  clip, Level 1 has a contact clip, Level 20 has multiple neighbour-aware bridges).
+- UI tests: `RingKnotUITests/RingKnotPhase6cUITests` (six genuine screenshots incl.
+  a blocked-band highlight and the copper knot staying visible on Level 20).
+- Replay validator additionally enforces `bridgeBand` clips carry a `contactRingId`.
+- Screenshots: `docs/screenshots/phase-6c-*.png`.

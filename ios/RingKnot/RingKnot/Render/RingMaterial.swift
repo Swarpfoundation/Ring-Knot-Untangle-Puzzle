@@ -224,6 +224,21 @@ enum RingTextureFactory {
                     options: [])
             }
 
+            // Wrap-over ends: darken the extreme left/right so the band reads as
+            // curving down over the tubes it clamps. (Phase 6C.)
+            if let ends = CGGradient(
+                colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                colors: [colors.shadow.withAlphaComponent(0.55).cgColor,
+                         UIColor.clear.cgColor, UIColor.clear.cgColor,
+                         colors.shadow.withAlphaComponent(0.55).cgColor] as CFArray,
+                locations: [0.0, 0.16, 0.84, 1.0]) {
+                cg.drawLinearGradient(
+                    ends,
+                    start: CGPoint(x: rect.minX, y: rect.midY),
+                    end: CGPoint(x: rect.maxX, y: rect.midY),
+                    options: [.drawsBeforeStartLocation, .drawsAfterEndLocation])
+            }
+
             // Bevel: a bright top edge and a darker bottom edge inside the band.
             let bevelInset = rect.insetBy(dx: rect.width * 0.10, dy: rect.height * 0.16)
             cg.setLineWidth(max(1, px.height * 0.06))

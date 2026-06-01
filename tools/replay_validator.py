@@ -242,6 +242,12 @@ def validate_level(level):
         if contact is not None and contact not in rings:
             raise ValidationError(
                 f"Level {level_id}: clip '{cid}' contactRingId '{contact}' unknown")
+        # Phase 6C: a bridgeBand spans two rings, so it must name a contact ring
+        # unless it is an explicitly decorative connector.
+        if clip.get("clampStyle") == "bridgeBand" and contact is None \
+                and clip.get("kind") != "connector":
+            raise ValidationError(
+                f"Level {level_id}: bridgeBand clip '{cid}' needs a contactRingId")
         clips[cid] = clip
 
     # Every closed anchor must carry at least one clip.
@@ -511,6 +517,10 @@ def selftest():
         {"id": "IL1", "blockerRingId": "S1", "blockedRingId": "C1",
          "blockerClipId": "K1", "contactAngleDegrees": 270,
          "visualContactMode": "telepathy"}]}, "invalid visualContactMode")
+    # A bridgeBand without a contactRingId is rejected (Phase 6C).
+    expect_fail({**good, "clips": good["clips"] + [
+        {"id": "KB", "ownerRingId": "C1", "angleDegrees": 0,
+         "clampStyle": "bridgeBand", "kind": "bridge"}]}, "needs a contactRingId")
 
     # The solution may not reference a non-removable anchor.
     expect_fail({**good, "solution": good["solution"] + [{"id": "A1", "drag": "N"}]},

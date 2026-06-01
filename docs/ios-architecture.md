@@ -197,3 +197,14 @@ The pure engine gains a rotation layer that the renderer drives:
 - **DEBUG**: `bridge.tryReleaseBlocked` triggers a genuine blocked-feedback flash
   for the screenshot tour (excluded from Release). See
   `docs/art/interlock-visual-style.md`.
+
+## Phase 6C — tube occlusion
+
+- **Render**: `GameScene.buildContactBands()` draws scene-level bands between owner
+  and contact ring centres with depthRole→z occlusion and contact shadows;
+  `retireBands(forRing:)` fades them on exit; `flashBands(blocking:)` highlights the
+  exact clamp on a blocked pull. Per-ring render z is `zIndex·1000 + order·4`.
+  `RingNode` now renders only legacy rolling clips (`!clip.isContactBand`).
+- **Model**: `BlockerClip.isContactBand` classifies scene-level vs rolling clips.
+- **Background**: `addBoardMotif(...)` adds a faint original graphite motif (abstract
+  arcs + non-readable strokes, alpha 0.05) — no copied reference content.

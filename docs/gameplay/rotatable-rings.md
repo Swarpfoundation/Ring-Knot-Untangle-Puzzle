@@ -158,3 +158,10 @@ is the cross-platform oracle.
   summary says to rotate the gap clear of the clip.
 - Pulling an aligned but still-blocked ring flashes the blocker ring(s) and their
   clamps amber, pointing at what to clear first (`flashBlockers`).
+
+## Phase 6C contact bands
+
+Contact clamps are now fixed at the true contact point between two rings (the ring's
+gap rotates past the fixed clamp, rather than the clamp rolling with the ring).
+Blocked pulls flash both the blocker ring and the exact contact band/bridge holding
+the selected ring.
