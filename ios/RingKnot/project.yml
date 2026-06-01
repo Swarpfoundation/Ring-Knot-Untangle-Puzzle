@@ -1,0 +1,87 @@
+name: RingKnot
+options:
+  bundleIdPrefix: com.swarpfoundation
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+  defaultConfig: Debug
+  groupSortPosition: top
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGNING_ALLOWED: NO
+    CODE_SIGN_IDENTITY: ""
+    CODE_SIGNING_REQUIRED: NO
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+targets:
+  RingKnot:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      # The RingKnot folder (incl. Resources/Assets.xcassets and
+      # Resources/PrivacyInfo.xcprivacy) is bundled automatically: non-source
+      # files are added to the resources build phase.
+      - path: RingKnot
+      - path: ../../shared/levels/ring_unlock_level_pack_v1.json
+        buildPhase: resources
+        group: SharedLevels
+      - path: ../../shared/assets/sfx
+        buildPhase: resources
+        group: SFX
+        type: folder
+    info:
+      path: RingKnot/Info.plist
+      properties:
+        CFBundleDisplayName: Ring Knot
+        CFBundleShortVersionString: "1.0.0"
+        CFBundleVersion: "1"
+        UILaunchScreen:
+          UIColorName: LaunchBackground
+          UIImageName: ring_knot_brand_mark
+          UIImageRespectsSafeAreaInsets: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+        UIRequiresFullScreen: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.swarpfoundation.ringknot
+        TARGETED_DEVICE_FAMILY: "1,2"
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+  RingKnotTests:
+    type: bundle.unit-test
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: RingKnotTests
+      - path: ../../shared/levels/ring_unlock_level_pack_v1.json
+        buildPhase: resources
+        group: SharedLevels
+    dependencies:
+      - target: RingKnot
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.swarpfoundation.ringknot.tests
+        GENERATE_INFOPLIST_FILE: YES
+  RingKnotUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: RingKnotUITests
+    dependencies:
+      - target: RingKnot
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.swarpfoundation.ringknot.uitests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: RingKnot

@@ -1,0 +1,733 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0030DCFC97E13ACED796BB28 /* RingKnotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */; };
+		01A44B9D728399EEFC8913F0 /* GameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C9FDACF4D2F709482A5DBA /* GameController.swift */; };
+		0C7E0686F4F73C83AF4772AD /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C2D66C86E72CDB7448A7FD1 /* AudioManager.swift */; };
+		1213AE26F682B613EC9172C3 /* RingKnotRealGestureUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E472A965C5612BCFE062336E /* RingKnotRealGestureUITests.swift */; };
+		1487253267E35C4E9709E2D2 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF379D7855F3BBBA4C8C601 /* Cell.swift */; };
+		22A6C40594790308F124C8DE /* ProgressStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36D153E26C2D028355D5800E /* ProgressStore.swift */; };
+		28444D2B575D36B2701DA0F9 /* sfx in Resources */ = {isa = PBXBuildFile; fileRef = 32D40866D28A9DBC5D0D63E2 /* sfx */; };
+		2D85EAD03A7A869197223DD3 /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D2D2780D2C028B456D91F9 /* Haptics.swift */; };
+		36E722C3EDF9F8BE8F7A6A10 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76FA71D19830F9BC98C3ED54 /* OnboardingView.swift */; };
+		388389E6D11BBB95706B5CC2 /* ProgressStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EED3537AE57FE06E23C9E41B /* ProgressStoreTests.swift */; };
+		3973A87E829AE3B763CCB640 /* RingKnotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13594919380D0F6BE43A0A43 /* RingKnotApp.swift */; };
+		4FCC8F1D98EC19638B0EFB6A /* TestBundleHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13A53166F1DD8B1DC96F266A /* TestBundleHelper.swift */; };
+		5035449BA6BA7CB5912E219E /* LevelDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 571DDC0297CD5CB67CAC7530 /* LevelDisplay.swift */; };
+		519DD5516800B767CA78E59D /* RingKnotPhase3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D490F9E073699275A9297 /* RingKnotPhase3UITests.swift */; };
+		532A9345B9F155B8EEB2A0F5 /* ScreenshotTour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018A9F7902E59C7E854CF652 /* ScreenshotTour.swift */; };
+		5411036FD93EE6D29C6D1ACB /* ring_unlock_level_pack_v1.json in Resources */ = {isa = PBXBuildFile; fileRef = 51BC30F54103E50008320E07 /* ring_unlock_level_pack_v1.json */; };
+		57221C31ED58B53B1AC6941A /* DirectionAndCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71F9C71F753AD8A905B7047E /* DirectionAndCellTests.swift */; };
+		582F50FF9108C705E29428F9 /* RingRotationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E83AB8E4ADE25A4CB4B30CB /* RingRotationTests.swift */; };
+		62D53353619AD3EEDBEAFD15 /* Direction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38A51C2788C357E7C4FFE306 /* Direction.swift */; };
+		6598255384C9842620967681 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = F0C78231BC5DE449C6C6C24B /* PrivacyInfo.xcprivacy */; };
+		70E81CF02AFBE1426F6322BB /* LevelLoaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746BE00906FB1D75A9D96204 /* LevelLoaderTests.swift */; };
+		74A22A99708A568A60A922BC /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5886BADA95AC376591CCBB3A /* Board.swift */; };
+		7766460B75FD7AEC0A86B099 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4020CF456013E3E30A432F1A /* Preferences.swift */; };
+		77C482A6A6A3CCCA38999FB5 /* MoveValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48C140339C473DE8BFC9BFC2 /* MoveValidator.swift */; };
+		788B0B873D30AD7A1613C031 /* AppEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 48FFAA4BB0C8FBFFEC0B344C /* AppEnvironment.swift */; };
+		7AE45D17E0C283179990D632 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42A7B4CAF77817148528DD1D /* Assets.xcassets */; };
+		7B34C4A6286595AD06D7A09B /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = A409D8D552249121F784A3CF /* Level.swift */; };
+		9D5CD9A4279D32D00F750460 /* ring_unlock_level_pack_v1.json in Resources */ = {isa = PBXBuildFile; fileRef = 51BC30F54103E50008320E07 /* ring_unlock_level_pack_v1.json */; };
+		A46A6DCBD5D18A973891B61D /* RingRotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEFB2E5A8E318E7F854FE58F /* RingRotation.swift */; };
+		A5F9DC6523171EC0B0092CB7 /* LevelLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF27EDE68A06D7BB0A80724B /* LevelLoader.swift */; };
+		BB356B03E29917B2EB69F571 /* SolutionPathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 608BB89FA8091C6ECDEFD14D /* SolutionPathTests.swift */; };
+		BCC70E93C751870AD09E1527 /* RingMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EB8B5FF892E1F884DF2298 /* RingMaterial.swift */; };
+		C1231A2BB8B53CAEB108906B /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6421BD00E9E9109F6CF12102 /* GameView.swift */; };
+		C490FE08CA220A2593A48B83 /* LevelSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383DEACAA6101BFAD057AAAB /* LevelSelectView.swift */; };
+		C9F8664C8790747744F6C443 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEF347469EBAFF70646E05B1 /* RootView.swift */; };
+		D3650404C64C76F5367668B4 /* MoveValidatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911B8CD00F1B04EA7497A193 /* MoveValidatorTests.swift */; };
+		D77B8175752BB460BFECC72E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F77768D6416D29EE763C0F1 /* GameScene.swift */; };
+		DC31774365A983C650AAEEBE /* RingKnotPhase4UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1C9755F4FC9FB9B57447A92 /* RingKnotPhase4UITests.swift */; };
+		EF651B4FBA95DED9A90A6E9A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6B373C5464991D5A46F4F37 /* SettingsView.swift */; };
+		F7A468F07B03E9BE44B56B25 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */; };
+		FAF765913C820F76FD885EDA /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222393C6D87CD7B8C2A81BBB /* GameState.swift */; };
+		FCA3AC66AF69DF8883A97CF4 /* RingNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67AE06224052C59428EB226F /* RingNode.swift */; };
+		FE23ECC2D6AD5CCA9B99F0D8 /* Ring.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74455134AA06586837F8E9AC /* Ring.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		4FAC9246B4D1C6E28D4E56C9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BECAD8CB4A09FE9E20FBAD5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 975789DB12564C8376997F8D;
+			remoteInfo = RingKnot;
+		};
+		4FD9EE769F098661CB2474C8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BECAD8CB4A09FE9E20FBAD5C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 975789DB12564C8376997F8D;
+			remoteInfo = RingKnot;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		018A9F7902E59C7E854CF652 /* ScreenshotTour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotTour.swift; sourceTree = "<group>"; };
+		041006BB4D82E629BDEB31F4 /* RingKnotUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RingKnotUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0F77768D6416D29EE763C0F1 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		13594919380D0F6BE43A0A43 /* RingKnotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotApp.swift; sourceTree = "<group>"; };
+		13A53166F1DD8B1DC96F266A /* TestBundleHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestBundleHelper.swift; sourceTree = "<group>"; };
+		14CBC364C25BB6354DA6D9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		1E83AB8E4ADE25A4CB4B30CB /* RingRotationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingRotationTests.swift; sourceTree = "<group>"; };
+		222393C6D87CD7B8C2A81BBB /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		31EB8B5FF892E1F884DF2298 /* RingMaterial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingMaterial.swift; sourceTree = "<group>"; };
+		32D40866D28A9DBC5D0D63E2 /* sfx */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sfx; path = ../../shared/assets/sfx; sourceTree = SOURCE_ROOT; };
+		36D153E26C2D028355D5800E /* ProgressStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStore.swift; sourceTree = "<group>"; };
+		383DEACAA6101BFAD057AAAB /* LevelSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectView.swift; sourceTree = "<group>"; };
+		38A51C2788C357E7C4FFE306 /* Direction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Direction.swift; sourceTree = "<group>"; };
+		3FF379D7855F3BBBA4C8C601 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
+		4020CF456013E3E30A432F1A /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
+		425D490F9E073699275A9297 /* RingKnotPhase3UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotPhase3UITests.swift; sourceTree = "<group>"; };
+		42A7B4CAF77817148528DD1D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		48C140339C473DE8BFC9BFC2 /* MoveValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveValidator.swift; sourceTree = "<group>"; };
+		48FFAA4BB0C8FBFFEC0B344C /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
+		51BC30F54103E50008320E07 /* ring_unlock_level_pack_v1.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = ring_unlock_level_pack_v1.json; path = ../../shared/levels/ring_unlock_level_pack_v1.json; sourceTree = "<group>"; };
+		51E4E8717B29CB1F288D290B /* RingKnot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = RingKnot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		571DDC0297CD5CB67CAC7530 /* LevelDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelDisplay.swift; sourceTree = "<group>"; };
+		5886BADA95AC376591CCBB3A /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		608BB89FA8091C6ECDEFD14D /* SolutionPathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionPathTests.swift; sourceTree = "<group>"; };
+		6421BD00E9E9109F6CF12102 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		67AE06224052C59428EB226F /* RingNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingNode.swift; sourceTree = "<group>"; };
+		71F9C71F753AD8A905B7047E /* DirectionAndCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionAndCellTests.swift; sourceTree = "<group>"; };
+		74455134AA06586837F8E9AC /* Ring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ring.swift; sourceTree = "<group>"; };
+		746BE00906FB1D75A9D96204 /* LevelLoaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLoaderTests.swift; sourceTree = "<group>"; };
+		74C9FDACF4D2F709482A5DBA /* GameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameController.swift; sourceTree = "<group>"; };
+		76FA71D19830F9BC98C3ED54 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		80F1377C90DEBEAC1C46F3BB /* RingKnotTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RingKnotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		911B8CD00F1B04EA7497A193 /* MoveValidatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveValidatorTests.swift; sourceTree = "<group>"; };
+		94D2D2780D2C028B456D91F9 /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
+		9C2D66C86E72CDB7448A7FD1 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		A409D8D552249121F784A3CF /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		AEF347469EBAFF70646E05B1 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		AEFB2E5A8E318E7F854FE58F /* RingRotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingRotation.swift; sourceTree = "<group>"; };
+		B6B373C5464991D5A46F4F37 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BF27EDE68A06D7BB0A80724B /* LevelLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelLoader.swift; sourceTree = "<group>"; };
+		E1C9755F4FC9FB9B57447A92 /* RingKnotPhase4UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotPhase4UITests.swift; sourceTree = "<group>"; };
+		E472A965C5612BCFE062336E /* RingKnotRealGestureUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotRealGestureUITests.swift; sourceTree = "<group>"; };
+		E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		EED3537AE57FE06E23C9E41B /* ProgressStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressStoreTests.swift; sourceTree = "<group>"; };
+		F0C78231BC5DE449C6C6C24B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RingKnotUITests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		14E23E377710552053EACA30 /* SFX */ = {
+			isa = PBXGroup;
+			children = (
+				32D40866D28A9DBC5D0D63E2 /* sfx */,
+			);
+			name = SFX;
+			sourceTree = "<group>";
+		};
+		1BC1C994BFA670E72C2E5E07 /* Render */ = {
+			isa = PBXGroup;
+			children = (
+				0F77768D6416D29EE763C0F1 /* GameScene.swift */,
+				31EB8B5FF892E1F884DF2298 /* RingMaterial.swift */,
+				67AE06224052C59428EB226F /* RingNode.swift */,
+			);
+			path = Render;
+			sourceTree = "<group>";
+		};
+		3E18AD92424E74FFA70EAD0D /* RingKnot */ = {
+			isa = PBXGroup;
+			children = (
+				EE15A48FBB24937452BA3AF3 /* App */,
+				BA87CBDB931BA8A901291AB5 /* Engine */,
+				1BC1C994BFA670E72C2E5E07 /* Render */,
+				E25848F01554C2CAE02AAB3D /* Resources */,
+				14CBC364C25BB6354DA6D9EA /* Info.plist */,
+			);
+			path = RingKnot;
+			sourceTree = "<group>";
+		};
+		4C4CC513048A70DEBAB0C5DF /* RingKnotUITests */ = {
+			isa = PBXGroup;
+			children = (
+				425D490F9E073699275A9297 /* RingKnotPhase3UITests.swift */,
+				E1C9755F4FC9FB9B57447A92 /* RingKnotPhase4UITests.swift */,
+				E472A965C5612BCFE062336E /* RingKnotRealGestureUITests.swift */,
+				F4B5E0A100551CCCB9D0D362 /* RingKnotUITests.swift */,
+				018A9F7902E59C7E854CF652 /* ScreenshotTour.swift */,
+			);
+			path = RingKnotUITests;
+			sourceTree = "<group>";
+		};
+		61F27AF97EB5F7B1F7883619 /* SharedLevels */ = {
+			isa = PBXGroup;
+			children = (
+				51BC30F54103E50008320E07 /* ring_unlock_level_pack_v1.json */,
+			);
+			name = SharedLevels;
+			sourceTree = "<group>";
+		};
+		8743B02B3F71073C130382C1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				51E4E8717B29CB1F288D290B /* RingKnot.app */,
+				80F1377C90DEBEAC1C46F3BB /* RingKnotTests.xctest */,
+				041006BB4D82E629BDEB31F4 /* RingKnotUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BA87CBDB931BA8A901291AB5 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				5886BADA95AC376591CCBB3A /* Board.swift */,
+				3FF379D7855F3BBBA4C8C601 /* Cell.swift */,
+				38A51C2788C357E7C4FFE306 /* Direction.swift */,
+				222393C6D87CD7B8C2A81BBB /* GameState.swift */,
+				A409D8D552249121F784A3CF /* Level.swift */,
+				BF27EDE68A06D7BB0A80724B /* LevelLoader.swift */,
+				48C140339C473DE8BFC9BFC2 /* MoveValidator.swift */,
+				36D153E26C2D028355D5800E /* ProgressStore.swift */,
+				74455134AA06586837F8E9AC /* Ring.swift */,
+				AEFB2E5A8E318E7F854FE58F /* RingRotation.swift */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		E25848F01554C2CAE02AAB3D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				42A7B4CAF77817148528DD1D /* Assets.xcassets */,
+				F0C78231BC5DE449C6C6C24B /* PrivacyInfo.xcprivacy */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		EA89738ADFCB41BB985F9943 /* RingKnotTests */ = {
+			isa = PBXGroup;
+			children = (
+				71F9C71F753AD8A905B7047E /* DirectionAndCellTests.swift */,
+				746BE00906FB1D75A9D96204 /* LevelLoaderTests.swift */,
+				911B8CD00F1B04EA7497A193 /* MoveValidatorTests.swift */,
+				EED3537AE57FE06E23C9E41B /* ProgressStoreTests.swift */,
+				1E83AB8E4ADE25A4CB4B30CB /* RingRotationTests.swift */,
+				608BB89FA8091C6ECDEFD14D /* SolutionPathTests.swift */,
+				13A53166F1DD8B1DC96F266A /* TestBundleHelper.swift */,
+			);
+			path = RingKnotTests;
+			sourceTree = "<group>";
+		};
+		EE15A48FBB24937452BA3AF3 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				48FFAA4BB0C8FBFFEC0B344C /* AppEnvironment.swift */,
+				9C2D66C86E72CDB7448A7FD1 /* AudioManager.swift */,
+				74C9FDACF4D2F709482A5DBA /* GameController.swift */,
+				6421BD00E9E9109F6CF12102 /* GameView.swift */,
+				94D2D2780D2C028B456D91F9 /* Haptics.swift */,
+				E87CE2B44FA5FCA9D3CD0822 /* HomeView.swift */,
+				571DDC0297CD5CB67CAC7530 /* LevelDisplay.swift */,
+				383DEACAA6101BFAD057AAAB /* LevelSelectView.swift */,
+				76FA71D19830F9BC98C3ED54 /* OnboardingView.swift */,
+				4020CF456013E3E30A432F1A /* Preferences.swift */,
+				13594919380D0F6BE43A0A43 /* RingKnotApp.swift */,
+				AEF347469EBAFF70646E05B1 /* RootView.swift */,
+				B6B373C5464991D5A46F4F37 /* SettingsView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		F1611C2C7178444378B2BCFC = {
+			isa = PBXGroup;
+			children = (
+				3E18AD92424E74FFA70EAD0D /* RingKnot */,
+				EA89738ADFCB41BB985F9943 /* RingKnotTests */,
+				4C4CC513048A70DEBAB0C5DF /* RingKnotUITests */,
+				14E23E377710552053EACA30 /* SFX */,
+				61F27AF97EB5F7B1F7883619 /* SharedLevels */,
+				8743B02B3F71073C130382C1 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		975789DB12564C8376997F8D /* RingKnot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AA04F03DF624F1CFD58252D2 /* Build configuration list for PBXNativeTarget "RingKnot" */;
+			buildPhases = (
+				EBA2E0E7E919F6818E43C4CB /* Sources */,
+				321C76B20F64B34FC54EA702 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RingKnot;
+			packageProductDependencies = (
+			);
+			productName = RingKnot;
+			productReference = 51E4E8717B29CB1F288D290B /* RingKnot.app */;
+			productType = "com.apple.product-type.application";
+		};
+		BAA0346ECB028084F036273B /* RingKnotUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 949F6C5FD6FF5F4166EDD5F5 /* Build configuration list for PBXNativeTarget "RingKnotUITests" */;
+			buildPhases = (
+				8698380C6E034125A9CF469A /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DE76348E0D324F930235C1E /* PBXTargetDependency */,
+			);
+			name = RingKnotUITests;
+			packageProductDependencies = (
+			);
+			productName = RingKnotUITests;
+			productReference = 041006BB4D82E629BDEB31F4 /* RingKnotUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		EF5D2CC13362228BDE1E6D70 /* RingKnotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 041236FEF8C780E7221AA57A /* Build configuration list for PBXNativeTarget "RingKnotTests" */;
+			buildPhases = (
+				12E2A792260603CD48B15C68 /* Sources */,
+				7E99B559F4B6FBF169E12694 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CBCF609DFD2B5C12F240448E /* PBXTargetDependency */,
+			);
+			name = RingKnotTests;
+			packageProductDependencies = (
+			);
+			productName = RingKnotTests;
+			productReference = 80F1377C90DEBEAC1C46F3BB /* RingKnotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BECAD8CB4A09FE9E20FBAD5C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					975789DB12564C8376997F8D = {
+						DevelopmentTeam = "";
+					};
+					BAA0346ECB028084F036273B = {
+						DevelopmentTeam = "";
+						TestTargetID = 975789DB12564C8376997F8D;
+					};
+					EF5D2CC13362228BDE1E6D70 = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = 86FF3B5C010E328343D56048 /* Build configuration list for PBXProject "RingKnot" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = F1611C2C7178444378B2BCFC;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 8743B02B3F71073C130382C1 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				975789DB12564C8376997F8D /* RingKnot */,
+				EF5D2CC13362228BDE1E6D70 /* RingKnotTests */,
+				BAA0346ECB028084F036273B /* RingKnotUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		321C76B20F64B34FC54EA702 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7AE45D17E0C283179990D632 /* Assets.xcassets in Resources */,
+				6598255384C9842620967681 /* PrivacyInfo.xcprivacy in Resources */,
+				5411036FD93EE6D29C6D1ACB /* ring_unlock_level_pack_v1.json in Resources */,
+				28444D2B575D36B2701DA0F9 /* sfx in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7E99B559F4B6FBF169E12694 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9D5CD9A4279D32D00F750460 /* ring_unlock_level_pack_v1.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		12E2A792260603CD48B15C68 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57221C31ED58B53B1AC6941A /* DirectionAndCellTests.swift in Sources */,
+				70E81CF02AFBE1426F6322BB /* LevelLoaderTests.swift in Sources */,
+				D3650404C64C76F5367668B4 /* MoveValidatorTests.swift in Sources */,
+				388389E6D11BBB95706B5CC2 /* ProgressStoreTests.swift in Sources */,
+				582F50FF9108C705E29428F9 /* RingRotationTests.swift in Sources */,
+				BB356B03E29917B2EB69F571 /* SolutionPathTests.swift in Sources */,
+				4FCC8F1D98EC19638B0EFB6A /* TestBundleHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8698380C6E034125A9CF469A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				519DD5516800B767CA78E59D /* RingKnotPhase3UITests.swift in Sources */,
+				DC31774365A983C650AAEEBE /* RingKnotPhase4UITests.swift in Sources */,
+				1213AE26F682B613EC9172C3 /* RingKnotRealGestureUITests.swift in Sources */,
+				0030DCFC97E13ACED796BB28 /* RingKnotUITests.swift in Sources */,
+				532A9345B9F155B8EEB2A0F5 /* ScreenshotTour.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EBA2E0E7E919F6818E43C4CB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				788B0B873D30AD7A1613C031 /* AppEnvironment.swift in Sources */,
+				0C7E0686F4F73C83AF4772AD /* AudioManager.swift in Sources */,
+				74A22A99708A568A60A922BC /* Board.swift in Sources */,
+				1487253267E35C4E9709E2D2 /* Cell.swift in Sources */,
+				62D53353619AD3EEDBEAFD15 /* Direction.swift in Sources */,
+				01A44B9D728399EEFC8913F0 /* GameController.swift in Sources */,
+				D77B8175752BB460BFECC72E /* GameScene.swift in Sources */,
+				FAF765913C820F76FD885EDA /* GameState.swift in Sources */,
+				C1231A2BB8B53CAEB108906B /* GameView.swift in Sources */,
+				2D85EAD03A7A869197223DD3 /* Haptics.swift in Sources */,
+				F7A468F07B03E9BE44B56B25 /* HomeView.swift in Sources */,
+				7B34C4A6286595AD06D7A09B /* Level.swift in Sources */,
+				5035449BA6BA7CB5912E219E /* LevelDisplay.swift in Sources */,
+				A5F9DC6523171EC0B0092CB7 /* LevelLoader.swift in Sources */,
+				C490FE08CA220A2593A48B83 /* LevelSelectView.swift in Sources */,
+				77C482A6A6A3CCCA38999FB5 /* MoveValidator.swift in Sources */,
+				36E722C3EDF9F8BE8F7A6A10 /* OnboardingView.swift in Sources */,
+				7766460B75FD7AEC0A86B099 /* Preferences.swift in Sources */,
+				22A6C40594790308F124C8DE /* ProgressStore.swift in Sources */,
+				FE23ECC2D6AD5CCA9B99F0D8 /* Ring.swift in Sources */,
+				3973A87E829AE3B763CCB640 /* RingKnotApp.swift in Sources */,
+				BCC70E93C751870AD09E1527 /* RingMaterial.swift in Sources */,
+				FCA3AC66AF69DF8883A97CF4 /* RingNode.swift in Sources */,
+				A46A6DCBD5D18A973891B61D /* RingRotation.swift in Sources */,
+				C9F8664C8790747744F6C443 /* RootView.swift in Sources */,
+				EF651B4FBA95DED9A90A6E9A /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4DE76348E0D324F930235C1E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 975789DB12564C8376997F8D /* RingKnot */;
+			targetProxy = 4FAC9246B4D1C6E28D4E56C9 /* PBXContainerItemProxy */;
+		};
+		CBCF609DFD2B5C12F240448E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 975789DB12564C8376997F8D /* RingKnot */;
+			targetProxy = 4FD9EE769F098661CB2474C8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1B87FD69E98343B5D1EA6A2F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.swarpfoundation.ringknot.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RingKnot.app/RingKnot";
+			};
+			name = Release;
+		};
+		1C79E8D57BB764F47519DEA0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Release;
+		};
+		4C64D54E9B8DD087C16FB86B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RingKnot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.swarpfoundation.ringknot;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		4CDF12BF25695B8EC56B5109 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = RingKnot/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.swarpfoundation.ringknot;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5F81454596E39C8C14B23DA8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.swarpfoundation.ringknot.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RingKnot;
+			};
+			name = Release;
+		};
+		8DC8C3319569ADC180AC75B4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.10;
+			};
+			name = Debug;
+		};
+		C71C55BE3D1AB1B5A33F2DF0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.swarpfoundation.ringknot.uitests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = RingKnot;
+			};
+			name = Debug;
+		};
+		F1B9E95A1B0C4F55F92D4B51 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.swarpfoundation.ringknot.tests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/RingKnot.app/RingKnot";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		041236FEF8C780E7221AA57A /* Build configuration list for PBXNativeTarget "RingKnotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F1B9E95A1B0C4F55F92D4B51 /* Debug */,
+				1B87FD69E98343B5D1EA6A2F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		86FF3B5C010E328343D56048 /* Build configuration list for PBXProject "RingKnot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8DC8C3319569ADC180AC75B4 /* Debug */,
+				1C79E8D57BB764F47519DEA0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		949F6C5FD6FF5F4166EDD5F5 /* Build configuration list for PBXNativeTarget "RingKnotUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C71C55BE3D1AB1B5A33F2DF0 /* Debug */,
+				5F81454596E39C8C14B23DA8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		AA04F03DF624F1CFD58252D2 /* Build configuration list for PBXNativeTarget "RingKnot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4CDF12BF25695B8EC56B5109 /* Debug */,
+				4C64D54E9B8DD087C16FB86B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BECAD8CB4A09FE9E20FBAD5C /* Project object */;
+}

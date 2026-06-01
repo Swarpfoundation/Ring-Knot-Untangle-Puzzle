@@ -1,0 +1,17 @@
+{
+  "images" : [
+    {
+      "filename" : "bg_completion_dark_burst.png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    }
+  ],
+  "info" : {
+    "author" : "ringknot-procedural",
+    "version" : 1
+  },
+  "properties" : {
+    "preserves-vector-representation" : false,
+    "template-rendering-intent" : "original"
+  }
+}

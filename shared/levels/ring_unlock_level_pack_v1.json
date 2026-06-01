@@ -1,0 +1,3126 @@
+{
+  "game": "Ring Unlock",
+  "version": "1.0.0",
+  "coordinateSystem": {
+    "cellFormat": "row-letter + column-number, e.g. A1 is top-left. Suffixes a/b/c are overlapping visual offsets inside the same cell for knot pieces.",
+    "rows": "A is top, then B, C, D, E, F when board has 6 rows.",
+    "directions": {
+      "N": {
+        "dx": 0,
+        "dy": -1
+      },
+      "NE": {
+        "dx": 1,
+        "dy": -1
+      },
+      "E": {
+        "dx": 1,
+        "dy": 0
+      },
+      "SE": {
+        "dx": 1,
+        "dy": 1
+      },
+      "S": {
+        "dx": 0,
+        "dy": 1
+      },
+      "SW": {
+        "dx": -1,
+        "dy": 1
+      },
+      "W": {
+        "dx": -1,
+        "dy": 0
+      },
+      "NW": {
+        "dx": -1,
+        "dy": -1
+      }
+    }
+  },
+  "mechanics": {
+    "objective": "Remove all silver blocker rings and copper goal rings from the board.",
+    "dragModel": "Rotate then pull. Roll the selected ring by dragging tangentially around its centre until the gap is within alignmentToleranceDegrees of the exitDirection, then pull it outward along that direction to release. Releasing needs both exit-projected travel past releaseThresholdCellUnits and genuine outward travel past radialPullThresholdCellUnits, so a purely tangential roll never releases the ring.",
+    "invalidMove": "Pulling a ring whose gap is not yet aligned is refused with a 'rotate first' nudge; pulling a ring whose requires are not all cleared shows the blocked feedback. Both snap the ring back, and neither counts as a move.",
+    "releaseThresholdCellUnits": 0.5,
+    "exitDistanceCellUnits": 1.6,
+    "ringDefaults": {
+      "outerRadiusCellUnits": 0.44,
+      "tubeWidthCellUnits": 0.14,
+      "gapDegrees": 72,
+      "connectorWidthCellUnits": 0.16,
+      "alignmentToleranceDegreesByBand": {
+        "levels1to5": 22,
+        "levels6to10": 18,
+        "levels11to15": 15,
+        "levels16to20": 12
+      },
+      "initialGapAngleField": "initialGapAngle: gap angle in degrees (E=0, N=90, CCW+) the ring starts at; offset from exitDirection so the player must rotate to align.",
+      "rotationBeginRadiusCellUnits": 0.1,
+      "snapDegrees": 6
+    },
+    "rotationModel": "Each ring is an open circle with one gap. The player rolls the selected ring (dragging tangentially around its centre) until the gap is within alignmentToleranceDegrees of its exitDirection, then pulls it out through the gap along that direction. A ring never releases while its gap is misaligned or while any requires dependency is still on the board.",
+    "radialPullThresholdCellUnits": 0.16
+  },
+  "levels": [
+    {
+      "id": 1,
+      "name": "Single Hook",
+      "difficulty": 1,
+      "alignmentToleranceDegrees": 22,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3",
+          "exitDirection": "E",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 285
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "N"
+        },
+        {
+          "id": "C1",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Two Side Pins",
+      "difficulty": 1,
+      "alignmentToleranceDegrees": 22,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "W",
+          "requires": [],
+          "initialGapAngle": 240
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "E",
+          "requires": [],
+          "initialGapAngle": 285
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3",
+          "exitDirection": "S",
+          "requires": [
+            "S1",
+            "S2"
+          ],
+          "initialGapAngle": 0
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "W"
+        },
+        {
+          "id": "S2",
+          "drag": "E"
+        },
+        {
+          "id": "C1",
+          "drag": "S"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Top Cap",
+      "difficulty": 1,
+      "alignmentToleranceDegrees": 22,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "W",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 105
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "E",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 90
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3",
+          "exitDirection": "S",
+          "requires": [
+            "S2",
+            "S3"
+          ],
+          "initialGapAngle": 215
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "N"
+        },
+        {
+          "id": "S2",
+          "drag": "W"
+        },
+        {
+          "id": "S3",
+          "drag": "E"
+        },
+        {
+          "id": "C1",
+          "drag": "S"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "First Fork",
+      "difficulty": 2,
+      "alignmentToleranceDegrees": 22,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "SW",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "SE",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 45
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "S",
+          "requires": [
+            "S2",
+            "S3"
+          ],
+          "initialGapAngle": 215
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3",
+          "exitDirection": "E",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 70
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "N"
+        },
+        {
+          "id": "S2",
+          "drag": "SW"
+        },
+        {
+          "id": "S3",
+          "drag": "SE"
+        },
+        {
+          "id": "S4",
+          "drag": "S"
+        },
+        {
+          "id": "C1",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Bridge Latch",
+      "difficulty": 2,
+      "alignmentToleranceDegrees": 22,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "NW",
+          "requires": [],
+          "initialGapAngle": 195
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "A4",
+          "exitDirection": "NE",
+          "requires": [],
+          "initialGapAngle": 330
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [
+            "S1",
+            "S2"
+          ],
+          "initialGapAngle": 180
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "W",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 125
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "E",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 70
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3",
+          "exitDirection": "S",
+          "requires": [
+            "S4",
+            "S5"
+          ],
+          "initialGapAngle": 170
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "NW"
+        },
+        {
+          "id": "S2",
+          "drag": "NE"
+        },
+        {
+          "id": "S3",
+          "drag": "N"
+        },
+        {
+          "id": "S4",
+          "drag": "W"
+        },
+        {
+          "id": "S5",
+          "drag": "E"
+        },
+        {
+          "id": "C1",
+          "drag": "S"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Split Core",
+      "difficulty": 2,
+      "alignmentToleranceDegrees": 18,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "B1",
+          "exitDirection": "W",
+          "requires": [],
+          "initialGapAngle": 240
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "E",
+          "requires": [],
+          "initialGapAngle": 285
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [
+            "S1",
+            "S2"
+          ],
+          "initialGapAngle": 180
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "SW",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 170
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "SE",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 25
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "W",
+          "requires": [
+            "S4",
+            "S5"
+          ],
+          "initialGapAngle": 80
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "E",
+          "requires": [
+            "C1"
+          ],
+          "initialGapAngle": 50
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "W"
+        },
+        {
+          "id": "S2",
+          "drag": "E"
+        },
+        {
+          "id": "S3",
+          "drag": "N"
+        },
+        {
+          "id": "S4",
+          "drag": "SW"
+        },
+        {
+          "id": "S5",
+          "drag": "SE"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Lower Trap",
+      "difficulty": 3,
+      "alignmentToleranceDegrees": 18,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "SW",
+          "requires": [],
+          "initialGapAngle": 285
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "D4",
+          "exitDirection": "SE",
+          "requires": [],
+          "initialGapAngle": 240
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "W",
+          "requires": [],
+          "initialGapAngle": 270
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "E",
+          "requires": [],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "C3",
+          "exitDirection": "N",
+          "requires": [
+            "S3",
+            "S4"
+          ],
+          "initialGapAngle": 160
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "S",
+          "requires": [
+            "S1",
+            "S2",
+            "S5"
+          ],
+          "initialGapAngle": 170
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "W",
+          "requires": [
+            "S6"
+          ],
+          "initialGapAngle": 230
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "E",
+          "requires": [
+            "C1"
+          ],
+          "initialGapAngle": 275
+        }
+      ],
+      "solution": [
+        {
+          "id": "S3",
+          "drag": "W"
+        },
+        {
+          "id": "S4",
+          "drag": "E"
+        },
+        {
+          "id": "S5",
+          "drag": "N"
+        },
+        {
+          "id": "S1",
+          "drag": "SW"
+        },
+        {
+          "id": "S2",
+          "drag": "SE"
+        },
+        {
+          "id": "S6",
+          "drag": "S"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "Outer Arms",
+      "difficulty": 3,
+      "alignmentToleranceDegrees": 18,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "B1",
+          "exitDirection": "W",
+          "requires": [],
+          "initialGapAngle": 105
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "E",
+          "requires": [],
+          "initialGapAngle": 90
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "SW",
+          "requires": [
+            "S1",
+            "S2"
+          ],
+          "initialGapAngle": 170
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "SE",
+          "requires": [
+            "S1",
+            "S3"
+          ],
+          "initialGapAngle": 25
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "W",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 80
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "D4",
+          "exitDirection": "E",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 50
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3",
+          "exitDirection": "S",
+          "requires": [
+            "S6",
+            "S7"
+          ],
+          "initialGapAngle": 185
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "N"
+        },
+        {
+          "id": "S2",
+          "drag": "W"
+        },
+        {
+          "id": "S3",
+          "drag": "E"
+        },
+        {
+          "id": "S4",
+          "drag": "SW"
+        },
+        {
+          "id": "S5",
+          "drag": "SE"
+        },
+        {
+          "id": "S6",
+          "drag": "W"
+        },
+        {
+          "id": "S7",
+          "drag": "E"
+        },
+        {
+          "id": "C1",
+          "drag": "S"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Bottom First",
+      "difficulty": 3,
+      "alignmentToleranceDegrees": 18,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "E3",
+          "exitDirection": "S",
+          "requires": [],
+          "initialGapAngle": 330
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "SW",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "D4",
+          "exitDirection": "SE",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 45
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 35
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "W",
+          "requires": [
+            "S4",
+            "S2"
+          ],
+          "initialGapAngle": 250
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "E",
+          "requires": [
+            "S4",
+            "S3"
+          ],
+          "initialGapAngle": 260
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "NW",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 185
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "NE",
+          "requires": [
+            "S6"
+          ],
+          "initialGapAngle": 320
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3",
+          "exitDirection": "S",
+          "requires": [
+            "S7",
+            "S8"
+          ],
+          "initialGapAngle": 20
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "S"
+        },
+        {
+          "id": "S2",
+          "drag": "SW"
+        },
+        {
+          "id": "S3",
+          "drag": "SE"
+        },
+        {
+          "id": "S4",
+          "drag": "N"
+        },
+        {
+          "id": "S5",
+          "drag": "W"
+        },
+        {
+          "id": "S6",
+          "drag": "E"
+        },
+        {
+          "id": "S7",
+          "drag": "NW"
+        },
+        {
+          "id": "S8",
+          "drag": "NE"
+        },
+        {
+          "id": "C1",
+          "drag": "S"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Inner Clamp",
+      "difficulty": 4,
+      "alignmentToleranceDegrees": 18,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "NW",
+          "requires": [],
+          "initialGapAngle": 195
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "A4",
+          "exitDirection": "NE",
+          "requires": [],
+          "initialGapAngle": 330
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [
+            "S1",
+            "S2"
+          ],
+          "initialGapAngle": 180
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "B1",
+          "exitDirection": "W",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 125
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "E",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 70
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "SW",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 125
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "SE",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 5
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "S",
+          "requires": [
+            "S6",
+            "S7"
+          ],
+          "initialGapAngle": 185
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "W",
+          "requires": [
+            "S8"
+          ],
+          "initialGapAngle": 290
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "E",
+          "requires": [
+            "C1"
+          ],
+          "initialGapAngle": 295
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "NW"
+        },
+        {
+          "id": "S2",
+          "drag": "NE"
+        },
+        {
+          "id": "S3",
+          "drag": "N"
+        },
+        {
+          "id": "S4",
+          "drag": "W"
+        },
+        {
+          "id": "S5",
+          "drag": "E"
+        },
+        {
+          "id": "S6",
+          "drag": "SW"
+        },
+        {
+          "id": "S7",
+          "drag": "SE"
+        },
+        {
+          "id": "S8",
+          "drag": "S"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Four-Way Latch",
+      "difficulty": 4,
+      "alignmentToleranceDegrees": 15,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "C1",
+          "exitDirection": "W",
+          "requires": [],
+          "initialGapAngle": 240
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "C5",
+          "exitDirection": "E",
+          "requires": [],
+          "initialGapAngle": 285
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 180
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "E3",
+          "exitDirection": "S",
+          "requires": [],
+          "initialGapAngle": 215
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "NW",
+          "requires": [
+            "S1",
+            "S3"
+          ],
+          "initialGapAngle": 205
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "NE",
+          "requires": [
+            "S2",
+            "S3"
+          ],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "SW",
+          "requires": [
+            "S1",
+            "S4"
+          ],
+          "initialGapAngle": 275
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "D4",
+          "exitDirection": "SE",
+          "requires": [
+            "S2",
+            "S4"
+          ],
+          "initialGapAngle": 230
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "W",
+          "requires": [
+            "S5",
+            "S7"
+          ],
+          "initialGapAngle": 290
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "E",
+          "requires": [
+            "S6",
+            "S8",
+            "C1"
+          ],
+          "initialGapAngle": 295
+        }
+      ],
+      "solution": [
+        {
+          "id": "S3",
+          "drag": "N"
+        },
+        {
+          "id": "S4",
+          "drag": "S"
+        },
+        {
+          "id": "S1",
+          "drag": "W"
+        },
+        {
+          "id": "S2",
+          "drag": "E"
+        },
+        {
+          "id": "S5",
+          "drag": "NW"
+        },
+        {
+          "id": "S6",
+          "drag": "NE"
+        },
+        {
+          "id": "S7",
+          "drag": "SW"
+        },
+        {
+          "id": "S8",
+          "drag": "SE"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Rim Gate",
+      "difficulty": 4,
+      "alignmentToleranceDegrees": 15,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "B1",
+          "exitDirection": "W",
+          "requires": [],
+          "initialGapAngle": 105
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "E",
+          "requires": [],
+          "initialGapAngle": 90
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "E3",
+          "exitDirection": "S",
+          "requires": [],
+          "initialGapAngle": 215
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "D1",
+          "exitDirection": "SW",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 295
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "D5",
+          "exitDirection": "SE",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 215
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [
+            "S1",
+            "S2",
+            "S3"
+          ],
+          "initialGapAngle": 140
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "W",
+          "requires": [
+            "S5",
+            "S7"
+          ],
+          "initialGapAngle": 95
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "E",
+          "requires": [
+            "S6",
+            "S7"
+          ],
+          "initialGapAngle": 110
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "S",
+          "requires": [
+            "S8",
+            "S9"
+          ],
+          "initialGapAngle": 205
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "N",
+          "requires": [
+            "C1"
+          ],
+          "initialGapAngle": 170
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "N"
+        },
+        {
+          "id": "S2",
+          "drag": "W"
+        },
+        {
+          "id": "S3",
+          "drag": "E"
+        },
+        {
+          "id": "S4",
+          "drag": "S"
+        },
+        {
+          "id": "S5",
+          "drag": "SW"
+        },
+        {
+          "id": "S6",
+          "drag": "SE"
+        },
+        {
+          "id": "S7",
+          "drag": "N"
+        },
+        {
+          "id": "S8",
+          "drag": "W"
+        },
+        {
+          "id": "S9",
+          "drag": "E"
+        },
+        {
+          "id": "C1",
+          "drag": "S"
+        },
+        {
+          "id": "C2",
+          "drag": "N"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "name": "Clockwise Spiral",
+      "difficulty": 5,
+      "alignmentToleranceDegrees": 15,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A1",
+          "exitDirection": "NW",
+          "requires": [],
+          "initialGapAngle": 195
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 15
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "A5",
+          "exitDirection": "NE",
+          "requires": [
+            "S2"
+          ],
+          "initialGapAngle": 135
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "E",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "D5",
+          "exitDirection": "SE",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 25
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "E3",
+          "exitDirection": "S",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 170
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "E1",
+          "exitDirection": "SW",
+          "requires": [
+            "S6"
+          ],
+          "initialGapAngle": 275
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "D1",
+          "exitDirection": "W",
+          "requires": [
+            "S7"
+          ],
+          "initialGapAngle": 95
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "B1",
+          "exitDirection": "NW",
+          "requires": [
+            "S8"
+          ],
+          "initialGapAngle": 245
+        },
+        {
+          "id": "S10",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [
+            "S9"
+          ],
+          "initialGapAngle": 25
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "W",
+          "requires": [
+            "S10"
+          ],
+          "initialGapAngle": 260
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "E",
+          "requires": [
+            "C1"
+          ],
+          "initialGapAngle": 310
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "NW"
+        },
+        {
+          "id": "S2",
+          "drag": "N"
+        },
+        {
+          "id": "S3",
+          "drag": "NE"
+        },
+        {
+          "id": "S4",
+          "drag": "E"
+        },
+        {
+          "id": "S5",
+          "drag": "SE"
+        },
+        {
+          "id": "S6",
+          "drag": "S"
+        },
+        {
+          "id": "S7",
+          "drag": "SW"
+        },
+        {
+          "id": "S8",
+          "drag": "W"
+        },
+        {
+          "id": "S9",
+          "drag": "NW"
+        },
+        {
+          "id": "S10",
+          "drag": "N"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "name": "Double Key",
+      "difficulty": 5,
+      "alignmentToleranceDegrees": 15,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "NW",
+          "requires": [],
+          "initialGapAngle": 195
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "A4",
+          "exitDirection": "NE",
+          "requires": [],
+          "initialGapAngle": 330
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "W",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 270
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "E",
+          "requires": [
+            "S2"
+          ],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "C1",
+          "exitDirection": "W",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 250
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "C5",
+          "exitDirection": "E",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 260
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "SW",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 275
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "D4",
+          "exitDirection": "SE",
+          "requires": [
+            "S6"
+          ],
+          "initialGapAngle": 230
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "N",
+          "requires": [
+            "S3",
+            "S7"
+          ],
+          "initialGapAngle": 200
+        },
+        {
+          "id": "S10",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "S",
+          "requires": [
+            "S4",
+            "S8"
+          ],
+          "initialGapAngle": 205
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "W",
+          "requires": [
+            "S9"
+          ],
+          "initialGapAngle": 260
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "E",
+          "requires": [
+            "S10",
+            "C1"
+          ],
+          "initialGapAngle": 310
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "NW"
+        },
+        {
+          "id": "S2",
+          "drag": "NE"
+        },
+        {
+          "id": "S3",
+          "drag": "W"
+        },
+        {
+          "id": "S4",
+          "drag": "E"
+        },
+        {
+          "id": "S5",
+          "drag": "W"
+        },
+        {
+          "id": "S6",
+          "drag": "E"
+        },
+        {
+          "id": "S7",
+          "drag": "SW"
+        },
+        {
+          "id": "S8",
+          "drag": "SE"
+        },
+        {
+          "id": "S9",
+          "drag": "N"
+        },
+        {
+          "id": "S10",
+          "drag": "S"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "name": "Stacked Bridge",
+      "difficulty": 5,
+      "alignmentToleranceDegrees": 15,
+      "board": {
+        "rows": 5,
+        "cols": 5
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "NW",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 60
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "NE",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 135
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "C1",
+          "exitDirection": "W",
+          "requires": [
+            "S2"
+          ],
+          "initialGapAngle": 125
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "C5",
+          "exitDirection": "E",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 70
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "SW",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 125
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "D4",
+          "exitDirection": "SE",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 5
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "E3",
+          "exitDirection": "S",
+          "requires": [
+            "S6",
+            "S7"
+          ],
+          "initialGapAngle": 185
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "W",
+          "requires": [
+            "S2",
+            "S6"
+          ],
+          "initialGapAngle": 290
+        },
+        {
+          "id": "S10",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "E",
+          "requires": [
+            "S3",
+            "S7"
+          ],
+          "initialGapAngle": 295
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "S",
+          "requires": [
+            "S8",
+            "S9",
+            "S10"
+          ],
+          "initialGapAngle": 350
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "W",
+          "requires": [
+            "C1"
+          ],
+          "initialGapAngle": 130
+        },
+        {
+          "id": "C3",
+          "kind": "copper",
+          "cell": "C3c",
+          "exitDirection": "E",
+          "requires": [
+            "C2"
+          ],
+          "initialGapAngle": 95
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "N"
+        },
+        {
+          "id": "S2",
+          "drag": "NW"
+        },
+        {
+          "id": "S3",
+          "drag": "NE"
+        },
+        {
+          "id": "S4",
+          "drag": "W"
+        },
+        {
+          "id": "S5",
+          "drag": "E"
+        },
+        {
+          "id": "S6",
+          "drag": "SW"
+        },
+        {
+          "id": "S7",
+          "drag": "SE"
+        },
+        {
+          "id": "S8",
+          "drag": "S"
+        },
+        {
+          "id": "S9",
+          "drag": "W"
+        },
+        {
+          "id": "S10",
+          "drag": "E"
+        },
+        {
+          "id": "C1",
+          "drag": "S"
+        },
+        {
+          "id": "C2",
+          "drag": "W"
+        },
+        {
+          "id": "C3",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "name": "Outer Shell",
+      "difficulty": 6,
+      "alignmentToleranceDegrees": 12,
+      "board": {
+        "rows": 6,
+        "cols": 6
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "NW",
+          "requires": [],
+          "initialGapAngle": 195
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "A5",
+          "exitDirection": "NE",
+          "requires": [],
+          "initialGapAngle": 330
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B1",
+          "exitDirection": "W",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 270
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "B6",
+          "exitDirection": "E",
+          "requires": [
+            "S2"
+          ],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "E1",
+          "exitDirection": "SW",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 295
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "E6",
+          "exitDirection": "SE",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 215
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "F3",
+          "exitDirection": "S",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 320
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "F4",
+          "exitDirection": "S",
+          "requires": [
+            "S6"
+          ],
+          "initialGapAngle": 185
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [
+            "S1",
+            "S3"
+          ],
+          "initialGapAngle": 200
+        },
+        {
+          "id": "S10",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "N",
+          "requires": [
+            "S2",
+            "S4"
+          ],
+          "initialGapAngle": 25
+        },
+        {
+          "id": "S11",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "W",
+          "requires": [
+            "S9",
+            "S5"
+          ],
+          "initialGapAngle": 260
+        },
+        {
+          "id": "S12",
+          "kind": "silver",
+          "cell": "C5",
+          "exitDirection": "E",
+          "requires": [
+            "S10",
+            "S6"
+          ],
+          "initialGapAngle": 310
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "D3",
+          "exitDirection": "W",
+          "requires": [
+            "S7",
+            "S11"
+          ],
+          "initialGapAngle": 275
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "D4",
+          "exitDirection": "E",
+          "requires": [
+            "S8",
+            "S12",
+            "C1"
+          ],
+          "initialGapAngle": 290
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "NW"
+        },
+        {
+          "id": "S2",
+          "drag": "NE"
+        },
+        {
+          "id": "S3",
+          "drag": "W"
+        },
+        {
+          "id": "S4",
+          "drag": "E"
+        },
+        {
+          "id": "S5",
+          "drag": "SW"
+        },
+        {
+          "id": "S6",
+          "drag": "SE"
+        },
+        {
+          "id": "S7",
+          "drag": "S"
+        },
+        {
+          "id": "S8",
+          "drag": "S"
+        },
+        {
+          "id": "S9",
+          "drag": "N"
+        },
+        {
+          "id": "S10",
+          "drag": "N"
+        },
+        {
+          "id": "S11",
+          "drag": "W"
+        },
+        {
+          "id": "S12",
+          "drag": "E"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "name": "Alternating Locks",
+      "difficulty": 6,
+      "alignmentToleranceDegrees": 12,
+      "board": {
+        "rows": 6,
+        "cols": 6
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A3",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "F3",
+          "exitDirection": "S",
+          "requires": [],
+          "initialGapAngle": 195
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "C1",
+          "exitDirection": "W",
+          "requires": [],
+          "initialGapAngle": 270
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "C6",
+          "exitDirection": "E",
+          "requires": [],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "NW",
+          "requires": [
+            "S1",
+            "S3"
+          ],
+          "initialGapAngle": 205
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "NE",
+          "requires": [
+            "S1",
+            "S4"
+          ],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "E2",
+          "exitDirection": "SW",
+          "requires": [
+            "S2",
+            "S3"
+          ],
+          "initialGapAngle": 275
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "E5",
+          "exitDirection": "SE",
+          "requires": [
+            "S2",
+            "S4"
+          ],
+          "initialGapAngle": 230
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "W",
+          "requires": [
+            "S5",
+            "S7"
+          ],
+          "initialGapAngle": 290
+        },
+        {
+          "id": "S10",
+          "kind": "silver",
+          "cell": "C5",
+          "exitDirection": "E",
+          "requires": [
+            "S6",
+            "S8"
+          ],
+          "initialGapAngle": 295
+        },
+        {
+          "id": "S11",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "S",
+          "requires": [
+            "S9"
+          ],
+          "initialGapAngle": 350
+        },
+        {
+          "id": "S12",
+          "kind": "silver",
+          "cell": "D4",
+          "exitDirection": "S",
+          "requires": [
+            "S10"
+          ],
+          "initialGapAngle": 220
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "N",
+          "requires": [
+            "S11"
+          ],
+          "initialGapAngle": 185
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C4a",
+          "exitDirection": "N",
+          "requires": [
+            "S12"
+          ],
+          "initialGapAngle": 20
+        },
+        {
+          "id": "C3",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "E",
+          "requires": [
+            "C1",
+            "C2"
+          ],
+          "initialGapAngle": 105
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "N"
+        },
+        {
+          "id": "S2",
+          "drag": "S"
+        },
+        {
+          "id": "S3",
+          "drag": "W"
+        },
+        {
+          "id": "S4",
+          "drag": "E"
+        },
+        {
+          "id": "S5",
+          "drag": "NW"
+        },
+        {
+          "id": "S6",
+          "drag": "NE"
+        },
+        {
+          "id": "S7",
+          "drag": "SW"
+        },
+        {
+          "id": "S8",
+          "drag": "SE"
+        },
+        {
+          "id": "S9",
+          "drag": "W"
+        },
+        {
+          "id": "S10",
+          "drag": "E"
+        },
+        {
+          "id": "S11",
+          "drag": "S"
+        },
+        {
+          "id": "S12",
+          "drag": "S"
+        },
+        {
+          "id": "C1",
+          "drag": "N"
+        },
+        {
+          "id": "C2",
+          "drag": "N"
+        },
+        {
+          "id": "C3",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "name": "Corkscrew",
+      "difficulty": 7,
+      "alignmentToleranceDegrees": 12,
+      "board": {
+        "rows": 6,
+        "cols": 6
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A1",
+          "exitDirection": "NW",
+          "requires": [],
+          "initialGapAngle": 195
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "N",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 15
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "A4",
+          "exitDirection": "N",
+          "requires": [
+            "S2"
+          ],
+          "initialGapAngle": 180
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "A6",
+          "exitDirection": "NE",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 350
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "B6",
+          "exitDirection": "E",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 70
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "D6",
+          "exitDirection": "SE",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 215
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "F5",
+          "exitDirection": "S",
+          "requires": [
+            "S6"
+          ],
+          "initialGapAngle": 320
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "F3",
+          "exitDirection": "S",
+          "requires": [
+            "S7"
+          ],
+          "initialGapAngle": 185
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "F1",
+          "exitDirection": "SW",
+          "requires": [
+            "S8"
+          ],
+          "initialGapAngle": 335
+        },
+        {
+          "id": "S10",
+          "kind": "silver",
+          "cell": "E1",
+          "exitDirection": "W",
+          "requires": [
+            "S9"
+          ],
+          "initialGapAngle": 115
+        },
+        {
+          "id": "S11",
+          "kind": "silver",
+          "cell": "C1",
+          "exitDirection": "W",
+          "requires": [
+            "S10"
+          ],
+          "initialGapAngle": 260
+        },
+        {
+          "id": "S12",
+          "kind": "silver",
+          "cell": "B2",
+          "exitDirection": "NW",
+          "requires": [
+            "S11"
+          ],
+          "initialGapAngle": 85
+        },
+        {
+          "id": "S13",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [
+            "S12"
+          ],
+          "initialGapAngle": 185
+        },
+        {
+          "id": "S14",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "N",
+          "requires": [
+            "S13"
+          ],
+          "initialGapAngle": 20
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "W",
+          "requires": [
+            "S14"
+          ],
+          "initialGapAngle": 285
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "D4a",
+          "exitDirection": "E",
+          "requires": [
+            "C1"
+          ],
+          "initialGapAngle": 300
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "NW"
+        },
+        {
+          "id": "S2",
+          "drag": "N"
+        },
+        {
+          "id": "S3",
+          "drag": "N"
+        },
+        {
+          "id": "S4",
+          "drag": "NE"
+        },
+        {
+          "id": "S5",
+          "drag": "E"
+        },
+        {
+          "id": "S6",
+          "drag": "SE"
+        },
+        {
+          "id": "S7",
+          "drag": "S"
+        },
+        {
+          "id": "S8",
+          "drag": "S"
+        },
+        {
+          "id": "S9",
+          "drag": "SW"
+        },
+        {
+          "id": "S10",
+          "drag": "W"
+        },
+        {
+          "id": "S11",
+          "drag": "W"
+        },
+        {
+          "id": "S12",
+          "drag": "NW"
+        },
+        {
+          "id": "S13",
+          "drag": "N"
+        },
+        {
+          "id": "S14",
+          "drag": "N"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "name": "Two-Phase Center",
+      "difficulty": 7,
+      "alignmentToleranceDegrees": 12,
+      "board": {
+        "rows": 6,
+        "cols": 6
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "NW",
+          "requires": [],
+          "initialGapAngle": 195
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "A5",
+          "exitDirection": "NE",
+          "requires": [],
+          "initialGapAngle": 330
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B1",
+          "exitDirection": "W",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 270
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "B6",
+          "exitDirection": "E",
+          "requires": [
+            "S2"
+          ],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "F2",
+          "exitDirection": "SW",
+          "requires": [],
+          "initialGapAngle": 295
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "F5",
+          "exitDirection": "SE",
+          "requires": [],
+          "initialGapAngle": 215
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "E1",
+          "exitDirection": "W",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 230
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "E6",
+          "exitDirection": "E",
+          "requires": [
+            "S6"
+          ],
+          "initialGapAngle": 275
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [
+            "S1",
+            "S3"
+          ],
+          "initialGapAngle": 200
+        },
+        {
+          "id": "S10",
+          "kind": "silver",
+          "cell": "B4",
+          "exitDirection": "N",
+          "requires": [
+            "S2",
+            "S4"
+          ],
+          "initialGapAngle": 25
+        },
+        {
+          "id": "S11",
+          "kind": "silver",
+          "cell": "E3",
+          "exitDirection": "S",
+          "requires": [
+            "S5",
+            "S7"
+          ],
+          "initialGapAngle": 350
+        },
+        {
+          "id": "S12",
+          "kind": "silver",
+          "cell": "E4",
+          "exitDirection": "S",
+          "requires": [
+            "S6",
+            "S8"
+          ],
+          "initialGapAngle": 220
+        },
+        {
+          "id": "S13",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "W",
+          "requires": [
+            "S9",
+            "S11"
+          ],
+          "initialGapAngle": 275
+        },
+        {
+          "id": "S14",
+          "kind": "silver",
+          "cell": "C5",
+          "exitDirection": "E",
+          "requires": [
+            "S10",
+            "S12"
+          ],
+          "initialGapAngle": 290
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "D3",
+          "exitDirection": "W",
+          "requires": [
+            "S13"
+          ],
+          "initialGapAngle": 285
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "D4",
+          "exitDirection": "E",
+          "requires": [
+            "S14",
+            "C1"
+          ],
+          "initialGapAngle": 300
+        },
+        {
+          "id": "C3",
+          "kind": "copper",
+          "cell": "C3",
+          "exitDirection": "N",
+          "requires": [
+            "C2"
+          ],
+          "initialGapAngle": 175
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "NW"
+        },
+        {
+          "id": "S2",
+          "drag": "NE"
+        },
+        {
+          "id": "S3",
+          "drag": "W"
+        },
+        {
+          "id": "S4",
+          "drag": "E"
+        },
+        {
+          "id": "S5",
+          "drag": "SW"
+        },
+        {
+          "id": "S6",
+          "drag": "SE"
+        },
+        {
+          "id": "S7",
+          "drag": "W"
+        },
+        {
+          "id": "S8",
+          "drag": "E"
+        },
+        {
+          "id": "S9",
+          "drag": "N"
+        },
+        {
+          "id": "S10",
+          "drag": "N"
+        },
+        {
+          "id": "S11",
+          "drag": "S"
+        },
+        {
+          "id": "S12",
+          "drag": "S"
+        },
+        {
+          "id": "S13",
+          "drag": "W"
+        },
+        {
+          "id": "S14",
+          "drag": "E"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "E"
+        },
+        {
+          "id": "C3",
+          "drag": "N"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "name": "Final Knot",
+      "difficulty": 8,
+      "alignmentToleranceDegrees": 12,
+      "board": {
+        "rows": 6,
+        "cols": 6
+      },
+      "pieces": [
+        {
+          "id": "S1",
+          "kind": "silver",
+          "cell": "A4",
+          "exitDirection": "N",
+          "requires": [],
+          "initialGapAngle": 150
+        },
+        {
+          "id": "S2",
+          "kind": "silver",
+          "cell": "A2",
+          "exitDirection": "N",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 15
+        },
+        {
+          "id": "S3",
+          "kind": "silver",
+          "cell": "B1",
+          "exitDirection": "W",
+          "requires": [
+            "S2"
+          ],
+          "initialGapAngle": 270
+        },
+        {
+          "id": "S4",
+          "kind": "silver",
+          "cell": "B5",
+          "exitDirection": "E",
+          "requires": [
+            "S1"
+          ],
+          "initialGapAngle": 305
+        },
+        {
+          "id": "S5",
+          "kind": "silver",
+          "cell": "C1",
+          "exitDirection": "W",
+          "requires": [
+            "S3"
+          ],
+          "initialGapAngle": 250
+        },
+        {
+          "id": "S6",
+          "kind": "silver",
+          "cell": "C2",
+          "exitDirection": "W",
+          "requires": [
+            "S5"
+          ],
+          "initialGapAngle": 80
+        },
+        {
+          "id": "S7",
+          "kind": "silver",
+          "cell": "C4",
+          "exitDirection": "E",
+          "requires": [
+            "S4"
+          ],
+          "initialGapAngle": 50
+        },
+        {
+          "id": "S8",
+          "kind": "silver",
+          "cell": "C5",
+          "exitDirection": "E",
+          "requires": [
+            "S7"
+          ],
+          "initialGapAngle": 275
+        },
+        {
+          "id": "S9",
+          "kind": "silver",
+          "cell": "D2",
+          "exitDirection": "SW",
+          "requires": [
+            "S6"
+          ],
+          "initialGapAngle": 335
+        },
+        {
+          "id": "S10",
+          "kind": "silver",
+          "cell": "D4",
+          "exitDirection": "SE",
+          "requires": [
+            "S8"
+          ],
+          "initialGapAngle": 250
+        },
+        {
+          "id": "S11",
+          "kind": "silver",
+          "cell": "E2",
+          "exitDirection": "S",
+          "requires": [
+            "S9"
+          ],
+          "initialGapAngle": 350
+        },
+        {
+          "id": "S12",
+          "kind": "silver",
+          "cell": "E4",
+          "exitDirection": "S",
+          "requires": [
+            "S10"
+          ],
+          "initialGapAngle": 220
+        },
+        {
+          "id": "S13",
+          "kind": "silver",
+          "cell": "B3",
+          "exitDirection": "N",
+          "requires": [
+            "S2",
+            "S4"
+          ],
+          "initialGapAngle": 185
+        },
+        {
+          "id": "S14",
+          "kind": "silver",
+          "cell": "C3",
+          "exitDirection": "E",
+          "requires": [
+            "S13",
+            "S6",
+            "S7"
+          ],
+          "initialGapAngle": 290
+        },
+        {
+          "id": "S15",
+          "kind": "silver",
+          "cell": "D3",
+          "exitDirection": "S",
+          "requires": [
+            "S14",
+            "S11",
+            "S12"
+          ],
+          "initialGapAngle": 15
+        },
+        {
+          "id": "C1",
+          "kind": "copper",
+          "cell": "B3a",
+          "exitDirection": "W",
+          "requires": [
+            "S13",
+            "S14"
+          ],
+          "initialGapAngle": 120
+        },
+        {
+          "id": "C2",
+          "kind": "copper",
+          "cell": "C3a",
+          "exitDirection": "N",
+          "requires": [
+            "C1",
+            "S15"
+          ],
+          "initialGapAngle": 175
+        },
+        {
+          "id": "C3",
+          "kind": "copper",
+          "cell": "C3b",
+          "exitDirection": "E",
+          "requires": [
+            "C2"
+          ],
+          "initialGapAngle": 265
+        }
+      ],
+      "solution": [
+        {
+          "id": "S1",
+          "drag": "N"
+        },
+        {
+          "id": "S2",
+          "drag": "N"
+        },
+        {
+          "id": "S4",
+          "drag": "E"
+        },
+        {
+          "id": "S3",
+          "drag": "W"
+        },
+        {
+          "id": "S7",
+          "drag": "E"
+        },
+        {
+          "id": "S8",
+          "drag": "E"
+        },
+        {
+          "id": "S5",
+          "drag": "W"
+        },
+        {
+          "id": "S6",
+          "drag": "W"
+        },
+        {
+          "id": "S13",
+          "drag": "N"
+        },
+        {
+          "id": "S14",
+          "drag": "E"
+        },
+        {
+          "id": "S9",
+          "drag": "SW"
+        },
+        {
+          "id": "S10",
+          "drag": "SE"
+        },
+        {
+          "id": "S11",
+          "drag": "S"
+        },
+        {
+          "id": "S12",
+          "drag": "S"
+        },
+        {
+          "id": "S15",
+          "drag": "S"
+        },
+        {
+          "id": "C1",
+          "drag": "W"
+        },
+        {
+          "id": "C2",
+          "drag": "N"
+        },
+        {
+          "id": "C3",
+          "drag": "E"
+        }
+      ]
+    }
+  ]
+}
